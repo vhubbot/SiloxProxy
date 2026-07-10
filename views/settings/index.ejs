@@ -1,0 +1,281 @@
+<%- include('../parts/topbar') %>
+<%- include('../parts/sidebar') %>
+<script src="https://app.rybbit.io/api/script.js" data-site-id="8b65ec526edf" defer></script>
+<title>Silox Proxy - Settings</title>
+
+<div class="settings-container" style="animation: fadeInUp 0.6s ease-out;">
+    <h2 class="settings-title">Proxy Settings</h2>
+    <div class="setting-item">
+        <label for="type">Type</label>
+        <select id="type">
+            <option value="ultraviolet">Ultraviolet</option>
+            <option value="scramjet">Scramjet</option>
+        </select>
+    </div>
+</div>
+
+<div class="settings-container" style="animation: fadeInUp 0.6s ease-out 0.15s both;">
+    <h2 class="settings-title">Search Engine</h2>
+    <div class="setting-item">
+        <label for="search-engine">Search Engine</label>
+        <select id="search-engine">
+            <option value="https://www.google.com/search?q=">Google</option>
+            <option value="https://www.bing.com/search?q=">Bing</option>
+            <option value="https://search.brave.com/search?q=">Brave</option>
+            <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
+            <option value="https://www.ecosia.org/search?q=">Ecosia</option>
+        </select>
+    </div>
+</div>
+
+<div class="settings-container" style="animation: fadeInUp 0.6s ease-out 0.3s both;">
+    <h2 class="settings-title">Transport</h2>
+    <div class="setting-item">
+        <label for="transport-type">Transport</label>
+        <select id="transport-type">
+            <option value="libcurl">Libcurl</option>
+            <option value="epoxy">Epoxy</option>
+        </select>
+    </div>
+</div>
+
+<div class="settings-container" style="animation: fadeInUp 0.6s ease-out 0.45s both;">
+    <h2 class="settings-title">Wisp Server</h2>
+    <div class="setting-item">
+        <label for="wisp-server-type">Wisp Server</label>
+        <select id="wisp-server-type">
+            <option value="default">Default</option>
+            <option value="custom">Custom</option>
+        </select>
+    </div>
+    <div class="setting-item" id="custom-wisp-server-container" style="display: none;">
+        <label for="custom-wisp-server-input">Custom Wisp URL</label>
+        <input type="text" id="custom-wisp-server-input" placeholder="wss://your-custom-wisp-server.com/wisp/">
+    </div>
+</div>
+
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    body {
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: white;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        margin-left: 200px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .settings-container {
+        background-color: rgba(15, 20, 35, 0.8);
+        backdrop-filter: blur(15px);
+        padding: 24px 28px;
+        border-radius: 16px;
+        width: 80%;
+        max-width: 600px;
+        margin-top: 25px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .settings-container:hover {
+        border-color: rgba(100, 200, 255, 0.2);
+        box-shadow: 0 8px 40px rgba(100, 200, 255, 0.1);
+    }
+
+    .settings-title {
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(100, 200, 255, 0.7);
+        margin-top: 0;
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .setting-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .setting-item label {
+        font-size: 1em;
+        margin-right: 10px;
+        color: rgba(255, 255, 255, 0.8);
+    }
+
+    .setting-item select,
+    .setting-item input {
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background-color: rgba(20, 25, 40, 0.7);
+        color: white;
+        font-size: 0.95em;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.3s ease;
+        min-width: 200px;
+    }
+
+    .setting-item select:hover {
+        border-color: rgba(100, 200, 255, 0.3);
+    }
+
+    .setting-item select:focus,
+    .setting-item input:focus {
+        border-color: rgba(100, 200, 255, 0.5);
+        box-shadow: 0 0 15px rgba(100, 200, 255, 0.1);
+    }
+
+    .setting-item select option {
+        background-color: #1a1e2e;
+        color: white;
+        padding: 10px;
+    }
+
+    #custom-wisp-server-input {
+        width: 100%;
+        cursor: text;
+    }
+
+    #custom-wisp-server-container {
+        margin-top: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    #custom-wisp-server-container label {
+        margin-bottom: 6px;
+        font-size: 0.9em;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const defaultBg = '/assets/backgrounds/foggy-forest.png';
+        let bg = localStorage.getItem('bg');
+        if (!bg) {
+            bg = defaultBg;
+            localStorage.setItem('bg', bg);
+        }
+        document.body.style.backgroundImage = `url('${bg}')`;
+        
+        const proxyTypeSelect = document.getElementById('type');
+
+        if (!localStorage.getItem('proxy')) {
+            localStorage.setItem('proxy', 'ultraviolet');
+        }
+
+        proxyTypeSelect.value = localStorage.getItem('proxy');
+
+        proxyTypeSelect.addEventListener('change', (event) => {
+            localStorage.setItem('proxy', event.target.value);
+        });
+
+        const searchEngineSelect = document.getElementById('search-engine');
+
+        if (!localStorage.getItem('search')) {
+            localStorage.setItem('search', 'https://www.google.com/search?q=');
+        }
+
+        searchEngineSelect.value = localStorage.getItem('search');
+
+        searchEngineSelect.addEventListener('change', (event) => {
+            localStorage.setItem('search', event.target.value);
+        });
+
+        const transportTypeSelect = document.getElementById('transport-type');
+
+        if (!localStorage.getItem('transport')) {
+            localStorage.setItem('transport', 'libcurl');
+        }
+
+        transportTypeSelect.value = localStorage.getItem('transport');
+
+        transportTypeSelect.addEventListener('change', (event) => {
+            localStorage.setItem('transport', event.target.value);
+        });
+
+        const wispServerTypeSelect = document.getElementById('wisp-server-type');
+        const customWispServerContainer = document.getElementById('custom-wisp-server-container');
+        const customWispServerInput = document.getElementById('custom-wisp-server-input');
+
+        const defaultWispUrl = `wss://${window.location.host}/wisp/`;
+
+        if (!localStorage.getItem('wisp')) {
+            localStorage.setItem('wisp', defaultWispUrl);
+        }
+
+        const currentWispUrl = localStorage.getItem('wisp');
+        if (currentWispUrl === defaultWispUrl) {
+            wispServerTypeSelect.value = 'default';
+            customWispServerInput.value = '';
+        } else {
+            wispServerTypeSelect.value = 'custom';
+            customWispServerInput.value = currentWispUrl;
+        }
+
+        const updateWispServerVisibility = () => {
+            if (wispServerTypeSelect.value === 'custom') {
+                customWispServerContainer.style.display = 'flex';
+            } else {
+                customWispServerContainer.style.display = 'none';
+            }
+        };
+
+        updateWispServerVisibility();
+
+        wispServerTypeSelect.addEventListener('change', (event) => {
+            const selectedType = event.target.value;
+            if (selectedType === 'default') {
+                localStorage.setItem('wisp', defaultWispUrl);
+            } else {
+                localStorage.setItem('wisp', customWispServerInput.value);
+            }
+            updateWispServerVisibility();
+        });
+
+        customWispServerInput.addEventListener('input', (event) => {
+            if (wispServerTypeSelect.value === 'custom') {
+                localStorage.setItem('wisp', event.target.value);
+            }
+        });
+
+        const savedFont = localStorage.getItem('font');
+        if (savedFont) {
+            document.body.style.fontFamily = savedFont;
+        }
+    });
+</script>

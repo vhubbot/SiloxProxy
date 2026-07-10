@@ -1,0 +1,199 @@
+<%- include('../parts/topbar') %>
+<%- include('../parts/sidebar') %>
+<script src="https://app.rybbit.io/api/script.js" data-site-id="8b65ec526edf" defer></script>
+<title>Silox Proxy - Appearance</title>
+
+<div class="settings-container" style="animation: fadeInUp 0.6s ease-out;">
+    <h2 class="settings-title">Background</h2>
+    <div class="setting-item">
+        <label for="background-image">Select Background</label>
+        <select id="background-image">
+            <option value="/assets/backgrounds/TwoSwords.png">Two Swords</option>
+            <option value="/assets/backgrounds/foggy-forest.png">Foggy Forest</option>
+            <option value="/assets/backgrounds/night-city.png">Night City</option>
+            <option value="/assets/backgrounds/ocean-sunset.png">Ocean Sunset</option>
+            <option value="/assets/backgrounds/mountain-lake.png">Mountain Lake</option>
+            <option value="/assets/backgrounds/cyberpunk.png">Cyberpunk</option>
+            <option value="/assets/backgrounds/starry-night.png">Starry Night</option>
+        </select>
+    </div>
+</div>
+
+<div class="settings-container" style="animation: fadeInUp 0.6s ease-out 0.15s both;">
+    <h2 class="settings-title">Font</h2>
+    <div class="setting-item">
+        <label for="font-select">Select Font</label>
+        <select id="font-select">
+            <option value="">Default</option>
+            <option value="'Inter', sans-serif">Inter</option>
+            <option value="'Poppins', sans-serif">Poppins</option>
+            <option value="'JetBrains Mono', monospace">JetBrains Mono</option>
+            <option value="'Space Grotesk', sans-serif">Space Grotesk</option>
+            <option value="'DM Sans', sans-serif">DM Sans</option>
+        </select>
+    </div>
+</div>
+
+<style>
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes pulseGlow {
+        0%, 100% { box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3); }
+        50% { box-shadow: 0 8px 40px rgba(100, 200, 255, 0.15); }
+    }
+
+    body {
+        background-size: cover;
+        background-attachment: fixed;
+        background-position: center;
+        color: white;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        margin-left: 200px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        transition: background-image 0.5s ease;
+    }
+
+    .settings-container {
+        background-color: rgba(15, 20, 35, 0.75);
+        backdrop-filter: blur(20px);
+        padding: 24px 28px;
+        border-radius: 16px;
+        width: 80%;
+        max-width: 600px;
+        margin-top: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        transition: all 0.4s ease;
+        animation: pulseGlow 4s ease-in-out infinite;
+    }
+
+    .settings-container:hover {
+        border-color: rgba(100, 200, 255, 0.25);
+        box-shadow: 0 8px 40px rgba(100, 200, 255, 0.15);
+    }
+
+    .settings-title {
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 4px;
+        text-transform: uppercase;
+        color: rgba(100, 200, 255, 0.75);
+        margin-top: 0;
+        margin-bottom: 16px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .setting-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+    }
+
+    .setting-item:last-child {
+        margin-bottom: 0;
+    }
+
+    .setting-item label {
+        font-size: 1em;
+        margin-right: 10px;
+        color: rgba(255, 255, 255, 0.8);
+        font-weight: 500;
+    }
+
+    .setting-item select {
+        padding: 10px 14px;
+        border-radius: 10px;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        background-color: rgba(20, 25, 40, 0.7);
+        color: white;
+        font-size: 0.95em;
+        cursor: pointer;
+        outline: none;
+        transition: all 0.3s ease;
+        min-width: 220px;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='white' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 36px;
+    }
+
+    .setting-item select:hover {
+        border-color: rgba(100, 200, 255, 0.4);
+        background-color: rgba(25, 30, 50, 0.8);
+    }
+
+    .setting-item select:focus {
+        border-color: rgba(100, 200, 255, 0.5);
+        box-shadow: 0 0 20px rgba(100, 200, 255, 0.12);
+    }
+
+    .setting-item select option {
+        background-color: #1a1e2e;
+        color: white;
+        padding: 10px;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const savedFont = localStorage.getItem('font');
+        if (savedFont) {
+            document.body.style.fontFamily = savedFont;
+        }
+
+        const defaultBg = '/assets/backgrounds/TwoSwords.png';
+        let bg = localStorage.getItem('bg');
+        if (!bg) {
+            bg = defaultBg;
+            localStorage.setItem('bg', bg);
+        }
+        document.body.style.backgroundImage = `url('${bg}')`;
+
+        const backgroundImageSelect = document.getElementById('background-image');
+
+        if (backgroundImageSelect.querySelector(`option[value="${bg}"]`)) {
+            backgroundImageSelect.value = bg;
+        }
+
+        backgroundImageSelect.addEventListener('change', (event) => {
+            const selectedBg = event.target.value;
+            localStorage.setItem('bg', selectedBg);
+            document.body.style.backgroundImage = `url('${selectedBg}')`;
+        });
+
+        const fontSelect = document.getElementById('font-select');
+        const currentFont = localStorage.getItem('font') || '';
+        if (currentFont) {
+            fontSelect.value = currentFont;
+        }
+
+        fontSelect.addEventListener('change', (event) => {
+            const selectedFont = event.target.value;
+            if (selectedFont) {
+                localStorage.setItem('font', selectedFont);
+                document.body.style.fontFamily = selectedFont;
+            } else {
+                localStorage.removeItem('font');
+                document.body.style.fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+            }
+        });
+    });
+</script>

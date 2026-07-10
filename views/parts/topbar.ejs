@@ -1,0 +1,359 @@
+<style>
+    @keyframes slideDownTopbar {
+        from {
+            opacity: 0;
+            transform: translateX(-50%) translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+    }
+
+    @keyframes iconPulse {
+        0%, 100% { filter: drop-shadow(0 0 0px rgba(100, 200, 255, 0)); }
+        50% { filter: drop-shadow(0 0 6px rgba(100, 200, 255, 0.5)); }
+    }
+
+    .topbar {
+        position: fixed;
+        top: 10px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: fit-content;
+        background: rgba(15, 20, 35, 0.75);
+        backdrop-filter: blur(20px);
+        padding: 10px 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        z-index: 1000;
+        border-radius: 50px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(100, 200, 255, 0.05);
+        animation: slideDownTopbar 0.6s ease-out;
+        transition: all 0.3s ease;
+    }
+
+    .topbar:hover {
+        border-color: rgba(100, 200, 255, 0.2);
+        box-shadow: 0 8px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(100, 200, 255, 0.1);
+    }
+
+    .topbar-divider {
+        width: 1px;
+        height: 20px;
+        background: rgba(255, 255, 255, 0.12);
+        margin: 0 4px;
+        border-radius: 1px;
+    }
+
+    .topbar a,
+    .topbar .topbar-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 12px;
+        border-radius: 25px;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        position: relative;
+        cursor: pointer;
+    }
+
+    .topbar a:hover,
+    .topbar .topbar-btn:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .topbar a.active {
+        background: rgba(100, 200, 255, 0.12);
+        border: 1px solid rgba(100, 200, 255, 0.25);
+    }
+
+    .topbar a.active .topbar-icon {
+        animation: iconPulse 2s ease-in-out infinite;
+    }
+
+    .topbar-icon {
+        width: 22px;
+        height: 22px;
+        transition: all 0.3s ease;
+        opacity: 0.8;
+    }
+
+    .topbar a:hover .topbar-icon,
+    .topbar .topbar-btn:hover .topbar-icon {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .topbar a.active .topbar-icon {
+        opacity: 1;
+    }
+
+    .topbar-app-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+
+    .topbar a:hover .topbar-app-icon,
+    .topbar .topbar-btn:hover .topbar-app-icon {
+        transform: scale(1.15);
+    }
+
+    .topbar-tooltip {
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.85);
+        color: white;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 11px;
+        white-space: nowrap;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.2s ease;
+    }
+
+    .topbar a:hover .topbar-tooltip,
+    .topbar .topbar-btn:hover .topbar-tooltip {
+        opacity: 1;
+        bottom: -26px;
+    }
+
+    @media (max-width: 600px) {
+        .topbar {
+            padding: 8px 14px;
+            gap: 2px;
+        }
+        .topbar a, .topbar .topbar-btn {
+            padding: 6px 10px;
+        }
+        .topbar-icon {
+            width: 18px;
+            height: 18px;
+        }
+        .topbar-app-icon {
+            width: 16px;
+            height: 16px;
+        }
+    }
+</style>
+
+<div class="topbar">
+    <!-- Home -->
+    <a href="/" id="home-link">
+        <svg class="topbar-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 6V15H6V11C6 9.89543 6.89543 9 8 9C9.10457 9 10 9.89543 10 11V15H15V6L8 0L1 6Z" fill="white"/>
+        </svg>
+        <span class="topbar-tooltip">Home</span>
+    </a>
+
+    <div class="topbar-divider"></div>
+
+    <!-- Discord App -->
+    <a href="#" class="topbar-btn" onclick="event.preventDefault(); window.handleTopbarApp('https://discord.com')">
+        <img src="/assets/svg/discord.svg" alt="Discord" class="topbar-app-icon">
+        <span class="topbar-tooltip">Discord</span>
+    </a>
+
+    <!-- YouTube App -->
+    <a href="#" class="topbar-btn" onclick="event.preventDefault(); window.handleTopbarApp('https://youtube.com')">
+        <img src="/assets/svg/youtube.svg" alt="YouTube" class="topbar-app-icon">
+        <span class="topbar-tooltip">YouTube</span>
+    </a>
+
+    <!-- TikTok App -->
+    <a href="#" class="topbar-btn" onclick="event.preventDefault(); window.handleTopbarApp('https://tiktok.com')">
+        <svg class="topbar-icon" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+        </svg>
+        <span class="topbar-tooltip">TikTok</span>
+    </a>
+
+    <!-- Spotify App -->
+    <a href="#" class="topbar-btn" onclick="event.preventDefault(); window.handleTopbarApp('https://spotify.com')">
+        <img src="/assets/svg/spotify.svg" alt="Spotify" class="topbar-app-icon">
+        <span class="topbar-tooltip">Spotify</span>
+    </a>
+
+    <!-- X / Twitter App -->
+    <a href="#" class="topbar-btn" onclick="event.preventDefault(); window.handleTopbarApp('https://x.com')">
+        <img src="/assets/svg/x.svg" alt="X" class="topbar-app-icon">
+        <span class="topbar-tooltip">X</span>
+    </a>
+
+    <!-- Geforce Now App -->
+    <a href="#" class="topbar-btn" onclick="event.preventDefault(); window.handleTopbarApp('https://play.geforcenow.com')">
+        <img src="/assets/svg/geforcenow.svg" alt="GeForce Now" class="topbar-app-icon">
+        <span class="topbar-tooltip">GeForce Now</span>
+    </a>
+
+    <!-- Add Custom App Button -->
+    <a href="#" class="topbar-btn" id="add-app-topbar-btn">
+        <svg class="topbar-icon" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="16"/>
+            <line x1="8" y1="12" x2="16" y2="12"/>
+        </svg>
+        <span class="topbar-tooltip">Add App</span>
+    </a>
+
+    <div class="topbar-divider"></div>
+
+    <!-- Settings -->
+    <a href="/settings" id="settings-link">
+        <svg class="topbar-icon" viewBox="0 0 448 448" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="m 374.84801,275.296 c -2.24,6.6248 -4.80001,13.0228 -7.872,19.2332 l 32.54398,68.446 c -10.72,13.5688 -22.97599,25.8244 -36.54398,36.5764 l -68.48002,-32.5752 c -6.17599,3.1024 -12.60798,5.6308 -19.23199,7.9044 l -25.44,71.5204 C 241.344,447.3924 232.736,448 224,448 c -8.704,0 -17.312,-0.616 -25.792,-1.596 l -25.44,-71.5204 c -6.624,-2.268 -13.056,-4.802 -19.264,-7.9044 L 85.023999,399.5236 C 71.456,388.7716 59.199997,376.516 48.447997,362.9472 l 32.544002,-68.4488 c -3.007996,-6.1768 -5.6,-12.5748 -7.84,-19.1996 L 1.6000001,249.8272 C 0.63999994,241.3432 0,232.736 0,224 0,215.264 0.63999994,206.6568 1.6000001,198.1756 L 73.151999,172.7348 c 2.24,-6.622 4.800001,-13.0228 7.872003,-19.2304 L 48.511999,85.0556 C 59.263999,71.5204 71.519998,59.2312 85.087997,48.5128 L 153.568,81.0572 c 6.176,-3.0744 12.608,-5.6336 19.264,-7.9044 L 198.208,1.5988 C 206.688,0.6412 215.296,0 224,0 c 8.736,0 17.344,0.644 25.856,1.596 l 25.44,71.5568 c 6.62399,2.24 13.024,4.7992 19.232,7.8708 l 68.47999,-32.5444 c 13.56801,10.7212 25.82401,23.0076 36.544,36.5456 l -32.54398,68.446 c 3.07199,6.2104 5.63198,12.6084 7.87198,19.2332 L 446.432,198.1448 C 447.39214,206.6568 448,215.264 448,224 c 0,8.736 -0.60786,17.3432 -1.59994,25.8244 L 374.8481,275.296 Z M 224,127.9992 c -53.024,0 -96,42.9772 -96,96.0008 0,53.0236 42.976,96.0008 96,96.0008 53.024,0 95.99999,-42.9772 95.99999,-96.0008 0,-53.0236 -42.97599,-96.0008 -95.99999,-96.0008 z m 0,48.0004 c -26.528,0 -48,21.504 -48,48.0004 0,26.4964 21.472,48.0004 48,48.0004 26.528,0 48,-21.504 48,-48.0004 0,-26.4964 -21.472,-48.0004 -48,-48.0004 z" fill="white"/>
+        </svg>
+        <span class="topbar-tooltip">Settings</span>
+    </a>
+</div>
+
+<!-- Add App Modal -->
+<div id="add-app-modal-topbar" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.6); justify-content: center; align-items: center; backdrop-filter: blur(8px); color: white; z-index: 2000;">
+    <div style="background: rgba(15, 20, 35, 0.95); backdrop-filter: blur(20px); padding: 28px; border-radius: 16px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.15); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); min-width: 320px;">
+        <h3 style="margin: 0 0 20px 0; font-size: 1.2rem; color: rgba(100, 200, 255, 0.8); letter-spacing: 2px;">ADD APP</h3>
+        <label style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); display: block; margin-bottom: 6px; text-align: left;">App Name</label>
+        <input type="text" id="topbar-app-name" placeholder="e.g. Netflix" style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(20, 25, 40, 0.7); color: white; outline: none; font-size: 0.95em; margin-bottom: 14px; box-sizing: border-box; transition: all 0.3s ease;">
+        <label style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.6); display: block; margin-bottom: 6px; text-align: left;">App URL</label>
+        <input type="text" id="topbar-app-url" placeholder="e.g. netflix.com" style="width: 100%; padding: 10px 14px; border-radius: 10px; border: 1px solid rgba(255, 255, 255, 0.15); background: rgba(20, 25, 40, 0.7); color: white; outline: none; font-size: 0.95em; margin-bottom: 20px; box-sizing: border-box; transition: all 0.3s ease;">
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="add-app-submit-topbar" style="flex: 1; padding: 10px; border-radius: 25px; border: none; background: linear-gradient(135deg, #4a90d9, #6c5ce7); color: white; cursor: pointer; font-size: 0.9em; transition: all 0.2s ease;">Add</button>
+            <button id="add-app-cancel-topbar" style="flex: 1; padding: 10px; border-radius: 25px; border: 1px solid rgba(255, 255, 255, 0.2); background: transparent; color: rgba(255, 255, 255, 0.7); cursor: pointer; font-size: 0.9em; transition: all 0.2s ease;">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const homeLink = document.getElementById('home-link');
+        const settingsLink = document.getElementById('settings-link');
+
+        if (window.location.pathname === '/') {
+            homeLink.classList.add('active');
+        } else if (window.location.pathname === '/settings' || window.location.pathname.startsWith('/settings/')) {
+            settingsLink.classList.add('active');
+        }
+
+        // Handle clicking an app in the topbar - properly encode through proxy
+        window.handleTopbarApp = function(url) {
+            // Ensure URL has protocol
+            let fullUrl = url;
+            if (!fullUrl.startsWith('http://') && !fullUrl.startsWith('https://')) {
+                fullUrl = 'https://' + fullUrl;
+            }
+
+            // Use Ultraviolet encoding
+            if (typeof __uv$config !== 'undefined' && typeof __uv$config.encodeUrl === 'function') {
+                const encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(fullUrl);
+                localStorage.setItem("url", encodedUrl);
+                window.location.href = "/search";
+            }
+            // Fallback to Scramjet encoding
+            else {
+                const encodedUrl = "/scram/service/" + encodeURIComponent(fullUrl);
+                localStorage.setItem("url", encodedUrl);
+                window.location.href = "/search";
+            }
+        };
+
+        // Add App Modal Logic
+        const addAppBtn = document.getElementById('add-app-topbar-btn');
+        const modal = document.getElementById('add-app-modal-topbar');
+        const submitBtn = document.getElementById('add-app-submit-topbar');
+        const cancelBtn = document.getElementById('add-app-cancel-topbar');
+        const nameInput = document.getElementById('topbar-app-name');
+        const urlInput = document.getElementById('topbar-app-url');
+
+        if (addAppBtn) {
+            addAppBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                modal.style.display = 'flex';
+            });
+        }
+
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', () => {
+                modal.style.display = 'none';
+                nameInput.value = '';
+                urlInput.value = '';
+            });
+        }
+
+        if (modal) {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    nameInput.value = '';
+                    urlInput.value = '';
+                }
+            });
+        }
+
+        if (submitBtn) {
+            submitBtn.addEventListener('click', () => {
+                const name = nameInput.value.trim();
+                let url = urlInput.value.trim();
+                if (!name || !url) return;
+                if (!url.startsWith('http')) url = 'https://' + url;
+
+                // Save custom app
+                let customApps = JSON.parse(localStorage.getItem('topbarApps') || '[]');
+                customApps.push({ name, url });
+                localStorage.setItem('topbarApps', JSON.stringify(customApps));
+
+                modal.style.display = 'none';
+                nameInput.value = '';
+                urlInput.value = '';
+
+                // Reload to show new button
+                location.reload();
+            });
+        }
+
+        // Load custom apps from localStorage
+        function loadCustomApps() {
+            const customApps = JSON.parse(localStorage.getItem('topbarApps') || '[]');
+            const divider = document.querySelector('.topbar-divider:last-of-type');
+            const settingsLinkEl = document.getElementById('settings-link');
+
+            customApps.forEach((app, index) => {
+                const appEl = document.createElement('a');
+                appEl.href = '#';
+                appEl.className = 'topbar-btn';
+                appEl.setAttribute('data-app-index', index);
+                
+                appEl.setAttribute('onclick', "event.preventDefault(); window.handleTopbarApp('" + app.url.replace(/'/g, "\\'") + "')");
+                
+                appEl.innerHTML = `
+                    <span style="font-size: 12px; font-weight: 600; letter-spacing: 1px; color: rgba(255,255,255,0.7);">${app.name.substring(0, 4).toUpperCase()}</span>
+                    <span class="topbar-tooltip">${app.name}</span>
+                `;
+                
+                // Right-click to remove
+                appEl.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    let customApps = JSON.parse(localStorage.getItem('topbarApps') || '[]');
+                    customApps = customApps.filter(a => a.name !== app.name || a.url !== app.url);
+                    localStorage.setItem('topbarApps', JSON.stringify(customApps));
+                    location.reload();
+                });
+
+                if (divider) {
+                    divider.parentNode.insertBefore(appEl, divider);
+                } else if (settingsLinkEl) {
+                    settingsLinkEl.parentNode.insertBefore(appEl, settingsLinkEl);
+                }
+            });
+        }
+
+        loadCustomApps();
+    });
+</script>
