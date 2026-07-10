@@ -1,0 +1,217 @@
+<style>
+    @keyframes gxFadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes gxGlow {
+        0%, 100% { text-shadow: 0 0 20px rgba(250,30,78,0.3); }
+        50% { text-shadow: 0 0 40px rgba(250,30,78,0.6), 0 0 60px rgba(250,30,78,0.2); }
+    }
+
+    .gx-nt {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-size: cover;
+        background-position: center;
+        color: white;
+        font-family: 'Segoe UI', 'Inter', sans-serif;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    .gx-nt-logo {
+        font-size: 4rem;
+        font-weight: 900;
+        letter-spacing: 8px;
+        margin-bottom: 8px;
+        animation: gxGlow 3s ease-in-out infinite;
+    }
+
+    .gx-nt-logo span {
+        background: linear-gradient(135deg, var(--gx-accent, #fa1e4e), #ff6b81, var(--gx-accent, #fa1e4e));
+        background-size: 200% 200%;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        animation: gradientShift 3s ease infinite;
+    }
+
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .gx-nt-subtitle {
+        font-size: 0.9rem;
+        color: rgba(255,255,255,0.4);
+        letter-spacing: 3px;
+        margin-bottom: 30px;
+        text-transform: uppercase;
+    }
+
+    .gx-nt-search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        max-width: 500px;
+        width: 90%;
+        animation: gxFadeUp 0.5s ease-out 0.2s both;
+    }
+
+    .gx-nt-search-input {
+        flex: 1;
+        padding: 14px 22px;
+        border-radius: 30px;
+        border: 1px solid rgba(255,255,255,0.1);
+        background: rgba(255,255,255,0.04);
+        color: white;
+        outline: none;
+        font-size: 14px;
+        backdrop-filter: blur(10px);
+        transition: all 0.3s ease;
+    }
+
+    .gx-nt-search-input:focus {
+        border-color: var(--gx-accent, #fa1e4e);
+        box-shadow: 0 0 25px rgba(250,30,78,0.15);
+        background: rgba(255,255,255,0.06);
+    }
+
+    .gx-nt-search-input::placeholder {
+        color: rgba(255,255,255,0.3);
+    }
+
+    .gx-nt-search-btn {
+        padding: 14px 24px;
+        border-radius: 30px;
+        border: none;
+        background: var(--gx-accent, #fa1e4e);
+        color: white;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: all 0.2s ease;
+    }
+
+    .gx-nt-search-btn:hover {
+        filter: brightness(1.2);
+        transform: scale(1.03);
+    }
+
+    .gx-nt-speeddial {
+        display: flex;
+        gap: 16px;
+        margin-top: 40px;
+        flex-wrap: wrap;
+        justify-content: center;
+        animation: gxFadeUp 0.5s ease-out 0.4s both;
+    }
+
+    .gx-nt-dial {
+        width: 100px;
+        height: 100px;
+        border-radius: 16px;
+        background: rgba(255,255,255,0.04);
+        border: 1px solid rgba(255,255,255,0.08);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-decoration: none;
+        color: rgba(255,255,255,0.6);
+        font-size: 11px;
+    }
+
+    .gx-nt-dial:hover {
+        background: rgba(255,255,255,0.08);
+        border-color: rgba(255,255,255,0.2);
+        transform: translateY(-4px);
+        color: white;
+    }
+
+    .gx-nt-dial-icon {
+        font-size: 28px;
+    }
+
+    .gx-nt-dial-name {
+        text-align: center;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 80px;
+        white-space: nowrap;
+    }
+
+    .gx-nt-add-dial {
+        border: 2px dashed rgba(255,255,255,0.15);
+        font-size: 24px;
+        color: rgba(255,255,255,0.3);
+    }
+
+    .gx-nt-add-dial:hover {
+        border-color: var(--gx-accent, #fa1e4e);
+        color: var(--gx-accent, #fa1e4e);
+    }
+
+    @keyframes gradientShift {
+        0%, 100% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+    }
+</style>
+
+<div class="gx-nt">
+    <div class="gx-nt-logo"><span>SILOX</span></div>
+    <div class="gx-nt-subtitle">Gaming Browser</div>
+
+    <div class="gx-nt-search-box">
+        <input type="text" class="gx-nt-search-input" id="gx-nt-search" placeholder="Search the web or enter URL..." onkeydown="if(event.key==='Enter') parent.handleNavigation(this.value)">
+        <button class="gx-nt-search-btn" onclick="parent.handleNavigation(document.getElementById('gx-nt-search').value)">Search</button>
+    </div>
+
+    <div class="gx-nt-speeddial" id="gx-speeddial">
+        <!-- Populated by JS -->
+        <div class="gx-nt-dial gx-nt-add-dial" onclick="parent.addSpeedDial()" title="Add Site">+</div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        const dials = JSON.parse(localStorage.getItem('gx_speeddials') || '[]');
+        const container = document.getElementById('gx-speeddial');
+        const addBtn = container.querySelector('.gx-nt-add-dial');
+
+        dials.forEach(dial => {
+            const el = document.createElement('div');
+            el.className = 'gx-nt-dial';
+            el.innerHTML = `<span class="gx-nt-dial-icon">🌐</span><span class="gx-nt-dial-name">${dial.name}</span>`;
+            el.title = dial.url;
+            el.addEventListener('click', () => parent.handleNavigation(dial.url));
+            el.addEventListener('contextmenu', (e) => {
+                e.preventDefault();
+                const updated = JSON.parse(localStorage.getItem('gx_speeddials') || '[]').filter(d => d.url !== dial.url);
+                localStorage.setItem('gx_speeddials', JSON.stringify(updated));
+                location.reload();
+            });
+            container.insertBefore(el, addBtn);
+        });
+
+        parent.addSpeedDial = function() {
+            const name = prompt('Site name:');
+            if (!name) return;
+            let url = prompt('Site URL:');
+            if (!url) return;
+            if (!url.startsWith('http')) url = 'https://' + url;
+            const dials = JSON.parse(localStorage.getItem('gx_speeddials') || '[]');
+            dials.push({ name, url });
+            localStorage.setItem('gx_speeddials', JSON.stringify(dials));
+            location.reload();
+        };
+    })();
+</script>

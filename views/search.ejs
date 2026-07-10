@@ -10,727 +10,901 @@
     <script src="/uv/uv.config.js"></script>
     <script src="/scram/scramjet.all.js"></script>
     <link rel="icon" type="image/png" href="/assets/favicon.png">
-    <title>Silox Proxy - Search</title>
+    <title>Silox GX</title>
     <style>
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
         }
-
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-10px); }
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(15px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes slideUp {
+        @keyframes loadingBar {
+            0% { width: 0%; }
+            30% { width: 40%; }
+            60% { width: 75%; }
+            90% { width: 95%; }
+            100% { width: 100%; }
+        }
+        @keyframes gxFadeUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        @keyframes glowPulse {
-            0%, 100% { box-shadow: 0 0 5px rgba(100, 200, 255, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(100, 200, 255, 0.5); }
+        @keyframes gxGlow {
+            0%, 100% { text-shadow: 0 0 20px rgba(250,30,78,0.3); }
+            50% { text-shadow: 0 0 40px rgba(250,30,78,0.6), 0 0 60px rgba(250,30,78,0.2); }
+        }
+        @keyframes gradientShiftNT {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        @keyframes loadingShimmer {
-            0% { background-position: -200% 0; }
-            100% { background-position: 200% 0; }
+        :root {
+            --gx-accent: #fa1e4e;
+            --gx-accent2: #ff4757;
+            --gx-bg: #1a1a2e;
+            --gx-surface: #16213e;
+            --gx-surface2: #0f3460;
+            --gx-text: #e8e8e8;
+            --gx-text2: #a0a0b0;
+            --gx-border: rgba(255,255,255,0.06);
+            --gx-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
-        @keyframes engineWarning {
-            0%, 100% { border-color: rgba(255, 150, 50, 0.4); box-shadow: 0 0 15px rgba(255, 150, 50, 0.15); }
-            50% { border-color: rgba(255, 150, 50, 0.7); box-shadow: 0 0 25px rgba(255, 150, 50, 0.3); }
-        }
-
-        @keyframes enginePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.03); }
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             margin: 0;
             padding: 0;
             overflow: hidden;
-            background: #0a0e17;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d0d1a;
+            font-family: 'Segoe UI', 'Inter', system-ui, -apple-system, sans-serif;
             height: 100vh;
+            display: flex;
+            flex-direction: column;
+            color: var(--gx-text);
+        }
+
+        .gx-sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 56px;
+            height: 100%;
+            background: rgba(13, 13, 26, 0.95);
+            border-right: 1px solid var(--gx-border);
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 12px 0;
+            gap: 6px;
+            backdrop-filter: blur(20px);
+        }
+
+        .gx-sidebar-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            border: none;
+            background: transparent;
+            color: var(--gx-text2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .gx-sidebar-btn:hover {
+            background: rgba(255,255,255,0.06);
+            opacity: 1;
+        }
+        .gx-sidebar-btn.active {
+            background: rgba(250, 30, 78, 0.15);
+        }
+        .gx-sidebar-btn.active::before {
+            content: '';
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 3px;
+            height: 20px;
+            background: var(--gx-accent);
+            border-radius: 0 3px 3px 0;
+        }
+        .gx-sidebar-btn img {
+            width: 22px;
+            height: 22px;
+            opacity: 0.7;
+            transition: all 0.2s ease;
+        }
+        .gx-sidebar-btn:hover img {
+            opacity: 1;
+        }
+        .gx-sidebar-btn.active img {
+            opacity: 1;
+        }
+        .gx-sidebar-divider {
+            width: 30px;
+            height: 1px;
+            background: var(--gx-border);
+            margin: 8px 0;
+        }
+
+        .gx-main {
+            margin-left: 56px;
+            height: 100%;
             display: flex;
             flex-direction: column;
         }
 
-        /* Browser Chrome / Toolbar */
-        .browser-chrome {
-            background: linear-gradient(180deg, rgba(15, 20, 35, 0.98) 0%, rgba(10, 14, 23, 0.95) 100%);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(100, 200, 255, 0.12);
-            z-index: 1000;
-            animation: fadeIn 0.5s ease-out;
-        }
-
-        .toolbar-row {
+        .gx-topbar {
             display: flex;
             align-items: center;
-            padding: 10px 16px;
-            gap: 10px;
-        }
-
-        .nav-buttons {
-            display: flex;
-            gap: 6px;
-        }
-
-        .nav-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(20, 25, 40, 0.6);
-            color: rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 15px;
-            transition: all 0.2s ease;
-            outline: none;
-        }
-
-        .nav-btn:hover {
-            background: rgba(40, 50, 80, 0.8);
-            border-color: rgba(100, 200, 255, 0.4);
-            color: white;
-            transform: translateY(-1px);
-        }
-
-        .nav-btn:active {
-            transform: scale(0.94);
-        }
-
-        .nav-btn:disabled {
-            opacity: 0.3;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .nav-btn:disabled:hover {
-            background: rgba(20, 25, 40, 0.6);
-            border-color: rgba(255, 255, 255, 0.1);
-            transform: none;
-        }
-
-        .nav-btn svg {
-            width: 16px;
-            height: 16px;
-            fill: currentColor;
-        }
-
-        .home-btn {
-            background: linear-gradient(135deg, rgba(74, 144, 217, 0.3), rgba(108, 92, 231, 0.3));
-            border-color: rgba(100, 200, 255, 0.25);
-        }
-
-        .home-btn:hover {
-            background: linear-gradient(135deg, rgba(74, 144, 217, 0.5), rgba(108, 92, 231, 0.5));
-        }
-
-        .settings-btn {
-            margin-left: auto;
-            background: rgba(20, 25, 40, 0.6);
-        }
-
-        .engine-indicator {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 14px;
-            border-radius: 20px;
-            background: rgba(20, 25, 40, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            font-size: 11px;
-            color: rgba(255, 255, 255, 0.5);
-            margin-left: 8px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            white-space: nowrap;
-        }
-
-        .engine-indicator:hover {
-            background: rgba(30, 40, 70, 0.7);
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .engine-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #de5833;
-            flex-shrink: 0;
-        }
-
-        /* Tabs */
-        .tabs-row {
-            display: flex;
-            align-items: center;
-            padding: 0 16px 6px 16px;
-            gap: 4px;
-            overflow-x: auto;
-            scrollbar-width: thin;
-            scrollbar-color: rgba(100, 200, 255, 0.3) transparent;
-        }
-
-        .tabs-row::-webkit-scrollbar {
-            height: 3px;
-        }
-
-        .tabs-row::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .tabs-row::-webkit-scrollbar-thumb {
-            background: rgba(100, 200, 255, 0.3);
-            border-radius: 10px;
-        }
-
-        .tab {
-            display: flex;
-            align-items: center;
+            padding: 8px 16px;
             gap: 8px;
-            padding: 10px 16px;
-            border-radius: 12px 12px 0 0;
-            background: rgba(20, 25, 40, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-bottom: none;
-            color: rgba(255, 255, 255, 0.6);
-            cursor: pointer;
-            white-space: nowrap;
-            font-size: 13px;
-            transition: all 0.2s ease;
-            min-width: 100px;
-            max-width: 200px;
-            user-select: none;
-            position: relative;
+            background: rgba(13, 13, 26, 0.9);
+            border-bottom: 1px solid var(--gx-border);
+            backdrop-filter: blur(15px);
+            z-index: 100;
         }
 
-        .tab:hover {
-            background: rgba(30, 40, 70, 0.7);
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .tab.active {
-            background: rgba(25, 35, 60, 0.9);
-            color: white;
-            border-color: rgba(100, 200, 255, 0.3);
-            box-shadow: 0 -2px 15px rgba(100, 200, 255, 0.08);
-        }
-
-        .tab-icon {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: rgba(100, 200, 255, 0.25);
-            flex-shrink: 0;
+        .gx-nav-group {
             display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 9px;
+            gap: 2px;
         }
-
-        .tab-title {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 130px;
-        }
-
-        .tab-close {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            color: rgba(255, 255, 255, 0.35);
-            cursor: pointer;
-            font-size: 13px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-        }
-
-        .tab-close:hover {
-            background: rgba(255, 60, 60, 0.3);
-            color: white;
-        }
-
-        .new-tab-btn {
+        .gx-nav-btn {
             width: 32px;
             height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--gx-text2);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gx-nav-btn:hover { background: rgba(255,255,255,0.05); color: white; }
+        .gx-nav-btn:disabled { opacity: 0.25; cursor: default; }
+        .gx-nav-btn:disabled:hover { background: transparent; }
+
+        .gx-tabs {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            overflow-x: auto;
+            gap: 2px;
+            padding: 0 4px;
+            scrollbar-width: none;
+        }
+        .gx-tabs::-webkit-scrollbar { display: none; }
+
+        .gx-tab {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 14px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+            color: var(--gx-text2);
+            cursor: pointer;
+            font-size: 12px;
+            white-space: nowrap;
+            transition: all 0.15s ease;
+            min-width: 80px;
+            max-width: 180px;
+            user-select: none;
+        }
+        .gx-tab:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.08); }
+        .gx-tab.active { background: rgba(255,255,255,0.08); color: white; border-color: rgba(255,255,255,0.12); }
+        .gx-tab-title { overflow: hidden; text-overflow: ellipsis; flex: 1; }
+        .gx-tab-close {
+            width: 16px; height: 16px; border-radius: 50%; border: none;
+            background: transparent; color: var(--gx-text2); cursor: pointer;
+            font-size: 10px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s; flex-shrink: 0;
+        }
+        .gx-tab-close:hover { background: rgba(255,60,60,0.4); color: white; }
+
+        .gx-newtab-btn {
+            width: 28px; height: 28px; border-radius: 8px;
+            border: 1px dashed rgba(255,255,255,0.12); background: transparent;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s; flex-shrink: 0;
+        }
+        .gx-newtab-btn img {
+            width: 14px;
+            height: 14px;
+            opacity: 0.5;
+            transition: all 0.15s;
+        }
+        .gx-newtab-btn:hover { border-color: var(--gx-accent); background: rgba(250,30,78,0.08); }
+        .gx-newtab-btn:hover img { opacity: 0.9; }
+
+        .gx-window-controls {
+            display: flex;
+            gap: 4px;
+            margin-left: auto;
+        }
+        .gx-win-btn {
+            width: 28px; height: 28px; border-radius: 8px; border: none;
+            background: transparent; color: var(--gx-text2); cursor: pointer;
+            font-size: 12px; transition: all 0.15s;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .gx-win-btn:hover { background: rgba(255,255,255,0.06); }
+
+        .gx-url-row {
+            display: flex;
+            align-items: center;
+            padding: 6px 16px 10px 16px;
+            gap: 8px;
+            background: rgba(13, 13, 26, 0.9);
+            border-bottom: 1px solid var(--gx-border);
+        }
+        .gx-url-bar {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
             border-radius: 10px;
-            border: 1px dashed rgba(255, 255, 255, 0.2);
-            background: transparent;
-            color: rgba(255, 255, 255, 0.5);
-            cursor: pointer;
-            font-size: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            padding: 8px 14px;
+            gap: 8px;
             transition: all 0.2s ease;
-            flex-shrink: 0;
-            margin-bottom: 4px;
         }
-
-        .new-tab-btn:hover {
-            border-color: rgba(100, 200, 255, 0.5);
-            color: rgba(100, 200, 255, 0.8);
-            background: rgba(100, 200, 255, 0.1);
+        .gx-url-bar:focus-within {
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.06);
+            box-shadow: 0 0 20px rgba(250,30,78,0.08);
         }
-
-        /* URL Bar */
-        .url-bar-container {
-            display: flex;
-            align-items: center;
-            padding: 6px 16px 12px 16px;
-            gap: 10px;
+        .gx-url-icon { color: var(--gx-text2); font-size: 13px; flex-shrink: 0; }
+        .gx-url-input {
+            flex: 1; background: transparent; border: none; color: white;
+            outline: none; font-size: 13px; font-family: inherit;
         }
-
-        .url-bar {
-            flex: 1;
-            display: flex;
-            align-items: center;
-            background: rgba(20, 25, 40, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 25px;
-            padding: 10px 18px;
-            transition: all 0.3s ease;
-            gap: 10px;
+        .gx-url-input::placeholder { color: rgba(255,255,255,0.25); }
+        .gx-go-btn {
+            width: 34px; height: 34px; border-radius: 10px; border: none;
+            background: var(--gx-accent); color: white; cursor: pointer;
+            font-size: 14px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; flex-shrink: 0;
         }
+        .gx-go-btn:hover { filter: brightness(1.2); transform: scale(1.04); }
+        .gx-go-btn:active { transform: scale(0.94); }
 
-        .url-bar:focus-within {
-            border-color: rgba(100, 200, 255, 0.4);
-            box-shadow: 0 0 25px rgba(100, 200, 255, 0.1);
-            background: rgba(25, 30, 50, 0.85);
-        }
-
-        .url-icon {
-            color: rgba(100, 200, 255, 0.6);
-            font-size: 14px;
-            flex-shrink: 0;
-        }
-
-        .url-input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: white;
-            outline: none;
-            font-size: 14px;
-            font-family: inherit;
-        }
-
-        .url-input::placeholder {
-            color: rgba(255, 255, 255, 0.35);
-        }
-
-        .go-btn {
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            border: none;
-            background: linear-gradient(135deg, #4a90d9, #6c5ce7);
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.2s ease;
-            flex-shrink: 0;
-            box-shadow: 0 4px 15px rgba(74, 144, 217, 0.3);
-        }
-
-        .go-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(74, 144, 217, 0.5);
-        }
-
-        .go-btn:active {
-            transform: scale(0.93);
-        }
-
-        /* Iframe */
-        .iframe-container {
+        .gx-content {
             flex: 1;
             position: relative;
-            background: #0a0e17;
+            background: #0d0d1a;
         }
-
         iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            animation: fadeIn 0.4s ease-out;
+            width: 100%; height: 100%; border: none;
+            animation: fadeIn 0.3s ease-out;
         }
 
-        /* Loading indicator */
-        .loading-indicator {
+        .gx-loading {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #4a90d9, #6c5ce7, #a78bfa, transparent);
-            background-size: 200% 100%;
-            animation: loadingShimmer 1.2s ease-in-out infinite;
+            top: 0; left: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--gx-accent), #ff6b81, var(--gx-accent));
+            animation: loadingBar 2s ease-in-out forwards;
             display: none;
             z-index: 10;
         }
 
-        /* Engine Warning Modal */
-        .engine-warning-overlay {
+        .gx-status {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 3px 16px;
+            background: rgba(10, 10, 20, 0.95);
+            border-top: 1px solid rgba(255,255,255,0.04);
+            font-size: 10px;
+            color: rgba(255,255,255,0.3);
+        }
+        .gx-status-left { display: flex; align-items: center; gap: 10px; }
+        .gx-status-dot {
+            width: 6px; height: 6px; border-radius: 50%;
+            background: #2ecc71;
+        }
+
+        /* Settings Panel */
+        .gx-settings-overlay {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7);
             z-index: 5000;
             display: flex;
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(5px);
-            animation: fadeIn 0.3s ease-out;
+            animation: fadeIn 0.2s ease-out;
         }
-
-        .engine-warning-box {
-            background: rgba(15, 20, 35, 0.98);
-            border: 1px solid rgba(255, 150, 50, 0.5);
-            border-radius: 20px;
-            padding: 30px;
-            text-align: center;
-            max-width: 440px;
+        .gx-settings-panel {
+            background: var(--gx-surface);
+            border: 1px solid var(--gx-border);
+            border-radius: 16px;
+            padding: 24px;
             width: 90%;
-            animation: engineWarning 2s ease-in-out infinite, slideUp 0.4s ease-out;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            animation: slideUp 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
         }
-
-        .engine-warning-box .warning-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
+        .gx-settings-panel h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: white;
+            letter-spacing: 1px;
         }
-
-        .engine-warning-box h2 {
-            font-size: 1.4rem;
-            color: #ffa040;
-            margin-bottom: 10px;
-        }
-
-        .engine-warning-box p {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 0.9rem;
-            line-height: 1.6;
+        .gx-bg-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
             margin-bottom: 20px;
         }
-
-        .engine-warning-box .engine-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
+        .gx-bg-option {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: all 0.2s ease;
+            aspect-ratio: 16/9;
         }
-
-        .engine-warning-box .switch-btn {
+        .gx-bg-option:hover {
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        .gx-bg-option.selected {
+            border-color: var(--gx-accent);
+            box-shadow: 0 0 20px rgba(250,30,78,0.3);
+        }
+        .gx-bg-option img {
             width: 100%;
-            padding: 14px 20px;
-            border-radius: 25px;
-            border: none;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            animation: enginePulse 2s ease-in-out infinite;
+            height: 100%;
+            object-fit: cover;
         }
-
-        .switch-btn.duckduckgo {
-            background: linear-gradient(135deg, #de5833, #e67330);
-            color: white;
-            box-shadow: 0 4px 20px rgba(222, 88, 51, 0.4);
-        }
-
-        .switch-btn.duckduckgo:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 30px rgba(222, 88, 51, 0.6);
-        }
-
-        .switch-btn.brave {
-            background: linear-gradient(135deg, #fb542b, #ff2000);
-            color: white;
-            box-shadow: 0 4px 20px rgba(251, 84, 43, 0.4);
-        }
-
-        .switch-btn.brave:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 30px rgba(251, 84, 43, 0.6);
-        }
-
-        .engine-warning-box .ignore-link {
-            color: rgba(255, 255, 255, 0.4);
-            font-size: 0.8rem;
-            cursor: pointer;
-            margin-top: 12px;
-            text-decoration: underline;
-            transition: color 0.2s;
-        }
-
-        .engine-warning-box .ignore-link:hover {
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* Status bar */
-        .status-bar {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 4px 16px;
-            background: rgba(10, 14, 23, 0.9);
-            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        .gx-bg-option .bg-label {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 6px 10px;
+            background: rgba(0,0,0,0.7);
             font-size: 11px;
-            color: rgba(255, 255, 255, 0.4);
-            gap: 15px;
+            color: white;
+            text-align: center;
         }
-
-        .status-bar .status-left {
+        .gx-bg-option .selected-check {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--gx-accent);
+            color: white;
             display: flex;
             align-items: center;
-            gap: 15px;
+            justify-content: center;
+            font-size: 12px;
+            display: none;
+        }
+        .gx-bg-option.selected .selected-check {
+            display: flex;
         }
 
-        .status-bar .status-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #4ade80;
+        .gx-color-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .gx-color-option {
+            width: 36px; height: 36px; border-radius: 50%;
+            cursor: pointer; border: 2px solid transparent;
+            transition: all 0.2s ease;
+        }
+        .gx-color-option:hover { transform: scale(1.15); }
+        .gx-color-option.selected { border-color: white; box-shadow: 0 0 12px currentColor; }
+
+        .gx-btn {
+            padding: 8px 20px; border-radius: 8px; border: none;
+            font-size: 13px; cursor: pointer; transition: all 0.2s ease;
+            font-family: inherit;
+        }
+        .gx-btn-primary { background: var(--gx-accent); color: white; }
+        .gx-btn-primary:hover { filter: brightness(1.15); }
+        .gx-btn-secondary {
+            background: transparent; border: 1px solid rgba(255,255,255,0.15);
+            color: var(--gx-text2);
+        }
+        .gx-btn-secondary:hover { background: rgba(255,255,255,0.04); color: white; }
+
+        /* Favorites bar */
+        .gx-fav-bar {
+            display: flex;
+            gap: 6px;
+            padding: 6px 16px;
+            background: rgba(13, 13, 26, 0.95);
+            border-bottom: 1px solid var(--gx-border);
+            overflow-x: auto;
+            align-items: center;
+        }
+        .gx-fav-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid transparent;
+            color: var(--gx-text2);
+            cursor: pointer;
+            font-size: 11px;
+            white-space: nowrap;
+            transition: all 0.15s;
+        }
+        .gx-fav-item:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); color: white; }
+        .gx-fav-add {
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: 1px dashed rgba(255,255,255,0.12);
+            background: transparent;
+            color: var(--gx-text2);
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.15s;
             flex-shrink: 0;
         }
+        .gx-fav-add:hover { border-color: var(--gx-accent); color: var(--gx-accent); }
 
-        @media (max-width: 600px) {
-            .toolbar-row {
-                padding: 8px 10px;
-                gap: 6px;
-            }
-            .nav-btn {
-                width: 30px;
-                height: 30px;
-                font-size: 13px;
-            }
-            .tab {
-                padding: 8px 12px;
-                font-size: 11px;
-                min-width: 70px;
-                max-width: 140px;
-            }
-            .url-bar {
-                padding: 8px 14px;
-            }
-            .url-input {
-                font-size: 13px;
-            }
-            .engine-indicator {
-                display: none;
-            }
+        /* New Tab Page Styles */
+        .gx-nt {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-size: cover;
+            background-position: center;
+            color: white;
+            font-family: 'Segoe UI', 'Inter', sans-serif;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        .gx-nt-logo {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 8px;
+            margin-bottom: 8px;
+            animation: gxGlow 3s ease-in-out infinite;
+        }
+        .gx-nt-logo span {
+            background: linear-gradient(135deg, var(--gx-accent, #fa1e4e), #ff6b81, var(--gx-accent, #fa1e4e));
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: gradientShiftNT 3s ease infinite;
+        }
+
+        @keyframes gradientShiftNT {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .gx-nt-subtitle {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 3px;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+        }
+        .gx-nt-search-box {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            max-width: 500px;
+            width: 90%;
+            animation: gxFadeUp 0.5s ease-out 0.2s both;
+        }
+        .gx-nt-search-input {
+            flex: 1;
+            padding: 14px 22px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.04);
+            color: white;
+            outline: none;
+            font-size: 14px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        .gx-nt-search-input:focus {
+            border-color: var(--gx-accent, #fa1e4e);
+            box-shadow: 0 0 25px rgba(250,30,78,0.15);
+            background: rgba(255,255,255,0.06);
+        }
+        .gx-nt-search-input::placeholder { color: rgba(255,255,255,0.3); }
+        .gx-nt-search-btn {
+            padding: 14px 24px;
+            border-radius: 30px;
+            border: none;
+            background: var(--gx-accent, #fa1e4e);
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.2s ease;
+        }
+        .gx-nt-search-btn:hover { filter: brightness(1.2); transform: scale(1.03); }
+        .gx-nt-speeddial {
+            display: flex;
+            gap: 16px;
+            margin-top: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+            animation: gxFadeUp 0.5s ease-out 0.4s both;
+        }
+        .gx-nt-dial {
+            width: 100px;
+            height: 100px;
+            border-radius: 16px;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            color: rgba(255,255,255,0.6);
+            font-size: 11px;
+            padding: 8px;
+        }
+        .gx-nt-dial:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.2);
+            transform: translateY(-4px);
+            color: white;
+        }
+        .gx-nt-dial-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+        .gx-nt-dial-name {
+            text-align: center;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 80px;
+            white-space: nowrap;
+        }
+        .gx-nt-add-dial {
+            border: 2px dashed rgba(255,255,255,0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gx-nt-add-dial img {
+            width: 28px;
+            height: 28px;
+            opacity: 0.4;
+            transition: all 0.15s;
+        }
+        .gx-nt-add-dial:hover { border-color: var(--gx-accent, #fa1e4e); }
+        .gx-nt-add-dial:hover img { opacity: 0.8; }
+
+        @media (max-width: 700px) {
+            .gx-sidebar { width: 42px; }
+            .gx-main { margin-left: 42px; }
+            .gx-sidebar-btn { width: 32px; height: 32px; border-radius: 10px; }
+            .gx-sidebar-btn img { width: 18px; height: 18px; }
+            .gx-tab { min-width: 60px; max-width: 120px; font-size: 11px; padding: 6px 10px; }
         }
     </style>
 </head>
 <body>
-    <div class="browser-chrome">
-        <div class="toolbar-row">
-            <div class="nav-buttons">
-                <button class="nav-btn" id="back-btn" title="Go Back (Alt+Left)" disabled>
-                    <svg viewBox="0 0 24 24"><path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/></svg>
-                </button>
-                <button class="nav-btn" id="forward-btn" title="Go Forward (Alt+Right)" disabled>
-                    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
-                </button>
-                <button class="nav-btn" id="refresh-btn" title="Refresh (F5)">
-                    <svg viewBox="0 0 24 24"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
-                </button>
-                <button class="nav-btn home-btn" id="home-btn" title="Home">⌂</button>
-            </div>
-            <div class="engine-indicator" id="engine-indicator" title="Current Search Engine">
-                <span class="engine-dot"></span>
-                <span id="engine-name">DuckDuckGo</span>
-            </div>
-            <button class="nav-btn settings-btn" id="settings-btn" title="Settings">⚙</button>
-        </div>
-        <div class="tabs-row" id="tabs-row">
-            <button class="new-tab-btn" id="new-tab-btn" title="New Tab (Ctrl+T)">+</button>
-        </div>
-        <div class="url-bar-container">
-            <div class="url-bar">
-                <span class="url-icon">🔒</span>
-                <input type="text" class="url-input" id="url-input" placeholder="Search with DuckDuckGo or enter URL...">
-            </div>
-            <button class="go-btn" id="go-btn">➜</button>
-        </div>
-    </div>
-    <div class="iframe-container">
-        <div class="loading-indicator" id="loading-bar"></div>
-        <iframe id="Frame" src=""></iframe>
-    </div>
-    <div class="status-bar">
-        <div class="status-left">
-            <span class="status-dot"></span>
-            <span id="status-text">Ready</span>
-        </div>
-        <span id="status-tab-count">1 tab</span>
+    <div class="gx-sidebar">
+        <!-- Browser button (active by default since we're on /search) -->
+        <button class="gx-sidebar-btn active" title="Browser">
+            <img src="/public/icons/browser.png" alt="Browser">
+        </button>
+        <!-- New Tab button -->
+        <button class="gx-sidebar-btn" title="New Tab" onclick="newTabBtn.click()">
+            <img src="/public/icons/plus.png" alt="New Tab">
+        </button>
+        <div class="gx-sidebar-divider"></div>
+        <!-- Favorites button -->
+        <button class="gx-sidebar-btn" title="Favorites" onclick="toggleFavorites()">
+            <img src="/public/icons/favorite.png" alt="Favorites">
+        </button>
+        <!-- Settings button -->
+        <button class="gx-sidebar-btn" title="Settings" onclick="openGXSettings()">
+            <img src="/public/icons/settings.png" alt="Settings">
+        </button>
+        <div class="gx-sidebar-divider"></div>
+        <!-- Home button -->
+        <button class="gx-sidebar-btn" title="Home" onclick="window.location.href='/'">
+            <img src="/public/icons/home.png" alt="Home">
+        </button>
     </div>
 
-    <!-- Google Search Engine Warning -->
-    <div class="engine-warning-overlay" id="engine-warning" style="display: none;">
-        <div class="engine-warning-box">
-            <div class="warning-icon">⚠️</div>
-            <h2>Google Search Blocked</h2>
-            <p>
-                Google's search detects proxies and will repeatedly ask you to verify "you're not a robot."
-                This gets very annoying and breaks the browsing experience.
-            </p>
-            <p style="font-size: 0.85rem; color: rgba(255, 200, 120, 0.9);">
-                <strong>Switch to DuckDuckGo or Brave Search instead — they work perfectly through the proxy!</strong>
-            </p>
-            <div class="engine-options">
-                <button class="switch-btn duckduckgo" onclick="switchEngine('duckduckgo')">
-                    🦆 Switch to DuckDuckGo (Recommended)
-                </button>
-                <button class="switch-btn brave" onclick="switchEngine('brave')">
-                    🛡️ Switch to Brave Search
+    <div class="gx-main">
+        <div class="gx-topbar">
+            <div class="gx-nav-group">
+                <button class="gx-nav-btn" id="back-btn" disabled>◀</button>
+                <button class="gx-nav-btn" id="forward-btn" disabled>▶</button>
+                <button class="gx-nav-btn" id="refresh-btn">↻</button>
+            </div>
+            <div class="gx-tabs" id="gx-tabs">
+                <button class="gx-newtab-btn" id="new-tab-btn" title="New Tab">
+                    <img src="/public/icons/plus.png" alt="+">
                 </button>
             </div>
-            <span class="ignore-link" onclick="ignoreWarning()">I understand, continue with Google anyway</span>
+            <div class="gx-window-controls">
+                <button class="gx-win-btn" onclick="window.location.href='/'">⌂</button>
+                <button class="gx-win-btn" onclick="openGXSettings()">⚙</button>
+            </div>
+        </div>
+
+        <div class="gx-fav-bar" id="gx-fav-bar" style="display: none;">
+            <button class="gx-fav-add" onclick="addFavorite()" title="Add current page to favorites">+</button>
+        </div>
+
+        <div class="gx-url-row">
+            <div class="gx-url-bar">
+                <span class="gx-url-icon">🔒</span>
+                <input type="text" class="gx-url-input" id="url-input" placeholder="Search with DuckDuckGo or enter URL...">
+            </div>
+            <button class="gx-go-btn" id="go-btn">→</button>
+        </div>
+
+        <div class="gx-content">
+            <div class="gx-loading" id="loading-bar"></div>
+            <iframe id="Frame" src="" style="width:100%;height:100%;border:none;display:none;"></iframe>
+            <div id="newtab-container" style="width:100%;height:100%;overflow:auto;display:flex;">
+                <div class="gx-nt" id="gx-nt-page">
+                    <div class="gx-nt-logo"><span>SILOX</span></div>
+                    <div class="gx-nt-subtitle">Gaming Browser</div>
+                    <div class="gx-nt-search-box">
+                        <input type="text" class="gx-nt-search-input" id="gx-nt-search" placeholder="Search the web or enter URL..." onkeydown="if(event.key==='Enter') handleNavigation(this.value)">
+                        <button class="gx-nt-search-btn" onclick="handleNavigation(document.getElementById('gx-nt-search').value)">Search</button>
+                    </div>
+                    <div class="gx-nt-speeddial" id="gx-speeddial">
+                        <div class="gx-nt-dial gx-nt-add-dial" onclick="addSpeedDial()" title="Add Site">
+                            <img src="/public/icons/plus.png" alt="+">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="gx-status">
+            <div class="gx-status-left">
+                <span class="gx-status-dot"></span>
+                <span id="status-text">Ready</span>
+            </div>
+            <span id="status-tab-count">1 tab</span>
+        </div>
+    </div>
+
+    <div class="gx-settings-overlay" id="gx-settings-overlay" style="display: none;">
+        <div class="gx-settings-panel">
+            <h3>⚙ GX Settings</h3>
+            <p style="color:var(--gx-text2);margin-bottom:12px;font-size:13px;">Choose Background</p>
+            <div class="gx-bg-grid" id="bg-grid"></div>
+            <p style="color:var(--gx-text2);margin-bottom:12px;font-size:13px;">Accent Color</p>
+            <div class="gx-color-row" id="color-row">
+                <div class="gx-color-option" style="background:#fa1e4e" data-color="#fa1e4e" onclick="setAccent('#fa1e4e', this)"></div>
+                <div class="gx-color-option" style="background:#ff6b35" data-color="#ff6b35" onclick="setAccent('#ff6b35', this)"></div>
+                <div class="gx-color-option" style="background:#f7b731" data-color="#f7b731" onclick="setAccent('#f7b731', this)"></div>
+                <div class="gx-color-option" style="background:#26de81" data-color="#26de81" onclick="setAccent('#26de81', this)"></div>
+                <div class="gx-color-option" style="background:#45aaf2" data-color="#45aaf2" onclick="setAccent('#45aaf2', this)"></div>
+                <div class="gx-color-option" style="background:#a55eea" data-color="#a55eea" onclick="setAccent('#a55eea', this)"></div>
+                <div class="gx-color-option" style="background:#ffffff" data-color="#ffffff" onclick="setAccent('#ffffff', this)"></div>
+                <div class="gx-color-option" style="background:#0d0d1a" data-color="#0d0d1a" onclick="setAccent('#0d0d1a', this)"></div>
+            </div>
+            <div style="display:flex;gap:10px;">
+                <button class="gx-btn gx-btn-primary" onclick="saveGXSettings()">Save</button>
+                <button class="gx-btn gx-btn-secondary" onclick="closeGXSettings()">Cancel</button>
+            </div>
         </div>
     </div>
 
     <script>
         const frame = document.getElementById("Frame");
         const urlInput = document.getElementById("url-input");
-        const tabsRow = document.getElementById("tabs-row");
+        const tabsContainer = document.getElementById("gx-tabs");
         const newTabBtn = document.getElementById("new-tab-btn");
         const backBtn = document.getElementById("back-btn");
         const forwardBtn = document.getElementById("forward-btn");
         const refreshBtn = document.getElementById("refresh-btn");
-        const homeBtn = document.getElementById("home-btn");
-        const settingsBtn = document.getElementById("settings-btn");
         const goBtn = document.getElementById("go-btn");
         const loadingBar = document.getElementById("loading-bar");
-        const engineWarning = document.getElementById("engine-warning");
-        const engineIndicator = document.getElementById("engine-indicator");
-        const engineName = document.getElementById("engine-name");
         const statusText = document.getElementById("status-text");
         const statusTabCount = document.getElementById("status-tab-count");
+        const favBar = document.getElementById("gx-fav-bar");
+        const settingsOverlay = document.getElementById("gx-settings-overlay");
+        const bgGrid = document.getElementById("bg-grid");
+        const newtabContainer = document.getElementById("newtab-container");
 
         let tabs = [];
         let activeTabId = null;
+        let favorites = JSON.parse(localStorage.getItem('gx_favorites') || '[]');
         let currentEngine = localStorage.getItem('search') || 'https://duckduckgo.com/?q=';
-        let warningIgnored = localStorage.getItem('googleWarningIgnored') === 'true';
+        let gxBg = localStorage.getItem('gx_bg') || '';
+        let gxAccent = localStorage.getItem('gx_accent') || '#fa1e4e';
 
-        const SEARCH_ENGINES = {
-            'google': 'https://www.google.com/search?q=',
-            'duckduckgo': 'https://duckduckgo.com/?q=',
-            'brave': 'https://search.brave.com/search?q=',
-            'bing': 'https://www.bing.com/search?q='
-        };
+        const BG_OPTIONS = [
+            { name: 'Gold GX', file: 'gold-GX.png' },
+            { name: 'Red GX', file: 'red-GX.png' },
+            { name: 'Blue GX', file: 'blue-GX.png' },
+            { name: 'Green GX', file: 'green-GX.png' },
+            { name: 'Orange GX', file: 'orange-GX.png' },
+            { name: 'Default Dark', file: '' }
+        ];
 
-        function getEngineName(url) {
-            if (url.includes('duckduckgo.com')) return 'DuckDuckGo';
-            if (url.includes('search.brave.com')) return 'Brave';
-            if (url.includes('google.com/search')) return 'Google';
-            if (url.includes('bing.com/search')) return 'Bing';
-            return 'Custom';
+        function applyAccent(color) {
+            gxAccent = color;
+            document.documentElement.style.setProperty('--gx-accent', color);
+            document.documentElement.style.setProperty('--gx-accent2', color + 'cc');
+            document.querySelectorAll('.gx-color-option').forEach(el => el.classList.remove('selected'));
+            const active = document.querySelector(`.gx-color-option[data-color="${color}"]`);
+            if (active) active.classList.add('selected');
         }
 
-        function updateEngineDisplay() {
-            const name = getEngineName(currentEngine);
-            engineName.textContent = name;
-            const dot = engineIndicator.querySelector('.engine-dot');
-            if (name === 'DuckDuckGo') dot.style.background = '#de5833';
-            else if (name === 'Brave') dot.style.background = '#fb542b';
-            else if (name === 'Google') dot.style.background = '#4285f4';
-            else dot.style.background = '#888';
+        function applyBackground(bgFile) {
+            gxBg = bgFile;
+            if (bgFile) {
+                newtabContainer.style.backgroundImage = `url('/assets/backgrounds/${bgFile}')`;
+                newtabContainer.style.backgroundSize = 'cover';
+                newtabContainer.style.backgroundPosition = 'center';
+            } else {
+                newtabContainer.style.backgroundImage = '';
+                newtabContainer.style.background = '#0d0d1a';
+            }
+            renderBgGrid();
         }
 
-        function switchEngine(engine) {
-            currentEngine = SEARCH_ENGINES[engine] || SEARCH_ENGINES['duckduckgo'];
-            localStorage.setItem('search', currentEngine);
-            updateEngineDisplay();
-            engineWarning.style.display = 'none';
-            statusText.textContent = 'Search engine switched to ' + getEngineName(currentEngine);
-            setTimeout(() => { statusText.textContent = 'Ready'; }, 2000);
+        function renderBgGrid() {
+            bgGrid.innerHTML = BG_OPTIONS.map(bg => `
+                <div class="gx-bg-option ${gxBg === bg.file ? 'selected' : ''}" onclick="applyBackground('${bg.file}')">
+                    ${bg.file ? `<img src="/assets/backgrounds/${bg.file}" alt="${bg.name}" onerror="this.style.display='none';this.parentElement.innerHTML='<div style=\\'width:100%;height:100%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;color:#555;\\'>${bg.name}</div>'">` : '<div style="width:100%;height:100%;background:#1a1a2e;display:flex;align-items:center;justify-content:center;color:#555;">Dark</div>'}
+                    <div class="bg-label">${bg.name}</div>
+                    <div class="selected-check">✓</div>
+                </div>
+            `).join('');
         }
 
-        function ignoreWarning() {
-            localStorage.setItem('googleWarningIgnored', 'true');
-            warningIgnored = true;
-            engineWarning.style.display = 'none';
+        function openGXSettings() {
+            settingsOverlay.style.display = 'flex';
+            renderBgGrid();
+            applyAccent(gxAccent);
+        }
+        function closeGXSettings() { settingsOverlay.style.display = 'none'; }
+        function saveGXSettings() {
+            localStorage.setItem('gx_bg', gxBg);
+            localStorage.setItem('gx_accent', gxAccent);
+            closeGXSettings();
+        }
+        function setAccent(color, el) { applyAccent(color); }
+
+        function toggleFavorites() {
+            favBar.style.display = favBar.style.display === 'none' ? 'flex' : 'none';
         }
 
-        function showGoogleWarning() {
-            if (!warningIgnored) {
-                engineWarning.style.display = 'flex';
+        function addFavorite() {
+            const tab = tabs.find(t => t.id === activeTabId);
+            if (!tab || !tab.url) return;
+            const decoded = decodeUrl(tab.url);
+            const name = tab.title || decoded;
+            if (!favorites.find(f => f.url === decoded)) {
+                favorites.push({ name, url: decoded });
+                localStorage.setItem('gx_favorites', JSON.stringify(favorites));
+                renderFavorites();
             }
         }
 
-        function isGoogleUrl(url) {
-            return url.includes('google.com/search') || url.includes('google.com/url');
+        function removeFavorite(url) {
+            favorites = favorites.filter(f => f.url !== url);
+            localStorage.setItem('gx_favorites', JSON.stringify(favorites));
+            renderFavorites();
+        }
+
+        function renderFavorites() {
+            const existing = favBar.querySelectorAll('.gx-fav-item');
+            existing.forEach(el => el.remove());
+            const addBtn = favBar.querySelector('.gx-fav-add');
+            favorites.forEach(fav => {
+                const el = document.createElement('div');
+                el.className = 'gx-fav-item';
+                el.innerHTML = `<img src="${getFavicon(fav.url)}" style="width:14px;height:14px;border-radius:3px;" onerror="this.style.display='none'"> <span>${fav.name}</span>`;
+                el.title = fav.url;
+                el.addEventListener('click', () => handleNavigation(fav.url));
+                el.addEventListener('contextmenu', (e) => { e.preventDefault(); removeFavorite(fav.url); });
+                favBar.insertBefore(el, addBtn);
+            });
+        }
+
+        function getFavicon(url) {
+            try {
+                const host = new URL(url).hostname;
+                return `https://www.google.com/s2/favicons?domain=${host}&sz=32`;
+            } catch(e) { return ''; }
+        }
+
+        function renderSpeedDial() {
+            const container = document.getElementById('gx-speeddial');
+            const addBtn = container.querySelector('.gx-nt-add-dial');
+            const existing = container.querySelectorAll('.gx-nt-dial:not(.gx-nt-add-dial)');
+            existing.forEach(el => el.remove());
+            
+            const dials = JSON.parse(localStorage.getItem('gx_speeddials') || '[]');
+            dials.forEach(dial => {
+                const el = document.createElement('div');
+                el.className = 'gx-nt-dial';
+                const faviconUrl = getFavicon(dial.url);
+                el.innerHTML = `<img class="gx-nt-dial-icon" src="${faviconUrl}" alt="${dial.name}" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 40 40%22><rect fill=%22%23333%22 width=%2240%22 height=%2240%22 rx=%228%22/><text fill=%22%23888%22 x=%2220%22 y=%2226%22 text-anchor=%22middle%22 font-size=%2216%22>${dial.name[0].toUpperCase()}</text></svg>'"><span class="gx-nt-dial-name">${escapeHtml(dial.name)}</span>`;
+                el.title = dial.url;
+                el.addEventListener('click', () => handleNavigation(dial.url));
+                el.addEventListener('contextmenu', (e) => {
+                    e.preventDefault();
+                    const updated = JSON.parse(localStorage.getItem('gx_speeddials') || '[]').filter(d => d.url !== dial.url);
+                    localStorage.setItem('gx_speeddials', JSON.stringify(updated));
+                    renderSpeedDial();
+                });
+                container.insertBefore(el, addBtn);
+            });
+        }
+
+        function addSpeedDial() {
+            const name = prompt('Site name (e.g. YouTube, Discord):');
+            if (!name) return;
+            let url = prompt('Site URL (e.g. youtube.com):');
+            if (!url) return;
+            if (!url.startsWith('http')) url = 'https://' + url;
+            const dials = JSON.parse(localStorage.getItem('gx_speeddials') || '[]');
+            dials.push({ name, url });
+            localStorage.setItem('gx_speeddials', JSON.stringify(dials));
+            renderSpeedDial();
         }
 
         class Tab {
             constructor(id, url = '', title = 'New Tab') {
-                this.id = id;
-                this.url = url;
-                this.title = title;
-                this.history = [];
-                this.historyIndex = -1;
+                this.id = id; this.url = url; this.title = title;
+                this.history = []; this.historyIndex = -1;
             }
-
             pushHistory(url) {
-                if (this.historyIndex < this.history.length - 1) {
-                    this.history = this.history.slice(0, this.historyIndex + 1);
-                }
-                this.history.push(url);
-                this.historyIndex = this.history.length - 1;
+                if (this.historyIndex < this.history.length - 1) this.history = this.history.slice(0, this.historyIndex + 1);
+                this.history.push(url); this.historyIndex = this.history.length - 1;
             }
-
-            canGoBack() {
-                return this.historyIndex > 0;
-            }
-
-            canGoForward() {
-                return this.historyIndex < this.history.length - 1;
-            }
-
-            goBack() {
-                if (this.canGoBack()) {
-                    this.historyIndex--;
-                    return this.history[this.historyIndex];
-                }
-                return null;
-            }
-
-            goForward() {
-                if (this.canGoForward()) {
-                    this.historyIndex++;
-                    return this.history[this.historyIndex];
-                }
-                return null;
-            }
+            canGoBack() { return this.historyIndex > 0; }
+            canGoForward() { return this.historyIndex < this.history.length - 1; }
+            goBack() { if (this.canGoBack()) { this.historyIndex--; return this.history[this.historyIndex]; } return null; }
+            goForward() { if (this.canGoForward()) { this.historyIndex++; return this.history[this.historyIndex]; } return null; }
         }
 
-        function createTabId() {
-            return 'tab-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5);
-        }
+        function createTabId() { return 'gx-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5); }
 
         function addTab(url = '', title = 'New Tab') {
             const id = createTabId();
@@ -738,27 +912,23 @@
             tabs.push(tab);
             renderTabs();
             switchTab(id);
-            if (url) {
-                navigateInTab(id, url);
-            }
+            if (url) navigateInTab(id, url);
+            else showNewTabPage();
             updateTabCount();
             return tab;
         }
 
         function closeTab(id) {
             if (tabs.length <= 1) return;
-            const index = tabs.findIndex(t => t.id === id);
-            if (index === -1) return;
-            
-            tabs.splice(index, 1);
-            
+            const idx = tabs.findIndex(t => t.id === id);
+            if (idx === -1) return;
+            tabs.splice(idx, 1);
             if (activeTabId === id) {
-                const newIndex = Math.min(index, tabs.length - 1);
-                activeTabId = tabs[newIndex].id;
+                const newIdx = Math.min(idx, tabs.length - 1);
+                activeTabId = tabs[newIdx].id;
+                updateActiveTab();
             }
-            
             renderTabs();
-            updateActiveTab();
             updateTabCount();
         }
 
@@ -771,20 +941,27 @@
         function updateActiveTab() {
             const tab = tabs.find(t => t.id === activeTabId);
             if (!tab) return;
-
             if (tab.url) {
+                showWebPage();
                 frame.src = tab.url;
                 urlInput.value = decodeUrl(tab.url);
-                
-                if (isGoogleUrl(decodeUrl(tab.url))) {
-                    showGoogleWarning();
-                }
             } else {
-                frame.src = '';
+                showNewTabPage();
                 urlInput.value = '';
             }
-
             updateNavButtons(tab);
+        }
+
+        function showWebPage() {
+            frame.style.display = 'block';
+            newtabContainer.style.display = 'none';
+        }
+
+        function showNewTabPage() {
+            frame.style.display = 'none';
+            newtabContainer.style.display = 'flex';
+            renderSpeedDial();
+            document.getElementById('gx-nt-search').value = '';
         }
 
         function updateNavButtons(tab) {
@@ -799,260 +976,116 @@
         function navigateInTab(id, rawUrl) {
             const tab = tabs.find(t => t.id === id);
             if (!tab) return;
-
             showLoading();
             statusText.textContent = 'Loading...';
-
             const encodedUrl = encodeUrl(rawUrl);
             tab.url = encodedUrl;
             tab.pushHistory(encodedUrl);
-            
             updateTitle(tab, rawUrl);
-
             if (activeTabId === id) {
+                showWebPage();
                 frame.src = encodedUrl;
                 urlInput.value = rawUrl;
                 updateNavButtons(tab);
-                
-                if (isGoogleUrl(rawUrl)) {
-                    showGoogleWarning();
-                }
             }
-            
             renderTabs();
-            setTimeout(() => {
-                hideLoading();
-                statusText.textContent = 'Ready';
-            }, 800);
+            setTimeout(() => { hideLoading(); statusText.textContent = 'Ready'; }, 800);
         }
 
-        function updateTitle(tab, url) {
-            try {
-                const parsed = new URL(url.startsWith('http') ? url : 'https://' + url);
-                let host = parsed.hostname.replace('www.', '');
-                tab.title = host || url.substring(0, 35);
-            } catch {
-                tab.title = url.substring(0, 35);
-            }
-        }
-
-        function encodeUrl(url) {
-            // Check if it's a search query
-            if (!url.includes('.') || url.includes(' ')) {
-                url = currentEngine + encodeURIComponent(url);
-            } else if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                url = 'https://' + url;
-            }
-
-            const proxyType = localStorage.getItem('proxy') || 'ultraviolet';
-            if (proxyType === 'ultraviolet') {
-                return __uv$config.prefix + __uv$config.encodeUrl(url);
-            } else {
-                return "/scram/service/" + encodeURIComponent(url);
-            }
-        }
-
-        function decodeUrl(encoded) {
-            try {
-                if (encoded.includes(__uv$config.prefix)) {
-                    return __uv$config.decodeUrl(encoded.split(__uv$config.prefix)[1]);
-                } else if (encoded.includes("/scram/service/")) {
-                    return decodeURIComponent(encoded.split("/scram/service/")[1]);
-                }
-            } catch (e) {
-                return encoded;
-            }
-            return encoded;
-        }
-
-        function renderTabs() {
-            const existingButtons = tabsRow.querySelectorAll('.tab');
-            existingButtons.forEach(b => b.remove());
-
-            tabs.forEach(tab => {
-                const tabEl = document.createElement('div');
-                tabEl.className = 'tab' + (tab.id === activeTabId ? ' active' : '');
-                tabEl.dataset.tabId = tab.id;
-                tabEl.innerHTML = `
-                    <span class="tab-icon">●</span>
-                    <span class="tab-title">${escapeHtml(tab.title || 'New Tab')}</span>
-                    ${tabs.length > 1 ? `<button class="tab-close" data-close="${tab.id}">✕</button>` : ''}
-                `;
-                
-                tabEl.addEventListener('click', (e) => {
-                    if (!e.target.classList.contains('tab-close')) {
-                        switchTab(tab.id);
-                    }
-                });
-
-                tabsRow.insertBefore(tabEl, newTabBtn);
-            });
-
-            document.querySelectorAll('.tab-close').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    closeTab(btn.dataset.close);
-                });
-            });
-        }
-
-        function escapeHtml(text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
-
-        async function handleNavigation(query) {
+        function handleNavigation(query) {
             const url = query.trim();
             if (!url) return;
-
             const tab = tabs.find(t => t.id === activeTabId);
-            if (!tab) {
-                addTab(url);
-                return;
-            }
-            
+            if (!tab) { addTab(url); return; }
             navigateInTab(activeTabId, url);
             urlInput.blur();
         }
 
-        function showLoading() {
-            loadingBar.style.display = 'block';
+        function updateTitle(tab, url) {
+            try {
+                const p = new URL(url.startsWith('http') ? url : 'https://' + url);
+                tab.title = p.hostname.replace('www.', '') || url.substring(0, 30);
+            } catch { tab.title = url.substring(0, 30); }
         }
 
-        function hideLoading() {
-            loadingBar.style.display = 'none';
+        function encodeUrl(url) {
+            if (!url.includes('.') || url.includes(' ')) url = currentEngine + encodeURIComponent(url);
+            else if (!url.startsWith('http://') && !url.startsWith('https://')) url = 'https://' + url;
+            const proxyType = localStorage.getItem('proxy') || 'ultraviolet';
+            return proxyType === 'ultraviolet' ? __uv$config.prefix + __uv$config.encodeUrl(url) : "/scram/service/" + encodeURIComponent(url);
         }
+
+        function decodeUrl(encoded) {
+            try {
+                if (encoded.includes(__uv$config.prefix)) return __uv$config.decodeUrl(encoded.split(__uv$config.prefix)[1]);
+                if (encoded.includes("/scram/service/")) return decodeURIComponent(encoded.split("/scram/service/")[1]);
+            } catch(e) {}
+            return encoded;
+        }
+
+        function renderTabs() {
+            const existing = tabsContainer.querySelectorAll('.gx-tab');
+            existing.forEach(el => el.remove());
+            tabs.forEach(tab => {
+                const el = document.createElement('div');
+                el.className = 'gx-tab' + (tab.id === activeTabId ? ' active' : '');
+                el.innerHTML = `<span class="gx-tab-title">${escapeHtml(tab.title || 'New Tab')}</span>${tabs.length > 1 ? `<button class="gx-tab-close">✕</button>` : ''}`;
+                el.querySelector('.gx-tab-title')?.addEventListener('click', () => switchTab(tab.id));
+                el.querySelector('.gx-tab-close')?.addEventListener('click', (e) => { e.stopPropagation(); closeTab(tab.id); });
+                tabsContainer.insertBefore(el, newTabBtn);
+            });
+        }
+
+        function showLoading() { loadingBar.style.display = 'block'; loadingBar.style.width = '0%'; setTimeout(() => loadingBar.style.width = '100%', 50); }
+        function hideLoading() { loadingBar.style.display = 'none'; loadingBar.style.width = '0%'; }
+        function escapeHtml(t) { const d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
 
         async function init() {
             try {
-                const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+                const conn = new BareMux.BareMuxConnection("/baremux/worker.js");
                 const wispUrl = localStorage.getItem("wisp") || ((location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/");
                 const transport = localStorage.getItem("transport") || "libcurl";
                 const transportPath = transport === "epoxy" ? "/epoxy/index.mjs" : "/libcurl/index.mjs";
-                if (await connection.getTransport() !== transportPath) {
-                    await connection.setTransport(transportPath, [{ wisp: wispUrl }]);
-                }
-            } catch (err) {
-                console.error(err);
-            }
+                if (await conn.getTransport() !== transportPath) await conn.setTransport(transportPath, [{ wisp: wispUrl }]);
+            } catch(e) { console.error(e); }
         }
 
-        // Event Listeners
         document.addEventListener("DOMContentLoaded", () => {
-            updateEngineDisplay();
-            
+            applyAccent(gxAccent);
+            applyBackground(gxBg);
+            renderFavorites();
+            renderSpeedDial();
+
             const initialUrl = localStorage.getItem("url") || '';
             if (initialUrl) {
                 addTab(decodeUrl(initialUrl), 'Loading...');
-                frame.src = initialUrl;
                 const tab = tabs[0];
-                if (tab) {
-                    tab.url = initialUrl;
-                    tab.pushHistory(initialUrl);
-                    urlInput.value = decodeUrl(initialUrl);
-                }
+                if (tab) { tab.url = initialUrl; tab.pushHistory(initialUrl); urlInput.value = decodeUrl(initialUrl); showWebPage(); }
             } else {
-                addTab('', 'DuckDuckGo');
-                const duckUrl = 'https://duckduckgo.com/';
-                navigateInTab(tabs[0].id, duckUrl);
+                addTab('', 'New Tab');
             }
-            
             updateTabCount();
             init();
         });
 
-        urlInput.addEventListener("keydown", (e) => {
-            if (e.key === "Enter") handleNavigation(urlInput.value);
-        });
-
+        urlInput.addEventListener("keydown", e => { if (e.key === "Enter") handleNavigation(urlInput.value); });
         goBtn.addEventListener("click", () => handleNavigation(urlInput.value));
-
         backBtn.addEventListener("click", () => {
             const tab = tabs.find(t => t.id === activeTabId);
-            if (tab && tab.canGoBack()) {
-                const prevUrl = tab.goBack();
-                tab.url = prevUrl;
-                frame.src = prevUrl;
-                urlInput.value = decodeUrl(prevUrl);
-                updateNavButtons(tab);
-            }
+            if (tab?.canGoBack()) { const u = tab.goBack(); tab.url = u; showWebPage(); frame.src = u; urlInput.value = decodeUrl(u); updateNavButtons(tab); }
         });
-
         forwardBtn.addEventListener("click", () => {
             const tab = tabs.find(t => t.id === activeTabId);
-            if (tab && tab.canGoForward()) {
-                const nextUrl = tab.goForward();
-                tab.url = nextUrl;
-                frame.src = nextUrl;
-                urlInput.value = decodeUrl(nextUrl);
-                updateNavButtons(tab);
-            }
+            if (tab?.canGoForward()) { const u = tab.goForward(); tab.url = u; showWebPage(); frame.src = u; urlInput.value = decodeUrl(u); updateNavButtons(tab); }
         });
+        refreshBtn.addEventListener("click", () => { showLoading(); frame.src = frame.src; setTimeout(hideLoading, 600); });
+        newTabBtn.addEventListener("click", () => addTab('', 'New Tab'));
+        settingsOverlay.addEventListener("click", e => { if (e.target === settingsOverlay) closeGXSettings(); });
 
-        refreshBtn.addEventListener("click", () => {
-            showLoading();
-            statusText.textContent = 'Refreshing...';
-            frame.src = frame.src;
-            setTimeout(() => {
-                hideLoading();
-                statusText.textContent = 'Ready';
-            }, 800);
-        });
-
-        homeBtn.addEventListener("click", () => {
-            window.location.href = '/';
-        });
-
-        settingsBtn.addEventListener("click", () => {
-            const url = window.location.origin + '/settings';
-            handleNavigation(url);
-        });
-
-        newTabBtn.addEventListener("click", () => {
-            const tab = addTab('', 'New Tab');
-            const duckUrl = 'https://duckduckgo.com/';
-            navigateInTab(tab.id, duckUrl);
-        });
-
-        engineIndicator.addEventListener("click", () => {
-            const engines = ['DuckDuckGo', 'Brave', 'Google', 'Bing'];
-            const currentName = getEngineName(currentEngine);
-            const nextIndex = (engines.indexOf(currentName) + 1) % engines.length;
-            const nextEngine = engines[nextIndex].toLowerCase();
-            switchEngine(nextEngine);
-        });
-
-        frame.addEventListener("load", () => {
-            hideLoading();
-            statusText.textContent = 'Ready';
-        });
-
-        // Keyboard shortcuts
-        document.addEventListener("keydown", (e) => {
-            if (e.ctrlKey && e.key === 't') {
-                e.preventDefault();
-                newTabBtn.click();
-            }
-            if (e.ctrlKey && e.key === 'w') {
-                e.preventDefault();
-                const activeTab = tabs.find(t => t.id === activeTabId);
-                if (activeTab && tabs.length > 1) {
-                    closeTab(activeTabId);
-                }
-            }
-            if (e.key === 'F5') {
-                e.preventDefault();
-                refreshBtn.click();
-            }
-            if (e.altKey && e.key === 'ArrowLeft') {
-                e.preventDefault();
-                backBtn.click();
-            }
-            if (e.altKey && e.key === 'ArrowRight') {
-                e.preventDefault();
-                forwardBtn.click();
-            }
+        document.addEventListener("keydown", e => {
+            if (e.ctrlKey && e.key === 't') { e.preventDefault(); newTabBtn.click(); }
+            if (e.ctrlKey && e.key === 'w') { e.preventDefault(); const t = tabs.find(t => t.id === activeTabId); if (t && tabs.length > 1) closeTab(activeTabId); }
+            if (e.key === 'F5') { e.preventDefault(); refreshBtn.click(); }
         });
     </script>
 </body>
