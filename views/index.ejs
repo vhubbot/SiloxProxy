@@ -9,881 +9,603 @@
     <script src="/scram/scramjet.all.js"></script>
     <script src="/baremux"></script>
     <script src="/epoxy"></script>
-    <link rel="icon" type="image/png" src="/assets/favicon.png">
+    <link rel="icon" type="image/png" href="/assets/favicon.png">
     <script src="/uv/uv.bundle.js"></script>
     <script src="/uv/uv.config.js"></script>
     <style>
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes glowPulse { 0%, 100% { text-shadow: 0 0 30px rgba(220, 38, 38, 0.6), 0 0 60px rgba(220, 38, 38, 0.3); } 50% { text-shadow: 0 0 50px rgba(220, 38, 38, 0.9), 0 0 80px rgba(220, 38, 38, 0.5), 0 0 100px rgba(220, 38, 38, 0.3); } }
+        
+        /* Epic button drop animations */
+        @keyframes btnDrop1 { 
+            0% { transform: translateY(-500px) rotate(-45deg) scale(0.3); opacity: 0; } 
+            50% { transform: translateY(15px) rotate(5deg) scale(1.15); opacity: 1; } 
+            62% { transform: translateY(-12px) rotate(-3deg) scale(0.9); } 
+            72% { transform: translateY(8px) rotate(1.5deg) scale(1.05); } 
+            82% { transform: translateY(-5px) rotate(-0.5deg) scale(0.97); } 
+            90% { transform: translateY(3px) rotate(0.2deg) scale(1.02); } 
+            96% { transform: translateY(-1px); } 
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
+        }
+        @keyframes btnDrop2 { 
+            0% { transform: translateY(-550px) rotate(35deg) scale(0.2); opacity: 0; } 
+            48% { transform: translateY(18px) rotate(-6deg) scale(1.2); opacity: 1; } 
+            60% { transform: translateY(-14px) rotate(3deg) scale(0.88); } 
+            70% { transform: translateY(10px) rotate(-2deg) scale(1.06); } 
+            80% { transform: translateY(-6px) rotate(0.8deg) scale(0.96); } 
+            88% { transform: translateY(4px) rotate(-0.3deg) scale(1.03); } 
+            94% { transform: translateY(-2px); } 
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
+        }
+        @keyframes btnDrop3 { 
+            0% { transform: translateY(-480px) rotate(-55deg) scale(0.25); opacity: 0; } 
+            52% { transform: translateY(12px) rotate(4deg) scale(1.18); opacity: 1; } 
+            64% { transform: translateY(-10px) rotate(-2.5deg) scale(0.91); } 
+            74% { transform: translateY(7px) rotate(1deg) scale(1.04); } 
+            84% { transform: translateY(-4px) rotate(-0.3deg) scale(0.98); } 
+            92% { transform: translateY(2px) scale(1.01); } 
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
+        }
+        @keyframes btnDrop4 { 
+            0% { transform: translateY(-600px) rotate(50deg) scale(0.15); opacity: 0; } 
+            46% { transform: translateY(20px) rotate(-7deg) scale(1.25); opacity: 1; } 
+            58% { transform: translateY(-15px) rotate(4deg) scale(0.85); } 
+            68% { transform: translateY(12px) rotate(-2.5deg) scale(1.08); } 
+            78% { transform: translateY(-7px) rotate(1deg) scale(0.95); } 
+            86% { transform: translateY(5px) rotate(-0.5deg) scale(1.04); } 
+            93% { transform: translateY(-2px); } 
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
+        }
+        @keyframes btnDrop5 { 
+            0% { transform: translateY(-520px) rotate(-40deg) scale(0.2); opacity: 0; } 
+            50% { transform: translateY(16px) rotate(5deg) scale(1.2); opacity: 1; } 
+            61% { transform: translateY(-13px) rotate(-3deg) scale(0.89); } 
+            71% { transform: translateY(9px) rotate(1.5deg) scale(1.05); } 
+            81% { transform: translateY(-5px) rotate(-0.5deg) scale(0.97); } 
+            89% { transform: translateY(3px) scale(1.02); } 
+            95% { transform: translateY(-1px); } 
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
+        }
+        @keyframes btnDrop6 { 
+            0% { transform: translateY(-450px) rotate(-30deg) scale(0.3); opacity: 0; } 
+            54% { transform: translateY(10px) rotate(3deg) scale(1.15); opacity: 1; } 
+            66% { transform: translateY(-8px) rotate(-1.5deg) scale(0.93); } 
+            76% { transform: translateY(5px) rotate(0.5deg) scale(1.03); } 
+            86% { transform: translateY(-3px) scale(0.99); } 
+            93% { transform: translateY(1px); } 
+            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
         }
 
-        @keyframes pulse {
-            0%, 100% {
-                box-shadow: 0 0 0 0 rgba(100, 200, 255, 0.4);
-            }
-            50% {
-                box-shadow: 0 0 20px 10px rgba(100, 200, 255, 0.2);
-            }
+        /* Logo materialization */
+        @keyframes logoMaterialize { 
+            0% { transform: scale(0) perspective(500px) rotateX(90deg); opacity: 0; filter: blur(30px); } 
+            40% { transform: scale(1.2) perspective(500px) rotateX(-10deg); opacity: 0.7; filter: blur(0); } 
+            55% { transform: scale(0.9) perspective(500px) rotateX(5deg); } 
+            68% { transform: scale(1.05) perspective(500px) rotateX(-2deg); } 
+            78% { transform: scale(0.97); } 
+            88% { transform: scale(1.02); } 
+            95% { transform: scale(0.99); } 
+            100% { transform: scale(1) perspective(500px) rotateX(0deg); opacity: 1; filter: blur(0); } 
+        }
+        
+        @keyframes taglineReveal { 
+            0% { opacity: 0; transform: translateY(30px); letter-spacing: 25px; filter: blur(10px); } 
+            60% { filter: blur(0); } 
+            100% { opacity: 1; transform: translateY(0); letter-spacing: 6px; filter: blur(0); } 
+        }
+        
+        @keyframes searchBarUnfold { 
+            0% { transform: scaleX(0); opacity: 0; transform-origin: center; } 
+            50% { transform: scaleX(1.08); opacity: 1; } 
+            65% { transform: scaleX(0.95); } 
+            78% { transform: scaleX(1.03); } 
+            88% { transform: scaleX(0.98); } 
+            95% { transform: scaleX(1.01); } 
+            100% { transform: scaleX(1); opacity: 1; } 
         }
 
-        @keyframes float {
-            0%, 100% {
-                transform: translateY(0px);
-            }
-            50% {
-                transform: translateY(-10px);
-            }
+        @keyframes rumbleClick { 
+            0%, 100% { transform: translateX(0); } 
+            15% { transform: translateX(-3px) rotate(-1deg); } 
+            30% { transform: translateX(3px) rotate(1deg); } 
+            45% { transform: translateX(-2px) rotate(-0.5deg); } 
+            60% { transform: translateX(2px) rotate(0.5deg); } 
+            75% { transform: translateX(-1px); } 
+            90% { transform: translateX(1px); } 
         }
 
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        @keyframes particleRain { 
+            0% { transform: translateY(-10vh) rotate(0deg) scale(1); opacity: 0; } 
+            10% { opacity: 0.8; } 
+            90% { opacity: 0.6; } 
+            100% { transform: translateY(110vh) rotate(720deg) scale(0.3); opacity: 0; } 
         }
 
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        @keyframes bgGlow { 
+            0%, 100% { opacity: 0.3; } 
+            50% { opacity: 0.6; } 
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        @keyframes fogFloat {
-            0% {
-                opacity: 0.3;
-                transform: translateX(-10%) translateY(0);
-            }
-            25% {
-                opacity: 0.5;
-                transform: translateX(5%) translateY(-20px);
-            }
-            50% {
-                opacity: 0.35;
-                transform: translateX(10%) translateY(-10px);
-            }
-            75% {
-                opacity: 0.45;
-                transform: translateX(0%) translateY(-25px);
-            }
-            100% {
-                opacity: 0.3;
-                transform: translateX(-10%) translateY(0);
-            }
-        }
-
-        @keyframes fogFloat2 {
-            0% {
-                opacity: 0.2;
-                transform: translateX(5%) translateY(0);
-            }
-            33% {
-                opacity: 0.4;
-                transform: translateX(-8%) translateY(-15px);
-            }
-            66% {
-                opacity: 0.25;
-                transform: translateX(3%) translateY(-30px);
-            }
-            100% {
-                opacity: 0.2;
-                transform: translateX(5%) translateY(0);
-            }
-        }
-
-        @keyframes fogFloat3 {
-            0% {
-                opacity: 0.15;
-                transform: translateX(0%) translateY(0) scale(1);
-            }
-            50% {
-                opacity: 0.3;
-                transform: translateX(-5%) translateY(-10px) scale(1.2);
-            }
-            100% {
-                opacity: 0.15;
-                transform: translateX(0%) translateY(0) scale(1);
-            }
-        }
-
-        @keyframes introFadeOut {
-            0% { opacity: 1; }
-            70% { opacity: 1; }
-            100% { opacity: 0; visibility: hidden; }
-        }
-
-        @keyframes introTextGlow {
-            0%, 100% { text-shadow: 0 0 20px rgba(100, 200, 255, 0.5), 0 0 40px rgba(100, 200, 255, 0.2); }
-            50% { text-shadow: 0 0 30px rgba(100, 200, 255, 0.8), 0 0 60px rgba(100, 200, 255, 0.4), 0 0 80px rgba(150, 150, 255, 0.2); }
-        }
-
-        @keyframes tributeSlideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes particleRise {
-            0% {
-                opacity: 1;
-                transform: translateY(0) translateX(0) scale(1);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(-200px) translateX(var(--drift)) scale(0);
-            }
-        }
-
-        @keyframes chatSlideIn {
-            from { transform: translateX(100%); }
-            to { transform: translateX(0); }
-        }
-
-        @keyframes chatSlideOut {
-            from { transform: translateX(0); }
-            to { transform: translateX(100%); }
-        }
-
-        @keyframes chatBadgePulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-
-        /* Intro Overlay */
-        .intro-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(ellipse at center, #0a0e1a 0%, #050810 40%, #000 70%);
-            z-index: 9999;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-direction: column;
-            pointer-events: none;
-            overflow: hidden;
-        }
-
-        .intro-overlay.playing {
-            animation: introFadeOut 4s ease-in-out forwards;
-        }
-
-        .intro-overlay.hidden-intro {
-            display: none;
-        }
-
-        .intro-fog {
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(ellipse at 30% 50%, rgba(60, 80, 120, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 70% 40%, rgba(40, 60, 100, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 60%, rgba(80, 100, 140, 0.08) 0%, transparent 50%);
-            animation: fogFloat 8s ease-in-out infinite;
-        }
-
-        .intro-fog-2 {
-            position: absolute;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(ellipse at 60% 30%, rgba(50, 70, 110, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 20% 60%, rgba(30, 50, 90, 0.1) 0%, transparent 50%);
-            animation: fogFloat2 10s ease-in-out infinite;
-        }
-
-        .intro-fog-3 {
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            background: 
-                radial-gradient(ellipse at 40% 40%, rgba(100, 120, 160, 0.06) 0%, transparent 60%);
-            animation: fogFloat3 12s ease-in-out infinite;
-        }
-
-        .intro-particles {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-        }
-
-        .intro-particle {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background: rgba(100, 180, 255, 0.6);
-            border-radius: 50%;
-            animation: particleRise 3s ease-out infinite;
-        }
-
-        .intro-particle:nth-child(1) { left: 10%; animation-delay: 0s; --drift: 10px; }
-        .intro-particle:nth-child(2) { left: 25%; animation-delay: 0.5s; --drift: -8px; }
-        .intro-particle:nth-child(3) { left: 40%; animation-delay: 1s; --drift: 15px; }
-        .intro-particle:nth-child(4) { left: 55%; animation-delay: 1.5s; --drift: -12px; }
-        .intro-particle:nth-child(5) { left: 70%; animation-delay: 2s; --drift: 8px; }
-        .intro-particle:nth-child(6) { left: 85%; animation-delay: 2.5s; --drift: -10px; }
-        .intro-particle:nth-child(7) { left: 15%; animation-delay: 1.2s; --drift: 20px; }
-        .intro-particle:nth-child(8) { left: 50%; animation-delay: 0.8s; --drift: -15px; }
-        .intro-particle:nth-child(9) { left: 75%; animation-delay: 1.8s; --drift: 12px; }
-        .intro-particle:nth-child(10) { left: 35%; animation-delay: 2.2s; --drift: -6px; }
-
-        .intro-text-container {
-            text-align: center;
-            z-index: 1;
-            animation: introTextGlow 2s ease-in-out infinite;
-        }
-
-        .intro-welcome {
-            font-size: 2.5rem;
-            font-weight: 300;
-            color: rgba(160, 200, 240, 0.9);
-            letter-spacing: 6px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-        }
-
-        .intro-subtitle {
-            font-size: 1rem;
-            color: rgba(140, 180, 220, 0.7);
-            letter-spacing: 4px;
-        }
-
-        /* Main Content */
         body {
-            margin: 0;
-            padding: 0;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: white;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow-x: hidden;
+            margin: 0; padding: 0; min-height: 100vh; display: flex;
+            justify-content: center; align-items: center; overflow: hidden;
+            background: linear-gradient(135deg, #0a0a0a 0%, #0d0d0d 30%, #0a0a0f 60%, #0c0c0c 100%);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            color: #e0e0e0; padding: 80px 20px 120px;
+            position: relative;
         }
 
-        /* When intro hasn't played, hide main content initially */
-        body.intro-not-played .container,
-        body.intro-not-played .venusFooter,
-        body.intro-not-played .reset-button,
-        body.intro-not-played .chat-toggle-btn {
-            opacity: 0;
+        /* Radial glow behind logo */
+        .bg-glow {
+            position: fixed;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(220,38,38,0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+            animation: bgGlow 3s ease-in-out infinite;
         }
 
-        /* When intro is done or skipped, show everything normally */
-        body.intro-done .container {
-            animation: fadeInUp 1s ease-out 0.2s both;
+        /* Rain particles */
+        .particles {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
+        }
+        .particle {
+            position: absolute; border-radius: 50%;
+            animation: particleRain linear infinite;
         }
 
-        body.intro-done .venusFooter {
-            animation: fadeInUp 1s ease-out 0.4s both;
+        .container { 
+            text-align: center; 
+            max-width: 650px; 
+            width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
-        body.intro-done .reset-button {
-            animation: fadeInUp 1s ease-out 0.4s both;
+        /* Logo with dark text for readability on any background */
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
         }
-
-        body.intro-done .chat-toggle-btn {
-            animation: fadeInUp 1s ease-out 0.6s both;
-        }
-
-        .container {
-            text-align: center;
-        }
-
         .logo-text {
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: 4px;
-            margin-bottom: 10px;
-            background: linear-gradient(135deg, #64c8ff, #a78bfa, #64c8ff);
-            background-size: 200% 200%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: gradientShift 3s ease infinite;
+            font-size: 5.5rem; font-weight: 900; letter-spacing: 12px;
+            margin-bottom: 6px; line-height: 1;
+            color: #1a1a1a;
+            animation: logoMaterialize 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+            position: relative;
+            z-index: 1;
+            /* Text shadow for depth */
+            text-shadow: 
+                0 2px 0 rgba(255,255,255,0.1),
+                0 -2px 0 rgba(0,0,0,0.3),
+                2px 0 0 rgba(0,0,0,0.2),
+                -2px 0 0 rgba(0,0,0,0.2);
+        }
+        .logo-text span { 
+            color: #dc2626; 
             text-shadow: none;
-            filter: drop-shadow(0 0 20px rgba(100, 200, 255, 0.3));
+            animation: glowPulse 2s ease-in-out 1.2s infinite;
+            position: relative;
+            display: inline-block;
         }
 
         .tagline {
-            font-size: 1.1rem;
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 30px;
-            letter-spacing: 2px;
-        }
-
-        .tribute-message {
-            margin-bottom: 25px;
-            padding: 15px 25px;
-            background: rgba(15, 20, 35, 0.6);
-            backdrop-filter: blur(15px);
-            border-radius: 12px;
-            border: 1px solid rgba(100, 200, 255, 0.15);
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .tribute-message p {
-            margin: 0;
-            font-size: 0.85rem;
-            color: rgba(180, 200, 230, 0.9);
-            letter-spacing: 1px;
-            line-height: 1.6;
-        }
-
-        .tribute-message .heart {
-            color: #ff6b8a;
-            font-size: 1rem;
-        }
-
-        .tribute-message .highlight {
-            color: rgba(100, 200, 255, 0.9);
+            font-size: 0.8rem; color: rgba(0,0,0,0.6);
+            margin-bottom: 40px; letter-spacing: 6px; text-transform: uppercase;
             font-weight: 600;
+            animation: taglineReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.15);
         }
 
         .search-container {
-            display: flex;
-            align-items: center;
-            margin-top: 20px;
+            display: flex; align-items: center; gap: 8px;
+            animation: searchBarUnfold 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
         }
+
+        .search-input-wrapper { flex: 1; }
 
         .search-input {
-            border: 2px solid transparent;
-            border-radius: 50px;
-            padding: 14px 24px;
-            width: 420px;
-            font-size: 16px;
-            outline: none;
-            background-color: rgba(20, 25, 40, 0.85);
-            color: #e0e0e0;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            width: 100%; border: 2px solid rgba(0,0,0,0.15);
+            border-radius: 14px; padding: 15px 20px; font-size: 0.9rem;
+            outline: none; background: rgba(255,255,255,0.9); color: #1a1a1a;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: inherit;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
-
-        .search-input:focus {
-            border-color: rgba(100, 200, 255, 0.6);
-            box-shadow: 0 4px 30px rgba(100, 200, 255, 0.2);
-            background-color: rgba(25, 30, 50, 0.9);
+        .search-input:focus { 
+            border-color: #dc2626; background: #ffffff;
+            box-shadow: 0 0 30px rgba(220,38,38,0.2), 0 4px 15px rgba(0,0,0,0.15);
         }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.4);
-        }
+        .search-input::placeholder { color: rgba(0,0,0,0.3); }
 
         .search-button {
-            background: linear-gradient(135deg, #4a90d9, #6c5ce7);
-            border: none;
-            border-radius: 50px;
-            padding: 14px 20px;
-            margin-left: 8px;
-            cursor: pointer;
-            outline: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 20px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(74, 144, 217, 0.4);
+            background: linear-gradient(135deg, #dc2626, #b91c1c);
+            border: none; border-radius: 14px; padding: 15px 22px;
+            cursor: pointer; color: white; font-size: 18px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-weight: 700; box-shadow: 0 6px 25px rgba(220,38,38,0.4);
+            font-family: inherit;
         }
-
-        .search-button:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 25px rgba(74, 144, 217, 0.6);
+        .search-button:hover { 
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            box-shadow: 0 8px 35px rgba(220,38,38,0.6);
+            transform: translateY(-3px);
         }
-
-        .search-button:active {
-            transform: scale(0.95);
+        .search-button:active { 
+            transform: scale(0.93); 
+            transition: all 0.1s ease; 
+            animation: rumbleClick 0.35s ease;
         }
 
         .app-buttons {
-            display: flex;
-            justify-content: center;
-            margin-top: 30px;
+            display: flex; justify-content: center; margin-top: 35px; gap: 10px;
+            flex-wrap: wrap;
         }
 
         .app-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 55px;
-            height: 55px;
-            border-radius: 16px;
-            background-color: rgba(20, 25, 40, 0.75);
-            backdrop-filter: blur(10px);
-            margin: 0 8px;
-            cursor: pointer;
-            outline: none;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: white;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: flex; align-items: center; justify-content: center;
+            width: 56px; height: 56px; border-radius: 16px;
+            background: rgba(255,255,255,0.9); cursor: pointer;
+            border: 2px solid rgba(0,0,0,0.1); text-decoration: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: visible;
         }
-
-        .app-button:hover {
-            background-color: rgba(40, 50, 80, 0.85);
-            transform: translateY(-5px) scale(1.05);
-            box-shadow: 0 8px 25px rgba(100, 200, 255, 0.3);
-            border-color: rgba(100, 200, 255, 0.4);
-        }
-
-        .app-button img {
-            max-width: 55%;
-            max-height: 55%;
-            transition: transform 0.3s ease;
-        }
-
-        .app-button:hover img {
-            transform: scale(1.1);
-        }
-
-        #add-app-button {
-            background-color: rgba(20, 25, 40, 0.6);
-            border: 1px dashed rgba(255, 255, 255, 0.3);
-        }
-
-        #add-app-button:hover {
-            border-style: solid;
-            border-color: rgba(100, 200, 255, 0.5);
-        }
-
-        /* Chat Toggle Button */
-        .chat-toggle-btn {
-            position: fixed;
-            right: 20px;
-            bottom: 30px;
-            width: 55px;
-            height: 55px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #4a90d9, #6c5ce7);
-            border: none;
-            cursor: pointer;
-            z-index: 1500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 20px rgba(74, 144, 217, 0.4);
-            transition: all 0.3s ease;
-        }
-
-        .chat-toggle-btn:hover {
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(74, 144, 217, 0.6);
-        }
-
-        .chat-toggle-btn svg {
-            width: 28px;
-            height: 28px;
-            fill: white;
-        }
-
-        .chat-toggle-btn .badge {
+        .app-button::after {
+            content: '';
             position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #ff4757;
-            color: white;
-            border-radius: 50%;
-            width: 22px;
-            height: 22px;
-            font-size: 11px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            animation: chatBadgePulse 2s ease-in-out infinite;
-        }
-
-        .venusFooter {
-            position: fixed;
-            bottom: 15px;
-            right: 100px;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 11px;
-            text-decoration: none;
+            inset: -4px;
+            border-radius: 20px;
+            background: transparent;
+            z-index: -1;
             transition: all 0.3s ease;
-            letter-spacing: 1px;
         }
-
-        .venusFooter:hover {
-            color: rgba(255, 255, 255, 0.9);
-            text-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
+        .app-button.animate { animation-fill-mode: both; }
+        .app-button:nth-child(1).animate { animation: btnDrop1 1s cubic-bezier(0.16, 1, 0.3, 1) 0.95s both; }
+        .app-button:nth-child(2).animate { animation: btnDrop2 1.05s cubic-bezier(0.16, 1, 0.3, 1) 1.05s both; }
+        .app-button:nth-child(3).animate { animation: btnDrop3 0.95s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both; }
+        .app-button:nth-child(4).animate { animation: btnDrop4 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s both; }
+        .app-button:nth-child(5).animate { animation: btnDrop5 1.0s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both; }
+        .app-button:nth-child(6).animate { animation: btnDrop6 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both; }
+        
+        .app-button:hover { 
+            background: #ffffff; border-color: #dc2626;
+            box-shadow: 0 12px 35px rgba(220,38,38,0.3), 0 4px 15px rgba(0,0,0,0.15);
+            transform: translateY(-6px);
         }
+        .app-button:hover::after {
+            background: rgba(220,38,38,0.1);
+            inset: -8px;
+            border-radius: 24px;
+        }
+        .app-button:active { 
+            transform: scale(0.82); 
+            transition: all 0.1s ease; 
+            animation: rumbleClick 0.4s ease;
+        }
+        .app-button img { max-width: 48%; max-height: 48%; opacity: 0.7; transition: all 0.3s ease; }
+        .app-button:hover img { opacity: 1; transform: scale(1.1); }
 
+        .app-button.add-btn { border: 2.5px dashed rgba(0,0,0,0.15); background: rgba(255,255,255,0.7); }
+        .app-button.add-btn:hover { border-color: #dc2626; background: rgba(255,255,255,0.95); }
+        .app-button.add-btn svg { transition: all 0.3s ease; }
+        .app-button.add-btn:hover svg { stroke: #dc2626; transform: rotate(90deg); }
+
+        .credit-footer {
+            position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%);
+            color: rgba(0,0,0,0.3); font-size: 10px; letter-spacing: 2px;
+            transition: all 0.3s ease; font-weight: 600;
+            animation: fadeIn 1s ease 2s both;
+        }
+        .credit-footer:hover { color: #dc2626; }
+
+        .top-buttons {
+            position: fixed; top: 16px; right: 16px;
+            display: flex; gap: 8px; z-index: 1000;
+            animation: fadeIn 0.8s ease 1.6s both;
+        }
         .reset-button {
-            position: fixed;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgba(20, 25, 40, 0.7);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 50px;
-            color: rgba(255, 255, 255, 0.7);
-            padding: 10px 24px;
-            font-size: 13px;
-            cursor: pointer;
-            outline: none;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            letter-spacing: 1px;
+            background: rgba(255,255,255,0.85); border: 2px solid rgba(0,0,0,0.1);
+            border-radius: 10px; color: #333;
+            padding: 8px 18px; font-size: 11px; cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            font-family: inherit; font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
+        .reset-button:hover { background: #dc2626; border-color: #dc2626; color: white; box-shadow: 0 6px 25px rgba(220,38,38,0.4); }
+        .reset-button:active { transform: scale(0.9); animation: rumbleClick 0.3s ease; }
 
-        .reset-button:hover {
-            background-color: rgba(220, 50, 50, 0.6);
-            border-color: rgba(255, 80, 80, 0.5);
-            color: white;
-            box-shadow: 0 4px 20px rgba(255, 50, 50, 0.3);
+        .music-btn {
+            width: 38px; height: 38px; border-radius: 10px;
+            background: rgba(255,255,255,0.85); border: 2px solid rgba(0,0,0,0.1);
+            cursor: pointer; font-size: 15px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.08);
         }
+        .music-btn:hover { background: #dc2626; border-color: #dc2626; color: white; box-shadow: 0 6px 25px rgba(220,38,38,0.4); }
+        .music-btn:active { transform: scale(0.85); animation: rumbleClick 0.3s ease; }
 
-        #add-app-modal {
-            z-index: 2000;
-            animation: fadeInUp 0.3s ease-out;
-        }
-
+        /* Modal */
         #add-app-modal > div {
-            background-color: rgba(15, 20, 35, 0.95);
-            backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            background: #ffffff; border: 1px solid rgba(0,0,0,0.1);
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 18px;
         }
-
+        #add-app-modal h3 { color: #1a1a1a; }
+        #add-app-modal label { color: rgba(0,0,0,0.5); }
         #add-app-modal input {
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
+            border: 2px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.02);
+            color: #1a1a1a; transition: all 0.3s ease;
         }
+        #add-app-modal input:focus { border-color: #dc2626; background: #fff; }
+        #add-app-modal input::placeholder { color: rgba(0,0,0,0.25); }
+        #add-app-submit { background: #dc2626; color: white; border-radius: 10px; padding: 10px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+        #add-app-submit:hover { background: #ef4444; }
+        #add-app-cancel { background: transparent; border: 2px solid rgba(0,0,0,0.1); color: rgba(0,0,0,0.5); border-radius: 10px; padding: 10px; cursor: pointer; transition: all 0.2s; font-weight: 600; }
+        #add-app-cancel:hover { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.2); color: #333; }
 
-        #add-app-modal input:focus {
-            border-color: rgba(100, 200, 255, 0.5);
-            box-shadow: 0 0 15px rgba(100, 200, 255, 0.1);
-        }
-
-        #add-app-submit,
-        #add-app-cancel {
-            transition: all 0.3s ease;
-        }
-
-        #add-app-submit:hover {
-            background-color: rgba(74, 144, 217, 0.6) !important;
-        }
-
-        #add-app-cancel:hover {
-            background-color: rgba(200, 50, 50, 0.5) !important;
+        @media (max-width: 600px) {
+            .logo-text { font-size: 3.5rem; letter-spacing: 8px; }
+            .search-input { padding: 13px 16px; font-size: 0.8rem; }
+            .search-button { padding: 13px 18px; font-size: 16px; }
+            .app-button { width: 48px; height: 48px; border-radius: 14px; }
         }
     </style>
     <script>
         async function uvEncode(url) {
-            const encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
+            var encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(url);
             localStorage.setItem("url", encodedUrl);
             window.location.href = "/search";
         }
-
         async function sjEncode(url) {
-            const encodedUrl = "/scram/service/" + encodeURIComponent(url);
+            var encodedUrl = "/scram/service/" + encodeURIComponent(url);
             localStorage.setItem("url", encodedUrl);
             window.location.href = "/search";
         }
-
         async function init() {
             try {
-                const connection = new BareMux.BareMuxConnection("/baremux/worker.js");
-                let transport = localStorage.getItem("transport") || "libcurl";
-                localStorage.setItem("transport", transport);
-                let wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
-                if (localStorage.getItem("wisp-server-type") === "custom") {
-                    const customWisp = localStorage.getItem("wisp");
-                    if (customWisp) wispUrl = customWisp;
-                } else {
-                    localStorage.setItem("wisp", wispUrl);
-                }
-                const transportPath = transport === "epoxy" ? "/epoxy/index.mjs" : "/libcurl/index.mjs";
+                var connection = new BareMux.BareMuxConnection("/baremux/worker.js");
+                var transport = localStorage.getItem("transport") || "libcurl";
+                var wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
+                var transportPath = transport === "epoxy" ? "/epoxy/index.mjs" : "/libcurl/index.mjs";
                 if (await connection.getTransport() !== transportPath) {
                     await connection.setTransport(transportPath, [{ wisp: wispUrl }]);
                 }
-            } catch (err) {
-                console.error(err);
-            }
-
+            } catch (err) {}
             try {
-                const { ScramjetController } = $scramjetLoadController();
-                const scramjet = new ScramjetController({
+                var ScramjetController = $scramjetLoadController().ScramjetController;
+                var scramjet = new ScramjetController({
                     prefix: "/scram/service/",
-                    files: {
-                        wasm: "/scram/scramjet.wasm.wasm",
-                        all: "/scram/scramjet.all.js",
-                        sync: "/scram/scramjet.sync.js"
-                    },
-                    flags: {
-                        syncxhr: true
-                    }
+                    files: { wasm: "/scram/scramjet.wasm.wasm", all: "/scram/scramjet.all.js", sync: "/scram/scramjet.sync.js" },
+                    flags: { syncxhr: true }
                 });
-                window.sj = scramjet;
                 await scramjet.init();
-            } catch (error) {
-                console.error(error);
-            }
+            } catch (error) {}
         }
-
         function resetSiteData() {
-            if (confirm("Reset all settings, custom apps, chat data, and site data?")) {
+            if (confirm("Reset all settings and site data?")) {
+                if (window.persistentMusic && !window.persistentMusic.paused) window.persistentMusic.pause();
                 localStorage.clear();
-                if (navigator.serviceWorker) {
-                    navigator.serviceWorker.getRegistrations().then(registrations => {
-                        for (let r of registrations) r.unregister();
-                    });
-                }
                 window.location.reload();
             }
         }
 
-        if (navigator.serviceWorker) {
-            navigator.serviceWorker.getRegistrations().then(registrations => {
-                if (registrations.length === 0) {
-                    navigator.serviceWorker.register("sw.js").catch(err => console.error(err));
+        window.persistentMusic = null;
+
+        function togglePersistentMusic() {
+            var musicSrc = localStorage.getItem('persistentMusicSrc');
+            var activeAudioData = localStorage.getItem('activeAudioData');
+            var btn = document.getElementById('music-btn');
+            if (!window.persistentMusic) {
+                if (!musicSrc) { alert('No soundtrack set. Go to Settings!'); return; }
+                var audioSrc = musicSrc;
+                if (activeAudioData && musicSrc.indexOf('data:') === 0) audioSrc = activeAudioData;
+                window.persistentMusic = new Audio(audioSrc);
+                window.persistentMusic.loop = true;
+                window.persistentMusic.volume = parseFloat(localStorage.getItem('audioVolume') || '0.7');
+                window.persistentMusic.play().then(function() {
+                    localStorage.setItem('persistentMusicPlaying', 'true');
+                    if (btn) btn.textContent = '🎵';
+                }).catch(function() {});
+            } else {
+                if (window.persistentMusic.paused) {
+                    window.persistentMusic.play().then(function() {
+                        localStorage.setItem('persistentMusicPlaying', 'true');
+                        if (btn) btn.textContent = '🎵';
+                    }).catch(function() {});
+                } else {
+                    window.persistentMusic.pause();
+                    localStorage.setItem('persistentMusicPlaying', 'false');
+                    if (btn) btn.textContent = '🔇';
                 }
-            });
+            }
         }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            init();
-            const defaultBg = '/assets/backgrounds/TwoSwords.png';
-            let bg = localStorage.getItem('bg') || defaultBg;
-            document.body.style.backgroundImage = `url('${bg}')`;
-            const savedFont = localStorage.getItem('font');
-            if (savedFont) document.body.style.fontFamily = savedFont;
-
-            const hasSeenIntro = localStorage.getItem('hasSeenIntro');
-            const introOverlay = document.getElementById('intro-overlay');
-
-            if (hasSeenIntro) {
-                introOverlay.classList.add('hidden-intro');
-                document.body.classList.add('intro-done');
-                document.body.classList.remove('intro-not-played');
-            } else {
-                introOverlay.classList.add('playing');
-                document.body.classList.add('intro-not-played');
-                
-                setTimeout(() => {
-                    localStorage.setItem('hasSeenIntro', 'true');
-                    introOverlay.classList.add('hidden-intro');
-                    document.body.classList.remove('intro-not-played');
-                    document.body.classList.add('intro-done');
-                }, 4000);
+        function initMusic() {
+            var isPlaying = localStorage.getItem('persistentMusicPlaying');
+            var musicSrc = localStorage.getItem('persistentMusicSrc');
+            var btn = document.getElementById('music-btn');
+            if (isPlaying === 'true' && musicSrc) {
+                var audioSrc = musicSrc;
+                var activeAudioData = localStorage.getItem('activeAudioData');
+                if (activeAudioData && musicSrc.indexOf('data:') === 0) audioSrc = activeAudioData;
+                window.persistentMusic = new Audio(audioSrc);
+                window.persistentMusic.loop = true;
+                window.persistentMusic.volume = parseFloat(localStorage.getItem('audioVolume') || '0.7');
+                window.persistentMusic.play().then(function() {
+                    if (btn) btn.textContent = '🎵';
+                }).catch(function() {});
             }
+        }
 
-            const searchInput = document.querySelector('.search-input');
-            const searchButton = document.querySelector('.search-button');
-            const appButtonsDiv = document.querySelector('.app-buttons');
-            const addAppButton = document.getElementById('add-app-button');
+        // Create particles
+        function createParticles() {
+            var container = document.querySelector('.particles');
+            var colors = ['#dc2626', '#ef4444', '#f87171', '#b91c1c', '#991b1b'];
+            for (var i = 0; i < 20; i++) {
+                var p = document.createElement('div');
+                p.className = 'particle';
+                var size = Math.random() * 4 + 1.5;
+                p.style.cssText = 
+                    'left:' + Math.random() * 100 + '%;' +
+                    'width:' + size + 'px;' +
+                    'height:' + size + 'px;' +
+                    'background:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
+                    'animation-duration:' + (Math.random() * 8 + 6) + 's;' +
+                    'animation-delay:' + Math.random() * 10 + 's;' +
+                    'box-shadow: 0 0 ' + (size * 3) + 'px ' + colors[Math.floor(Math.random() * colors.length)] + ';';
+                container.appendChild(p);
+            }
+        }
 
-            const encodeURL = async (url) => {
-                let proxyType = localStorage.getItem('proxy') || 'ultraviolet';
+        document.addEventListener('DOMContentLoaded', function() {
+            createParticles();
+            init();
+            var defaultBg = '/assets/backgrounds/TwoSwords.png';
+            document.body.style.backgroundImage = 'url(\'' + (localStorage.getItem('bg') || defaultBg) + '\')';
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundPosition = 'center center';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundAttachment = 'fixed';
+
+            setTimeout(initMusic, 500);
+
+            var searchInput = document.querySelector('.search-input');
+            var searchButton = document.querySelector('.search-button');
+            var appButtonsDiv = document.querySelector('.app-buttons');
+            var addAppButton = document.getElementById('add-app-button');
+
+            var encodeURL = async function(url) {
+                var proxyType = localStorage.getItem('proxy') || 'ultraviolet';
                 proxyType === 'ultraviolet' ? await uvEncode(url) : await sjEncode(url);
             };
 
-            const handleSearch = async () => {
-                const query = searchInput.value.trim();
+            var handleSearch = async function() {
+                var query = searchInput.value.trim();
                 if (!query) return;
-                let url;
-                let isLikelySearch = false;
+                var url, isLikelySearch = false;
                 try {
                     url = (query.startsWith('http://') || query.startsWith('https://')) ? new URL(query) : new URL('https://' + query);
                     if (!url.hostname || !url.hostname.includes('.')) isLikelySearch = true;
-                } catch (e) {
-                    isLikelySearch = true;
-                }
+                } catch (e) { isLikelySearch = true; }
                 if (isLikelySearch) url = new URL((localStorage.getItem('search') || 'https://www.google.com/search?q=') + query);
                 await encodeURL(url.toString());
             };
 
-            const createAppButton = (appName, appUrl) => {
-                const appButton = document.createElement('a');
-                appButton.href = '#';
-                appButton.classList.add('app-button');
-                appButton.textContent = appName;
-                appButton.addEventListener('click', (e) => { e.preventDefault(); encodeURL(appUrl); });
-                appButton.addEventListener('contextmenu', (e) => {
+            var createAppButton = function(appName, appUrl) {
+                var btn = document.createElement('a');
+                btn.href = '#'; btn.classList.add('app-button', 'animate');
+                btn.innerHTML = '<span style="font-weight:700;font-size:0.7rem;color:rgba(0,0,0,0.5);">' + appName.substring(0, 2).toUpperCase() + '</span>';
+                btn.title = appName;
+                btn.addEventListener('click', function(e) { e.preventDefault(); encodeURL(appUrl); });
+                btn.addEventListener('contextmenu', function(e) {
                     e.preventDefault();
-                    const index = apps.findIndex(a => a.name === appButton.textContent);
-                    if (index > -1) {
-                        apps.splice(index, 1);
-                        localStorage.setItem('apps', JSON.stringify(apps));
-                        appButton.remove();
-                    }
+                    var idx = apps.findIndex(function(a) { return a.name === appName; });
+                    if (idx > -1) { apps.splice(idx, 1); localStorage.setItem('apps', JSON.stringify(apps)); btn.remove(); }
                 });
-                return appButton;
+                return btn;
             };
 
-            let apps = JSON.parse(localStorage.getItem('apps') || '[]');
-            apps.forEach(app => {
-                const btn = createAppButton(app.name, app.url);
+            var apps = JSON.parse(localStorage.getItem('apps') || '[]');
+            apps.forEach(function(app) {
+                var btn = createAppButton(app.name, app.url);
                 appButtonsDiv.insertBefore(btn, addAppButton);
             });
 
-            const addAppModal = document.getElementById('add-app-modal');
-            const addAppSubmit = document.getElementById('add-app-submit');
-            const addAppCancel = document.getElementById('add-app-cancel');
-            const appNameInput = document.getElementById('app-name');
-            const appUrlInput = document.getElementById('app-url');
-
-            addAppButton.addEventListener('click', () => addAppModal.style.display = 'flex');
-            addAppCancel.addEventListener('click', () => addAppModal.style.display = 'none');
-            addAppSubmit.addEventListener('click', () => {
-                const name = appNameInput.value;
-                let url = appUrlInput.value;
-                if (url && !url.startsWith('http')) url = 'https://' + url;
-                if (name && url) {
-                    apps.push({ name, url });
-                    localStorage.setItem('apps', JSON.stringify(apps));
-                    const btn = createAppButton(name, url);
-                    appButtonsDiv.insertBefore(btn, addAppButton);
-                    addAppModal.style.display = 'none';
-                    appNameInput.value = ''; appUrlInput.value = '';
-                }
+            // Animate all existing buttons
+            var allButtons = appButtonsDiv.querySelectorAll('.app-button');
+            allButtons.forEach(function(btn, i) {
+                btn.classList.add('animate');
             });
 
+            var addAppModal = document.getElementById('add-app-modal');
+            document.getElementById('add-app-cancel').addEventListener('click', function() { addAppModal.style.display = 'none'; });
+            document.getElementById('add-app-submit').addEventListener('click', function() {
+                var name = document.getElementById('app-name').value;
+                var url = document.getElementById('app-url').value;
+                if (url && !url.startsWith('http')) url = 'https://' + url;
+                if (name && url) {
+                    apps.push({ name: name, url: url });
+                    localStorage.setItem('apps', JSON.stringify(apps));
+                    var newBtn = createAppButton(name, url);
+                    appButtonsDiv.insertBefore(newBtn, addAppButton);
+                    addAppModal.style.display = 'none';
+                    document.getElementById('app-name').value = '';
+                    document.getElementById('app-url').value = '';
+                }
+            });
+            addAppButton.addEventListener('click', function() { addAppModal.style.display = 'flex'; });
             searchButton.addEventListener('click', handleSearch);
-            searchInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSearch(); });
+            searchInput.addEventListener('keydown', function(e) { if (e.key === 'Enter') handleSearch(); });
         });
-
-        function toggleChat() {
-            const chatPanel = document.getElementById('chat-panel');
-            if (chatPanel.classList.contains('chat-open')) {
-                chatPanel.classList.remove('chat-open');
-                chatPanel.style.animation = 'chatSlideOut 0.3s ease forwards';
-                setTimeout(() => { chatPanel.style.display = 'none'; }, 300);
-            } else {
-                chatPanel.style.display = 'block';
-                chatPanel.style.animation = 'chatSlideIn 0.3s ease forwards';
-                chatPanel.classList.add('chat-open');
-            }
-        }
     </script>
 </head>
 <body>
-    <!-- Intro Overlay -->
-    <div class="intro-overlay" id="intro-overlay">
-        <div class="intro-fog"></div>
-        <div class="intro-fog-2"></div>
-        <div class="intro-fog-3"></div>
-        <div class="intro-particles">
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-            <div class="intro-particle"></div>
-        </div>
-        <div class="intro-text-container">
-            <div class="intro-welcome">Welcome, My Friend</div>
-            <div class="intro-subtitle">Have Fun On The Proxy</div>
-        </div>
+    <div class="bg-glow"></div>
+    <div class="particles"></div>
+
+    <div class="top-buttons">
+        <button class="reset-button" onclick="resetSiteData()">Reset</button>
+        <button class="music-btn" id="music-btn" onclick="togglePersistentMusic()">🎵</button>
     </div>
 
-    <%- include('parts/topbar.ejs') %>
     <div class="container">
-        <div class="logo-text">SILOX</div>
-        <div class="tagline">BROWSE FREELY, STAY HIDDEN</div>
-        
-        <div class="tribute-message">
-            <p>
-                <span class="heart">🖤</span> This proxy was made by <span class="highlight">Hohogames</span>.
-                We will miss you, Old Hohogames <span class="heart">🖤</span><br>
-                No more Google Sites — no more.<br>
-                We changed to <span class="highlight">Proxys</span> now.
-            </p>
-        </div>
-
+        <div class="logo-text">SIL<span>O</span>X</div>
+        <div class="tagline">Browse Freely, Stay Hidden</div>
         <div class="search-container">
-            <input type="text" class="search-input" placeholder="Search the web freely...">
-            <button class="search-button">➜</button>
+            <div class="search-input-wrapper">
+                <input type="text" class="search-input" placeholder="Search the web freely...">
+            </div>
+            <button class="search-button">→</button>
         </div>
         <div class="app-buttons">
-            <a href="#" class="app-button" onclick="event.preventDefault(); document.querySelector('.search-input').value = 'https://discord.com'; document.querySelector('.search-button').click();">
+            <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://discord.com';document.querySelector('.search-button').click();">
                 <img src="/assets/svg/discord.svg" alt="Discord">
             </a>
-            <a href="#" class="app-button" onclick="event.preventDefault(); document.querySelector('.search-input').value = 'https://play.geforcenow.com'; document.querySelector('.search-button').click();">
+            <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://play.geforcenow.com';document.querySelector('.search-button').click();">
                 <img src="/assets/svg/geforcenow.svg" alt="Geforcenow">
             </a>
-            <a href="#" class="app-button" onclick="event.preventDefault(); document.querySelector('.search-input').value = 'https://youtube.com'; document.querySelector('.search-button').click();">
+            <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://youtube.com';document.querySelector('.search-button').click();">
                 <img src="/assets/svg/youtube.svg" alt="Youtube">
             </a>
-            <a href="#" class="app-button" onclick="event.preventDefault(); document.querySelector('.search-input').value = 'https://spotify.com'; document.querySelector('.search-button').click();">
+            <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://spotify.com';document.querySelector('.search-button').click();">
                 <img src="/assets/svg/spotify.svg" alt="Spotify">
             </a>
-            <a href="#" class="app-button" onclick="event.preventDefault(); document.querySelector('.search-input').value = 'https://x.com'; document.querySelector('.search-button').click();">
-                <img src="/assets/svg/x.svg" alt="Twitter/X">
+            <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://x.com';document.querySelector('.search-button').click();">
+                <img src="/assets/svg/x.svg" alt="X">
             </a>
-            <a href="#" class="app-button" id="add-app-button">
-                <img src="/assets/svg/plus.svg" alt="Add App">
+            <a href="#" class="app-button add-btn" id="add-app-button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </a>
         </div>
-        <div id="add-app-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); justify-content: center; align-items: center; backdrop-filter: blur(5px); color: white;">
-            <div style="background-color: rgba(0, 0, 0, 0.7); padding: 20px; border-radius: 10px; text-align: center;">
-                <h2 style="margin-bottom: 4px;">Add New App</h2>
-                <label>App Name:</label><br>
-                <input type="text" id="app-name" style="border: none; border-radius: 25px; padding: 10px 20px; width: 200px; outline: none; background-color: rgba(255, 255, 255, 0.1); color: white;"><br><br>
-                <label>App URL:</label><br>
-                <input type="text" id="app-url" style="border: none; border-radius: 25px; padding: 10px 20px; width: 200px; outline: none; background-color: rgba(255, 255, 255, 0.1); color: white;"><br><br>
-                <button id="add-app-submit" style="background-color: rgba(0, 0, 0, 0.7); border: none; border-radius: 25px; padding: 10px 15px; cursor: pointer; color: white;">Add</button>
-                <button id="add-app-cancel" style="background-color: rgba(0, 0, 0, 0.7); border: none; border-radius: 25px; padding: 10px 15px; cursor: pointer; color: white;">Cancel</button>
+        <div id="add-app-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;backdrop-filter:blur(8px);z-index:2000;">
+            <div style="padding:28px;border-radius:18px;text-align:center;min-width:300px;">
+                <h3 style="margin-bottom:16px;font-weight:700;font-size:1rem;letter-spacing:1px;">ADD APP</h3>
+                <label style="font-size:0.7rem;display:block;margin-bottom:4px;text-align:left;">Name</label>
+                <input type="text" id="app-name" placeholder="Netflix" style="width:100%;padding:10px 14px;border-radius:10px;outline:none;margin-bottom:12px;box-sizing:border-box;">
+                <label style="font-size:0.7rem;display:block;margin-bottom:4px;text-align:left;">URL</label>
+                <input type="text" id="app-url" placeholder="netflix.com" style="width:100%;padding:10px 14px;border-radius:10px;outline:none;margin-bottom:16px;box-sizing:border-box;">
+                <div style="display:flex;gap:8px;">
+                    <button id="add-app-submit" style="flex:1;">Add</button>
+                    <button id="add-app-cancel" style="flex:1;">Cancel</button>
+                </div>
             </div>
         </div>
     </div>
-    <button class="reset-button" onclick="resetSiteData()">Reset Site Data</button>
-    <a href="<%= _venus%>" class="venusFooter">Venus integration</a>
 
-    <!-- Chat Toggle Button -->
-    <button class="chat-toggle-btn" onclick="toggleChat()" title="Open Chat">
-        <svg viewBox="0 0 24 24" fill="white">
-            <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
-            <path d="M7 9h10v2H7zM7 12h7v2H7z"/>
-        </svg>
-        <span class="badge" id="chat-badge" style="display: none;">0</span>
-    </button>
+    <span class="credit-footer">Made By Hohogames</span>
 
-    <!-- Chat Panel -->
-    <div id="chat-panel" style="display: none; position: fixed; right: 0; top: 0; width: 380px; height: 100%; background: rgba(12, 17, 30, 0.98); backdrop-filter: blur(30px); border-left: 1px solid rgba(100, 200, 255, 0.15); z-index: 1600; box-shadow: -5px 0 30px rgba(0, 0, 0, 0.5);">
-        <%- include('parts/chat.ejs') %>
-    </div>
+    <%- include('parts/bottombar.ejs') %>
 </body>
 </html>
