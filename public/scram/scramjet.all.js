@@ -167,11 +167,11 @@ ${l}`}}if((0,n.U5)("rewriterLogs",r.base))for(let e of s.errors)console.error("o
                             <div id="troubleshooting">
                                 <p>Try:</p>
                                 <ul>
-                                    <li>Checking your internet connection</li>
-                                    <li>Verifying you entered the correct address</li>
-                                    <li>Clearing the site data</li>
-                                    <li>Contacting <b id="hostname"></b>'s administrator</li>
-                                    <li>Verify the server isn't censored</li>
+                                    <li>Damn bro i might need to fix this shit so dont search from that bar please</li>
+                                    <li>READ THIS</li>
+                                    <li>READ THIS</li>
+                                    <li>READ THIS <b id="hostname"></b>'s administrator</li>
+                                    <li>READ THIS NGA</li>
                                 </ul>
                                 <p>If you're the administrator of <b id="hostname"></b>, try:</p>
                                     <ul>

@@ -4,13 +4,26 @@
         to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
     @keyframes barPulse {
-        0%, 100% { box-shadow: 0 8px 32px rgba(220, 38, 38, 0.15); }
-        50% { box-shadow: 0 8px 40px rgba(220, 38, 38, 0.3); }
+        0%, 100% { box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2); }
+        50% { box-shadow: 0 8px 40px rgba(220, 38, 38, 0.45); }
     }
     @keyframes barItemPop {
         0% { transform: scale(1); }
-        50% { transform: scale(1.15); }
+        50% { transform: scale(1.2); }
         100% { transform: scale(1); }
+    }
+    @keyframes barRumble {
+        0%, 100% { transform: translateX(0); }
+        15% { transform: translateX(-3px) rotate(-1deg); }
+        30% { transform: translateX(3px) rotate(1deg); }
+        45% { transform: translateX(-2px) rotate(-0.5deg); }
+        60% { transform: translateX(2px) rotate(0.5deg); }
+        75% { transform: translateX(-1px); }
+        90% { transform: translateX(1px); }
+    }
+    @keyframes barGlowRed {
+        0%, 100% { box-shadow: 0 0 15px rgba(220, 38, 38, 0.3); }
+        50% { box-shadow: 0 0 30px rgba(220, 38, 38, 0.6); }
     }
 
     .bottombar {
@@ -20,19 +33,19 @@
         transform: translateX(-50%);
         width: fit-content;
         max-width: 95vw;
-        background: rgba(10, 10, 10, 0.85);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        padding: 8px 16px;
+        background: rgba(18, 18, 28, 0.92);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        padding: 10px 18px;
         display: flex;
         justify-content: center;
         align-items: center;
-        gap: 2px;
+        gap: 4px;
         z-index: 1000;
-        border-radius: 16px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
-        animation: slideUpBar 0.5s ease-out, barPulse 3s ease-in-out infinite;
+        border-radius: 18px;
+        border: 1.5px solid rgba(255, 255, 255, 0.12);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+        animation: slideUpBar 0.6s cubic-bezier(0.16, 1, 0.3, 1), barPulse 3s ease-in-out 0.6s infinite;
         transition: all 0.3s ease;
         overflow-x: auto;
         scrollbar-width: none;
@@ -42,114 +55,151 @@
     .bottombar::-webkit-scrollbar { display: none; }
 
     .bottombar:hover {
-        border-color: rgba(220, 38, 38, 0.3);
-        box-shadow: 0 12px 40px rgba(220, 38, 38, 0.2);
+        border-color: rgba(220, 38, 38, 0.4);
+        box-shadow: 0 12px 45px rgba(220, 38, 38, 0.3), 0 8px 32px rgba(0, 0, 0, 0.6);
     }
 
     .bb-divider {
-        width: 1px; height: 22px;
-        background: rgba(255, 255, 255, 0.1);
-        margin: 0 6px; flex-shrink: 0; border-radius: 1px;
+        width: 1.5px; 
+        height: 24px;
+        background: rgba(255, 255, 255, 0.12);
+        margin: 0 8px; 
+        flex-shrink: 0; 
+        border-radius: 2px;
     }
 
-    .bottombar a, .bottombar .bb-btn {
-        display: flex; align-items: center; justify-content: center;
-        width: 40px; height: 40px; border-radius: 12px;
-        transition: all 0.2s ease; text-decoration: none;
-        position: relative; cursor: pointer; flex-shrink: 0;
+    .bottombar a {
+        display: flex; 
+        align-items: center; 
+        justify-content: center;
+        width: 42px; 
+        height: 42px; 
+        border-radius: 13px;
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+        text-decoration: none;
+        position: relative; 
+        cursor: pointer; 
+        flex-shrink: 0;
         -webkit-tap-highlight-color: transparent;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid transparent;
     }
 
-    .bottombar a:hover, .bottombar .bb-btn:hover {
-        background: rgba(255, 255, 255, 0.06);
+    .bottombar a:hover {
+        background: rgba(255, 255, 255, 0.08);
+        border-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-3px);
     }
 
-    .bottombar a:active, .bottombar .bb-btn:active {
-        background: rgba(255, 255, 255, 0.1); transform: scale(0.92);
+    .bottombar a:active {
+        background: rgba(220, 38, 38, 0.2);
+        transform: scale(0.88);
+        animation: barRumble 0.35s ease;
     }
 
     .bottombar a.active {
         background: rgba(220, 38, 38, 0.2);
+        border-color: rgba(220, 38, 38, 0.4);
+        animation: barGlowRed 2s ease-in-out infinite;
     }
 
     .bottombar a.active::after {
-        content: ''; position: absolute; top: -6px; left: 50%;
-        transform: translateX(-50%); width: 4px; height: 4px;
-        background: #dc2626; border-radius: 50%;
+        content: ''; 
+        position: absolute; 
+        top: -5px; 
+        left: 50%;
+        transform: translateX(-50%); 
+        width: 5px; 
+        height: 5px;
+        background: #dc2626; 
+        border-radius: 50%;
+        box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
     }
 
-    .bottombar a.active .bb-icon {
-        opacity: 1; animation: barItemPop 0.3s ease-out;
+    .bottombar a.active .bb-icon-svg {
+        opacity: 1; 
+        animation: barItemPop 0.4s ease-out;
+        stroke: #ffffff;
     }
 
-    .bb-icon {
-        width: 20px; height: 20px;
-        transition: all 0.2s ease; opacity: 0.65; flex-shrink: 0;
+    .bb-icon-svg {
+        width: 20px; 
+        height: 20px;
+        transition: all 0.25s ease; 
+        opacity: 0.8; 
+        flex-shrink: 0;
+        stroke: #d0d0d0;
+        fill: none;
     }
 
-    .bottombar a:hover .bb-icon,
-    .bottombar .bb-btn:hover .bb-icon {
-        opacity: 1; transform: scale(1.1);
+    .bottombar a:hover .bb-icon-svg {
+        opacity: 1; 
+        transform: scale(1.15);
+        stroke: #ffffff;
     }
 
-    .bb-app-icon {
-        width: 18px; height: 18px; border-radius: 4px;
-        transition: all 0.2s ease; opacity: 0.65; flex-shrink: 0;
-    }
-
-    .bottombar a:hover .bb-app-icon,
-    .bottombar .bb-btn:hover .bb-app-icon {
+    .bottombar a.active .bb-icon-svg {
+        stroke: #ffffff;
         opacity: 1;
     }
 
     .bb-tooltip {
-        position: absolute; top: -32px; left: 50%;
-        transform: translateX(-50%); background: #1a1a1a;
-        color: #e0e0e0; padding: 4px 10px; border-radius: 6px;
-        font-size: 11px; white-space: nowrap; opacity: 0;
-        pointer-events: none; transition: all 0.15s ease;
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        position: absolute; 
+        top: -34px; 
+        left: 50%;
+        transform: translateX(-50%); 
+        background: #1e1e2a;
+        color: #e8e8f0; 
+        padding: 5px 12px; 
+        border-radius: 7px;
+        font-size: 11px; 
+        white-space: nowrap; 
+        opacity: 0;
+        pointer-events: none; 
+        transition: all 0.2s ease;
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        font-weight: 600;
+        letter-spacing: 0.3px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
     }
 
-    .bottombar a:hover .bb-tooltip,
-    .bottombar .bb-btn:hover .bb-tooltip {
-        opacity: 1; top: -28px;
+    .bb-tooltip::after {
+        content: '';
+        position: absolute;
+        bottom: -5px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid rgba(255, 255, 255, 0.15);
     }
 
-    .bb-btn.browser-btn {
-        background: rgba(220, 38, 38, 0.12); border: 1px solid rgba(220, 38, 38, 0.25);
+    .bottombar a:hover .bb-tooltip {
+        opacity: 1; 
+        top: -30px;
     }
-    .bb-btn.browser-btn:hover {
-        background: rgba(220, 38, 38, 0.25); border-color: rgba(220, 38, 38, 0.5);
-    }
-    .bb-btn.browser-btn .bb-icon { opacity: 0.9; }
 
     @media (max-width: 600px) {
-        .bottombar { padding: 6px 12px; gap: 0px; border-radius: 14px; bottom: 10px; }
-        .bottombar a, .bottombar .bb-btn { width: 36px; height: 36px; border-radius: 10px; }
-        .bb-icon { width: 18px; height: 18px; }
-        .bb-app-icon { width: 16px; height: 16px; }
-        .bb-divider { margin: 0 3px; height: 18px; }
-        .bb-tooltip { font-size: 10px; padding: 3px 8px; top: -30px; }
+        .bottombar { padding: 8px 12px; gap: 2px; border-radius: 16px; bottom: 10px; }
+        .bottombar a { width: 36px; height: 36px; border-radius: 11px; }
+        .bb-icon-svg { width: 17px; height: 17px; }
+        .bb-divider { margin: 0 5px; height: 20px; }
+        .bb-tooltip { font-size: 10px; padding: 4px 10px; top: -32px; }
     }
 
     @media (max-width: 380px) {
-        .bottombar { padding: 5px 8px; bottom: 8px; border-radius: 12px; }
-        .bottombar a, .bottombar .bb-btn { width: 32px; height: 32px; border-radius: 8px; }
-        .bb-icon { width: 16px; height: 16px; }
-        .bb-app-icon { width: 14px; height: 14px; }
-    }
-
-    @media (hover: none) and (pointer: coarse) {
-        .bottombar a, .bottombar .bb-btn { min-height: 40px; min-width: 40px; }
-        .bb-tooltip { display: none !important; }
+        .bottombar { padding: 6px 10px; bottom: 8px; border-radius: 14px; }
+        .bottombar a { width: 32px; height: 32px; border-radius: 10px; }
+        .bb-icon-svg { width: 15px; height: 15px; }
     }
 </style>
 
 <div class="bottombar">
     <a href="/" id="bb-home-link">
-        <svg class="bb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="bb-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
             <polyline points="9 22 9 12 15 12 15 22"/>
         </svg>
@@ -158,57 +208,30 @@
 
     <div class="bb-divider"></div>
 
-    <a href="/search" class="bb-btn browser-btn" id="bb-browser-link">
-        <svg class="bb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+    <a href="/search" id="bb-browser-link">
+        <svg class="bb-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <rect x="2" y="3" width="20" height="18" rx="2"/>
             <line x1="2" y1="8" x2="22" y2="8"/>
-            <circle cx="6" cy="5.5" r="1" fill="currentColor"/>
-            <circle cx="9.5" cy="5.5" r="1" fill="currentColor"/>
-            <circle cx="13" cy="5.5" r="1" fill="currentColor"/>
+            <circle cx="6" cy="5.5" r="1.2" fill="currentColor"/>
+            <circle cx="9.5" cy="5.5" r="1.2" fill="currentColor"/>
+            <circle cx="13" cy="5.5" r="1.2" fill="currentColor"/>
         </svg>
         <span class="bb-tooltip">Browser</span>
     </a>
 
-    <div class="bb-divider"></div>
-
-    <a href="#" class="bb-btn" onclick="event.preventDefault(); window.handleBBApp('https://discord.com')">
-        <img src="/assets/svg/discord.svg" alt="Discord" class="bb-app-icon">
-        <span class="bb-tooltip">Discord</span>
-    </a>
-    <a href="#" class="bb-btn" onclick="event.preventDefault(); window.handleBBApp('https://youtube.com')">
-        <img src="/assets/svg/youtube.svg" alt="YouTube" class="bb-app-icon">
-        <span class="bb-tooltip">YouTube</span>
-    </a>
-    <a href="#" class="bb-btn" onclick="event.preventDefault(); window.handleBBApp('https://tiktok.com')">
-        <svg class="bb-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
-        <span class="bb-tooltip">TikTok</span>
-    </a>
-    <a href="#" class="bb-btn" onclick="event.preventDefault(); window.handleBBApp('https://spotify.com')">
-        <img src="/assets/svg/spotify.svg" alt="Spotify" class="bb-app-icon">
-        <span class="bb-tooltip">Spotify</span>
-    </a>
-    <a href="#" class="bb-btn" onclick="event.preventDefault(); window.handleBBApp('https://x.com')">
-        <img src="/assets/svg/x.svg" alt="X" class="bb-app-icon">
-        <span class="bb-tooltip">X</span>
-    </a>
-    <a href="#" class="bb-btn" onclick="event.preventDefault(); window.handleBBApp('https://play.geforcenow.com')">
-        <img src="/assets/svg/geforcenow.svg" alt="GeForce Now" class="bb-app-icon">
-        <span class="bb-tooltip">GeForce Now</span>
-    </a>
-
-    <a href="#" class="bb-btn" id="add-app-bb-btn">
-        <svg class="bb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="12" r="10"/>
-            <line x1="12" y1="8" x2="12" y2="16"/>
-            <line x1="8" y1="12" x2="16" y2="12"/>
+    <a href="/chat" id="bb-chat-link">
+        <svg class="bb-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            <line x1="8" y1="10" x2="16" y2="10"/>
+            <line x1="8" y1="14" x2="13" y2="14"/>
         </svg>
-        <span class="bb-tooltip">Add App</span>
+        <span class="bb-tooltip">Chat</span>
     </a>
 
     <div class="bb-divider"></div>
 
     <a href="/settings" id="bb-settings-link">
-        <svg class="bb-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="bb-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"/>
             <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
         </svg>
@@ -216,84 +239,27 @@
     </a>
 </div>
 
-<div id="add-app-modal-bb" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); justify-content: center; align-items: center; backdrop-filter: blur(8px); color: white; z-index: 2001;">
-    <div style="background: #141414; padding: 28px; border-radius: 16px; text-align: center; border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); min-width: 300px; max-width: 90vw; animation: fadeIn 0.2s ease-out;">
-        <h3 style="margin: 0 0 20px 0; font-size: 1.2rem; color: #dc2626; letter-spacing: 2px; font-weight: 600;">ADD APP</h3>
-        <label style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); display: block; margin-bottom: 6px; text-align: left;">App Name</label>
-        <input type="text" id="bb-app-name" placeholder="e.g. Netflix" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: #1a1a1a; color: white; outline: none; font-size: 0.95em; margin-bottom: 14px; box-sizing: border-box;">
-        <label style="font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); display: block; margin-bottom: 6px; text-align: left;">App URL</label>
-        <input type="text" id="bb-app-url" placeholder="e.g. netflix.com" style="width: 100%; padding: 10px 14px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: #1a1a1a; color: white; outline: none; font-size: 0.95em; margin-bottom: 20px; box-sizing: border-box;">
-        <div style="display: flex; gap: 10px; justify-content: center;">
-            <button id="add-app-submit-bb" style="flex: 1; padding: 10px; border-radius: 8px; border: none; background: #dc2626; color: white; cursor: pointer; font-size: 0.9em; font-weight: 600;">Add</button>
-            <button id="add-app-cancel-bb" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid rgba(255, 255, 255, 0.1); background: transparent; color: rgba(255, 255, 255, 0.6); cursor: pointer; font-size: 0.9em;">Cancel</button>
-        </div>
-    </div>
-</div>
-
 <script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const homeLink = document.getElementById('bb-home-link');
-        const settingsLink = document.getElementById('bb-settings-link');
-        const browserLink = document.getElementById('bb-browser-link');
-        
-        if (window.location.pathname === '/') homeLink.classList.add('active');
-        else if (window.location.pathname === '/search' || window.location.pathname.startsWith('/search')) browserLink.classList.add('active');
-        else if (window.location.pathname === '/settings' || window.location.pathname.startsWith('/settings/')) settingsLink.classList.add('active');
-
-        window.handleBBApp = function(url) {
-            let fullUrl = url;
-            if (!fullUrl.startsWith('http://') && !fullUrl.startsWith('https://')) fullUrl = 'https://' + fullUrl;
-            if (typeof __uv$config !== 'undefined' && typeof __uv$config.encodeUrl === 'function') {
-                const encodedUrl = __uv$config.prefix + __uv$config.encodeUrl(fullUrl);
-                localStorage.setItem("url", encodedUrl);
-                window.location.href = "/search";
-            } else {
-                const encodedUrl = "/scram/service/" + encodeURIComponent(fullUrl);
-                localStorage.setItem("url", encodedUrl);
-                window.location.href = "/search";
-            }
+    document.addEventListener('DOMContentLoaded', function() {
+        var path = window.location.pathname;
+        var links = {
+            '/': 'bb-home-link',
+            '/search': 'bb-browser-link',
+            '/chat': 'bb-chat-link',
+            '/settings': 'bb-settings-link'
         };
-
-        const addBtn = document.getElementById('add-app-bb-btn');
-        const modal = document.getElementById('add-app-modal-bb');
-        const submitBtn = document.getElementById('add-app-submit-bb');
-        const cancelBtn = document.getElementById('add-app-cancel-bb');
-        const nameInput = document.getElementById('bb-app-name');
-        const urlInput = document.getElementById('bb-app-url');
-
-        if (addBtn) addBtn.addEventListener('click', (e) => { e.preventDefault(); modal.style.display = 'flex'; });
-        if (cancelBtn) cancelBtn.addEventListener('click', () => { modal.style.display = 'none'; nameInput.value = ''; urlInput.value = ''; });
-        if (modal) modal.addEventListener('click', (e) => { if (e.target === modal) { modal.style.display = 'none'; nameInput.value = ''; urlInput.value = ''; } });
-        if (submitBtn) submitBtn.addEventListener('click', () => {
-            const name = nameInput.value.trim();
-            let url = urlInput.value.trim();
-            if (!name || !url) return;
-            if (!url.startsWith('http')) url = 'https://' + url;
-            let customApps = JSON.parse(localStorage.getItem('bbApps') || '[]');
-            customApps.push({ name, url });
-            localStorage.setItem('bbApps', JSON.stringify(customApps));
-            modal.style.display = 'none'; nameInput.value = ''; urlInput.value = '';
-            location.reload();
+        
+        Object.values(links).forEach(function(id) {
+            var el = document.getElementById(id);
+            if (el) el.classList.remove('active');
         });
-
-        function loadCustomApps() {
-            const customApps = JSON.parse(localStorage.getItem('bbApps') || '[]');
-            const addBtnEl = document.getElementById('add-app-bb-btn');
-            customApps.forEach((app, index) => {
-                const appEl = document.createElement('a');
-                appEl.href = '#'; appEl.className = 'bb-btn'; appEl.setAttribute('data-app-index', index);
-                appEl.setAttribute('onclick', "event.preventDefault(); window.handleBBApp('" + app.url.replace(/'/g, "\\'") + "')");
-                appEl.innerHTML = `<span style="font-size: 11px; font-weight: 700; letter-spacing: 1px; color: rgba(255,255,255,0.5);">${app.name.substring(0, 3).toUpperCase()}</span><span class="bb-tooltip">${app.name}</span>`;
-                appEl.addEventListener('contextmenu', (e) => {
-                    e.preventDefault();
-                    let customApps = JSON.parse(localStorage.getItem('bbApps') || '[]');
-                    customApps = customApps.filter(a => a.name !== app.name || a.url !== app.url);
-                    localStorage.setItem('bbApps', JSON.stringify(customApps));
-                    location.reload();
-                });
-                if (addBtnEl) addBtnEl.parentNode.insertBefore(appEl, addBtnEl);
-            });
+        
+        for (var route in links) {
+            if (path === route || (route !== '/' && path.startsWith(route))) {
+                var activeEl = document.getElementById(links[route]);
+                if (activeEl) activeEl.classList.add('active');
+                break;
+            }
         }
-        loadCustomApps();
     });
 </script>

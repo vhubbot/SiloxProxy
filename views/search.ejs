@@ -19,12 +19,15 @@
         @keyframes tabSlideIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes bounceIn { 0% { transform: scale(0.3); opacity: 0; } 50% { transform: scale(1.05); } 70% { transform: scale(0.95); } 100% { transform: scale(1); opacity: 1; } }
         @keyframes logoShine { 0% { background-position: -200% center; } 100% { background-position: 200% center; } }
+        @keyframes logoBuild { 0%{transform:scale(0)perspective(500px)rotateX(90deg);opacity:0;filter:blur(30px)}40%{transform:scale(1.2)perspective(500px)rotateX(-10deg);opacity:.7;filter:blur(0)}55%{transform:scale(.9)perspective(500px)rotateX(5deg)}68%{transform:scale(1.05)perspective(500px)rotateX(-2deg)}78%{transform:scale(.97)}88%{transform:scale(1.02)}95%{transform:scale(.99)}100%{transform:scale(1)perspective(500px)rotateX(0);opacity:1} }
         @keyframes floatParticle { 0%, 100% { transform: translateY(0) rotate(0deg); opacity: 0.3; } 50% { transform: translateY(-30px) rotate(180deg); opacity: 0.7; } }
         @keyframes floatUp { 0% { transform: translateY(100vh) scale(0); opacity: 0; } 50% { opacity: 0.6; } 100% { transform: translateY(-10vh) scale(1); opacity: 0; } }
         @keyframes introFadeOut { from { opacity: 1; } to { opacity: 0; transform: scale(1.1); } }
         @keyframes gridMove { 0% { transform: translate(0, 0); } 100% { transform: translate(50px, 50px); } }
         @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes rumble { 0%,100%{transform:translateX(0)}15%{transform:translateX(-3px)rotate(-1deg)}30%{transform:translateX(3px)rotate(1deg)}45%{transform:translateX(-2px)rotate(-.5deg)}60%{transform:translateX(2px)rotate(.5deg)}75%{transform:translateX(-1px)}90%{transform:translateX(1px)} }
+        @keyframes pulseGlow { 0%,100%{box-shadow:0 0 20px rgba(220,38,38,0.3)}50%{box-shadow:0 0 40px rgba(220,38,38,0.6)} }
 
         :root {
             --bg: #0a0a0f;
@@ -216,6 +219,7 @@
             background: rgba(255, 255, 255, 0.04);
             color: var(--text);
         }
+        .tab:active { animation: rumble 0.3s ease; }
         .tab.active {
             background: rgba(26, 26, 36, 0.8);
             color: var(--text);
@@ -255,6 +259,7 @@
             background: rgba(220, 38, 38, 0.3);
             color: white;
         }
+        .tab-close:active { animation: rumble 0.2s ease; }
 
         .new-tab-btn {
             width: 30px; height: 30px;
@@ -277,7 +282,7 @@
             color: var(--accent);
             background: rgba(220, 38, 38, 0.1);
         }
-        .new-tab-btn:active { transform: scale(0.9); }
+        .new-tab-btn:active { transform: scale(0.9); animation: rumble 0.3s ease; }
 
         .content {
             flex: 1;
@@ -306,21 +311,23 @@
             font-weight: 900;
             letter-spacing: 10px;
             margin-bottom: 4px;
-            background: linear-gradient(90deg, #fff, #fff 30%, var(--accent) 30%, var(--accent) 35%, #fff 35%, #fff);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            animation: logoShine 4s linear infinite;
+            color: #1a1a1a;
+            animation: logoBuild 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+            text-shadow: 0 2px 0 rgba(255,255,255,0.1), 0 -2px 0 rgba(0,0,0,0.3);
         }
-        .nt-logo span { -webkit-text-fill-color: var(--accent); }
+        .nt-logo span { 
+            color: var(--accent); 
+            text-shadow: none;
+            animation: pulseGlow 2s ease-in-out 1.2s infinite;
+        }
         .nt-subtitle {
             font-size: 0.8rem;
             color: var(--text2);
             letter-spacing: 6px;
             margin-bottom: 32px;
             text-transform: uppercase;
-            font-weight: 500;
+            font-weight: 600;
+            animation: slideUp 0.6s ease 0.4s both;
         }
 
         /* Search box */
@@ -330,7 +337,7 @@
             gap: 10px;
             max-width: 560px;
             width: 88%;
-            animation: slideUp 0.5s ease;
+            animation: slideUp 0.5s ease 0.6s both;
         }
         .nt-search-input {
             flex: 1;
@@ -358,17 +365,18 @@
             cursor: pointer;
             font-size: 1rem;
             font-weight: 700;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             font-family: inherit;
             white-space: nowrap;
             box-shadow: 0 6px 25px rgba(220, 38, 38, 0.3);
+            animation: pulseGlow 2s ease-in-out infinite;
         }
         .nt-search-btn:hover {
             background: linear-gradient(135deg, #ef4444, #dc2626);
             box-shadow: 0 8px 35px rgba(220, 38, 38, 0.45);
-            transform: translateY(-1px);
+            transform: translateY(-2px);
         }
-        .nt-search-btn:active { transform: scale(0.96); }
+        .nt-search-btn:active { transform: scale(0.94); animation: rumble 0.35s ease; }
 
         /* Quick action buttons */
         .quick-actions {
@@ -377,7 +385,7 @@
             margin-top: 28px;
             flex-wrap: wrap;
             justify-content: center;
-            animation: fadeInUp 0.5s ease 0.15s both;
+            animation: fadeInUp 0.5s ease 0.8s both;
         }
         .qa-btn {
             padding: 12px 22px;
@@ -387,7 +395,7 @@
             color: var(--text2);
             cursor: pointer;
             font-size: 0.85rem;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             font-family: inherit;
             font-weight: 600;
         }
@@ -398,8 +406,9 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(220, 38, 38, 0.15);
         }
+        .qa-btn:active { transform: scale(0.94); animation: rumble 0.35s ease; }
 
-        /* Action buttons after search - hidden by default */
+        /* Action buttons after search */
         .post-search-actions {
             display: none;
             gap: 10px;
@@ -419,7 +428,7 @@
             color: var(--text);
             cursor: pointer;
             font-size: 0.82rem;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             font-family: inherit;
             font-weight: 600;
         }
@@ -429,11 +438,13 @@
             box-shadow: 0 6px 20px rgba(220, 38, 38, 0.2);
             transform: translateY(-2px);
         }
+        .psa-btn:active { transform: scale(0.94); animation: rumble 0.35s ease; }
         .psa-btn.primary {
             background: var(--accent);
             border-color: var(--accent);
             color: white;
             box-shadow: 0 6px 20px rgba(220, 38, 38, 0.3);
+            animation: pulseGlow 2s ease-in-out infinite;
         }
         .psa-btn.primary:hover { background: var(--accent-hover); }
 
@@ -444,7 +455,7 @@
             margin-top: 30px;
             flex-wrap: wrap;
             justify-content: center;
-            animation: fadeInUp 0.5s ease 0.3s both;
+            animation: fadeInUp 0.5s ease 1.0s both;
         }
         .app-shortcut {
             display: flex;
@@ -452,9 +463,10 @@
             align-items: center;
             gap: 8px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .app-shortcut:hover { transform: translateY(-4px); }
+        .app-shortcut:active { animation: rumble 0.35s ease; }
         .app-shortcut-icon {
             width: 52px; height: 52px;
             border-radius: 14px;
@@ -471,25 +483,9 @@
             box-shadow: 0 8px 25px rgba(220, 38, 38, 0.25);
             background: rgba(220, 38, 38, 0.15);
         }
-        .app-shortcut-icon img {
-            width: 60%; height: 60%;
-            object-fit: contain;
-            border-radius: 4px;
-        }
-        .app-shortcut-icon .app-letter {
-            font-weight: 800;
-            font-size: 1.3rem;
-            color: var(--text2);
-        }
-        .app-shortcut-name {
-            font-size: 0.7rem;
-            color: var(--text2);
-            max-width: 70px;
-            text-align: center;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+        .app-shortcut-icon img { width: 60%; height: 60%; object-fit: contain; border-radius: 4px; }
+        .app-shortcut-icon .app-letter { font-weight: 800; font-size: 1.3rem; color: var(--text2); }
+        .app-shortcut-name { font-size: 0.7rem; color: var(--text2); max-width: 70px; text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .add-app-shortcut {
             width: 52px; height: 52px;
             border-radius: 14px;
@@ -503,22 +499,17 @@
             align-items: center;
             justify-content: center;
         }
-        .add-app-shortcut:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-            background: rgba(220, 38, 38, 0.12);
-        }
+        .add-app-shortcut:hover { border-color: var(--accent); color: var(--accent); background: rgba(220, 38, 38, 0.12); }
+        .add-app-shortcut:active { animation: rumble 0.35s ease; }
 
         /* Add App Modal */
         .modal-overlay {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7);
             z-index: 5000;
             display: none;
-            align-items: center;
-            justify-content: center;
+            align-items: center; justify-content: center;
             backdrop-filter: blur(6px);
         }
         .modal-overlay.show { display: flex; }
@@ -527,46 +518,37 @@
             border: 1px solid var(--border);
             border-radius: 18px;
             padding: 30px;
-            width: 92%;
-            max-width: 380px;
+            width: 92%; max-width: 380px;
             box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
             animation: bounceIn 0.4s ease;
         }
         .modal-box h3 { font-size: 1rem; margin-bottom: 4px; letter-spacing: 0.5px; }
         .modal-box .modal-desc { font-size: 0.72rem; color: var(--text2); margin-bottom: 18px; }
         .modal-box input {
-            width: 100%;
-            padding: 13px 16px;
+            width: 100%; padding: 13px 16px;
             border-radius: 10px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            background: #1a1a24;
-            color: var(--text);
-            outline: none;
-            font-size: 0.88rem;
-            margin-bottom: 12px;
-            font-family: inherit;
+            background: #1a1a24; color: var(--text);
+            outline: none; font-size: 0.88rem;
+            margin-bottom: 12px; font-family: inherit;
         }
         .modal-box input:focus { border-color: var(--accent); }
         .modal-btns { display: flex; gap: 8px; margin-top: 6px; }
         .modal-btns button {
-            flex: 1;
-            padding: 12px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.82rem;
-            font-weight: 600;
-            font-family: inherit;
-            transition: all 0.2s;
+            flex: 1; padding: 12px;
+            border-radius: 10px; cursor: pointer;
+            font-size: 0.82rem; font-weight: 600;
+            font-family: inherit; transition: all 0.2s;
         }
         .modal-add { background: var(--accent); border: none; color: white; }
         .modal-add:hover { background: var(--accent-hover); }
+        .modal-add:active { animation: rumble 0.3s ease; }
         .modal-cancel { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: var(--text2); }
         .modal-cancel:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
 
         /* HISTORY */
         .history-panel {
-            position: fixed;
-            right: 0; top: 0;
+            position: fixed; right: 0; top: 0;
             width: 380px; height: 100%;
             background: rgba(17, 17, 24, 0.97);
             border-left: 1px solid var(--border);
@@ -574,125 +556,87 @@
             box-shadow: -10px 0 35px rgba(0, 0, 0, 0.5);
             transform: translateX(100%);
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-            display: flex;
-            flex-direction: column;
+            display: flex; flex-direction: column;
             backdrop-filter: blur(20px);
         }
         .history-panel.open { transform: translateX(0); }
         .history-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 18px 22px;
-            border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 22px; border-bottom: 1px solid var(--border);
         }
         .history-header h3 { font-size: 0.95rem; font-weight: 700; }
         .history-close {
-            width: 32px; height: 32px;
-            border-radius: 8px;
+            width: 32px; height: 32px; border-radius: 8px;
             border: 1px solid rgba(255,255,255,0.08);
-            background: transparent;
-            color: var(--text2);
-            cursor: pointer;
-            font-size: 14px;
-            transition: all 0.2s;
+            background: transparent; color: var(--text2);
+            cursor: pointer; font-size: 14px; transition: all 0.2s;
         }
-        .history-close:hover {
-            background: rgba(220, 38, 38, 0.15);
-            border-color: var(--accent);
-            color: var(--accent);
-        }
+        .history-close:hover { background: rgba(220, 38, 38, 0.15); border-color: var(--accent); color: var(--accent); }
+        .history-close:active { animation: rumble 0.3s ease; }
         .history-list { flex: 1; overflow-y: auto; padding: 4px 0; }
         .history-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 12px 22px;
-            cursor: pointer;
-            transition: all 0.2s;
-            border-left: 2px solid transparent;
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 22px; cursor: pointer;
+            transition: all 0.2s; border-left: 2px solid transparent;
         }
-        .history-item:hover {
-            background: rgba(255, 255, 255, 0.02);
-            border-left-color: var(--accent);
-        }
+        .history-item:hover { background: rgba(255, 255, 255, 0.02); border-left-color: var(--accent); }
+        .history-item:active { animation: rumble 0.25s ease; }
         .history-item-info { flex: 1; min-width: 0; }
-        .history-item-title {
-            font-size: 0.82rem;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            font-weight: 500;
-        }
+        .history-item-title { font-size: 0.82rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 500; }
         .history-item-url { font-size: 0.7rem; color: var(--text2); margin-top: 2px; }
         .history-item-delete {
-            width: 26px; height: 26px;
-            border-radius: 50%;
-            border: none;
-            background: transparent;
-            color: var(--text2);
-            cursor: pointer;
-            font-size: 10px;
-            opacity: 0;
-            transition: all 0.2s;
+            width: 26px; height: 26px; border-radius: 50%;
+            border: none; background: transparent;
+            color: var(--text2); cursor: pointer;
+            font-size: 10px; opacity: 0; transition: all 0.2s;
         }
         .history-item:hover .history-item-delete { opacity: 1; }
         .history-item-delete:hover { background: rgba(220, 38, 38, 0.3); color: var(--accent); }
         .history-actions-bar { padding: 14px 22px; border-top: 1px solid var(--border); }
         .history-clear-btn {
-            width: 100%;
-            padding: 10px;
-            border-radius: 10px;
+            width: 100%; padding: 10px; border-radius: 10px;
             border: 1.5px solid rgba(220, 38, 38, 0.3);
-            background: transparent;
-            color: var(--accent);
-            cursor: pointer;
-            font-size: 0.78rem;
-            transition: all 0.3s;
-            font-family: inherit;
-            font-weight: 600;
+            background: transparent; color: var(--accent);
+            cursor: pointer; font-size: 0.78rem;
+            transition: all 0.3s; font-family: inherit; font-weight: 600;
         }
         .history-clear-btn:hover { background: rgba(220, 38, 38, 0.1); }
+        .history-clear-btn:active { animation: rumble 0.3s ease; }
         .history-overlay {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.5);
-            z-index: 2999;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.35s;
+            z-index: 2999; opacity: 0;
+            pointer-events: none; transition: opacity 0.35s;
         }
         .history-overlay.visible { opacity: 1; pointer-events: all; }
 
         /* Top right buttons */
         .top-right-fixed {
-            position: fixed;
-            top: 10px; right: 10px;
-            display: flex;
-            gap: 6px;
-            z-index: 9999;
+            position: fixed; top: 10px; right: 10px;
+            display: flex; gap: 6px; z-index: 9999;
+            animation: fadeIn 0.6s ease 1.5s both;
         }
         .tr-btn {
             width: 38px; height: 38px;
             border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.1);
             background: rgba(26, 26, 36, 0.85);
             color: var(--text2);
             cursor: pointer;
             font-size: 15px;
-            transition: all 0.3s;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
         }
         .tr-btn:hover {
             background: var(--accent);
             border-color: var(--accent);
             color: white;
             box-shadow: 0 6px 25px rgba(220, 38, 38, 0.4);
+            transform: translateY(-2px);
         }
+        .tr-btn:active { transform: scale(0.9); animation: rumble 0.3s ease; }
         .tr-btn svg { width: 17px; height: 17px; }
 
         @media (max-width: 700px) {
@@ -709,11 +653,9 @@
     </style>
 </head>
 <body>
-    <!-- Animated Background -->
     <div class="bg-grid"></div>
     <div class="particles-container" id="particles-container"></div>
 
-    <!-- INTRO OVERLAY -->
     <div class="intro-overlay" id="intro-overlay" onclick="dismissIntro()">
         <div class="intro-particles">
             <div class="intro-particle"></div><div class="intro-particle"></div>
@@ -726,7 +668,6 @@
         <div class="intro-click">Click anywhere to continue</div>
     </div>
 
-    <!-- TOP RIGHT BUTTONS -->
     <div class="top-right-fixed">
         <button class="tr-btn" id="music-btn" onclick="togglePersistentMusic()" title="Toggle Music">🎵</button>
         <button class="tr-btn" onclick="openHistory()" title="History">
@@ -737,7 +678,6 @@
         </button>
     </div>
 
-    <!-- ADD APP MODAL -->
     <div class="modal-overlay" id="add-app-modal">
         <div class="modal-box">
             <h3>Add App Shortcut</h3>
@@ -751,17 +691,15 @@
         </div>
     </div>
 
-    <!-- BROWSER UI -->
     <div class="browser-ui" id="browser-ui">
         <div class="tabs-bar" id="tabs-bar">
             <button class="new-tab-btn" id="new-tab-btn" title="New Tab (Ctrl+T)">+</button>
         </div>
-
         <div class="content" id="content-area">
             <iframe id="frame" style="display:none;"></iframe>
             <div class="newtab-page" id="newtab-page">
                 <div class="nt-logo">SIL<span>O</span>X</div>
-                <div class="nt-subtitle"> i Fucking Hate ELA teachers🥀</div>
+                <div class="nt-subtitle">Browse Freely</div>
                 <div class="nt-search-box">
                     <input type="text" class="nt-search-input" id="nt-search" placeholder="Search Google or enter a URL..." onkeydown="if(event.key==='Enter')handleSearch(this.value)">
                     <button class="nt-search-btn" onclick="handleSearch(document.getElementById('nt-search').value)">Go</button>
@@ -785,443 +723,80 @@
 
     <div class="history-overlay" id="history-overlay" onclick="closeHistory()"></div>
     <div class="history-panel" id="history-panel">
-        <div class="history-header">
-            <h3>History</h3>
-            <button class="history-close" onclick="closeHistory()">✕</button>
-        </div>
+        <div class="history-header"><h3>History</h3><button class="history-close" onclick="closeHistory()">✕</button></div>
         <div class="history-list" id="history-list"></div>
-        <div class="history-actions-bar">
-            <button class="history-clear-btn" onclick="clearHistory()">Clear All</button>
-        </div>
+        <div class="history-actions-bar"><button class="history-clear-btn" onclick="clearHistory()">Clear All</button></div>
     </div>
 
     <%- include('parts/bottombar.ejs') %>
 
     <script>
-        // Create floating particles
         (function() {
-            var container = document.getElementById('particles-container');
-            var colors = ['#dc2626', '#ef4444', '#ffffff', '#999999', '#666666', '#333333'];
-            for (var i = 0; i < 30; i++) {
-                var p = document.createElement('div');
-                p.className = 'rising-particle';
-                var size = Math.random() * 3 + 1.5;
-                p.style.cssText = 
-                    'left:' + Math.random() * 100 + '%;' +
-                    'width:' + size + 'px;' +
-                    'height:' + size + 'px;' +
-                    'background:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
-                    'animation-duration:' + (Math.random() * 12 + 8) + 's;' +
-                    'animation-delay:' + Math.random() * 12 + 's;' +
-                    'box-shadow: 0 0 ' + (size * 4) + 'px ' + colors[Math.floor(Math.random() * colors.length)] + ';';
-                container.appendChild(p);
+            var c = document.getElementById('particles-container');
+            var colors = ['#dc2626','#ef4444','#ffffff','#999999','#666666','#333333'];
+            for(var i=0;i<30;i++){
+                var p=document.createElement('div');
+                p.className='rising-particle';
+                var s=Math.random()*3+1.5;
+                p.style.cssText='left:'+Math.random()*100+'%;width:'+s+'px;height:'+s+'px;background:'+colors[Math.floor(Math.random()*colors.length)]+';animation-duration:'+(Math.random()*12+8)+'s;animation-delay:'+Math.random()*12+'s;box-shadow:0 0 '+(s*4)+'px '+colors[Math.floor(Math.random()*colors.length)]+';';
+                c.appendChild(p);
             }
         })();
 
-        const frame = document.getElementById('frame');
-        const tabsBar = document.getElementById('tabs-bar');
-        const newTabBtn = document.getElementById('new-tab-btn');
-        const newtabPage = document.getElementById('newtab-page');
-        const historyPanel = document.getElementById('history-panel');
-        const historyOverlay = document.getElementById('history-overlay');
-        const historyList = document.getElementById('history-list');
-        const introOverlay = document.getElementById('intro-overlay');
-        const postSearchActions = document.getElementById('post-search-actions');
+        const frame=document.getElementById('frame'),tabsBar=document.getElementById('tabs-bar'),newTabBtn=document.getElementById('new-tab-btn'),newtabPage=document.getElementById('newtab-page'),historyPanel=document.getElementById('history-panel'),historyOverlay=document.getElementById('history-overlay'),historyList=document.getElementById('history-list'),introOverlay=document.getElementById('intro-overlay'),postSearchActions=document.getElementById('post-search-actions');
+        let tabs=[],activeTabId=null,lastSearchedUrl='';
 
-        let tabs = [];
-        let activeTabId = null;
-        let lastSearchedUrl = '';
+        function dismissIntro(){localStorage.setItem('silox_intro_seen','true');introOverlay.classList.add('fade-out');setTimeout(function(){introOverlay.classList.add('hidden');initBrowser();initMusic();},400);}
+        function initBrowser(){loadSettingsValues();var u=localStorage.getItem('url')||'';if(u){addTab(u,'Loading...');localStorage.removeItem('url');}else{addTab('','New Tab');}renderAppShortcuts();}
+        function getHistory(){return JSON.parse(localStorage.getItem('silox_browser_history')||'[]');}
+        function saveHistory(h){localStorage.setItem('silox_browser_history',JSON.stringify(h));}
+        function getApps(){return JSON.parse(localStorage.getItem('silox_browser_apps')||'[]');}
+        function saveApps(a){localStorage.setItem('silox_browser_apps',JSON.stringify(a));}
 
-        function dismissIntro() {
-            localStorage.setItem('silox_intro_seen', 'true');
-            introOverlay.classList.add('fade-out');
-            setTimeout(function() {
-                introOverlay.classList.add('hidden');
-                initBrowser();
-                initMusic();
-            }, 400);
-        }
+        class Tab{constructor(id,url,title){this.id=id;this.url=url||'';this.title=title||'New Tab';this.history=[];this.historyIndex=-1;}pushHistory(url){if(this.historyIndex<this.history.length-1)this.history=this.history.slice(0,this.historyIndex+1);this.history.push(url);this.historyIndex=this.history.length-1;}canGoBack(){return this.historyIndex>0;}canGoForward(){return this.historyIndex<this.history.length-1;}goBack(){if(this.canGoBack()){this.historyIndex--;return this.history[this.historyIndex];}return null;}goForward(){if(this.canGoForward()){this.historyIndex++;return this.history[this.historyIndex];}return null;}getCurrentUrl(){if(this.historyIndex>=0&&this.historyIndex<this.history.length)return this.history[this.historyIndex];return this.url;}}
 
-        function initBrowser() {
-            loadSettingsValues();
-            var savedUrl = localStorage.getItem('url') || '';
-            if (savedUrl) {
-                addTab(savedUrl, 'Loading...');
-                localStorage.removeItem('url');
-            } else {
-                addTab('', 'New Tab');
-            }
-            renderAppShortcuts();
-        }
+        function createTabId(){return't'+Date.now()+Math.random().toString(36).substr(2,5);}
+        function addTab(url,title){var id=createTabId();var tab=new Tab(id,url||'',title||'New Tab');tabs.push(tab);renderTabs();switchTab(id);if(url){var eu=encodeUrl(url);tab.pushHistory(eu);tab.url=eu;updateTabTitle(tab,url);showWebPage();frame.src=eu;}return tab;}
+        function addNewTab(){addTab('','New Tab');}
+        function closeTab(id){if(tabs.length<=1)return;var i=tabs.findIndex(function(t){return t.id===id;});if(i===-1)return;tabs.splice(i,1);if(activeTabId===id){var ni=Math.min(i,tabs.length-1);activeTabId=tabs[ni].id;updateActiveTab();}renderTabs();}
+        function switchTab(id){activeTabId=id;updateActiveTab();renderTabs();}
+        function updateActiveTab(){var tab=tabs.find(function(t){return t.id===activeTabId;});if(!tab)return;var u=tab.getCurrentUrl();if(u){showWebPage();frame.src=u;}else{showNewTabPage();}}
+        function showWebPage(){frame.style.display='block';newtabPage.style.display='none';}
+        function showNewTabPage(){frame.style.display='none';newtabPage.style.display='flex';document.getElementById('nt-search').value='';postSearchActions.classList.remove('show');}
+        function navigateInTab(id,rawUrl){var tab=tabs.find(function(t){return t.id===id;});if(!tab)return;var eu=encodeUrl(rawUrl);tab.pushHistory(eu);tab.url=eu;updateTabTitle(tab,rawUrl);var h=getHistory();h.unshift({url:rawUrl,title:tab.title,time:Date.now()});if(h.length>100)h.length=100;saveHistory(h);if(activeTabId===id){showWebPage();frame.src=eu;}renderTabs();}
+        function handleSearch(query){var url=query.trim();if(!url)return;lastSearchedUrl=url;postSearchActions.classList.add('show');document.getElementById('nt-search').value='';var tab=tabs.find(function(t){return t.id===activeTabId;});if(!tab){tab=addTab(url);return;}navigateInTab(activeTabId,url);}
+        function openInProxy(){if(!lastSearchedUrl)return;handleSearch(lastSearchedUrl);}
+        function openInNewTab(){if(!lastSearchedUrl)return;var u=lastSearchedUrl;if(!u.includes('.')||u.includes(' ')){u=(localStorage.getItem('search')||'https://www.google.com/search?q=')+encodeURIComponent(u);}else if(!u.startsWith('http')){u='https://'+u;}window.open(u,'_blank');}
+        function openFullscreen(){if(!lastSearchedUrl)return;var u=lastSearchedUrl;if(!u.includes('.')||u.includes(' ')){u=(localStorage.getItem('search')||'https://www.google.com/search?q=')+encodeURIComponent(u);}else if(!u.startsWith('http')){u='https://'+u;}var w=window.open(u,'_blank','fullscreen=yes');if(w)setTimeout(function(){w.document.documentElement.requestFullscreen().catch(function(){});},500);}
+        function cloakCurrentTab(){if(!lastSearchedUrl)return;var u=lastSearchedUrl;if(!u.includes('.')||u.includes(' ')){u=(localStorage.getItem('search')||'https://www.google.com/search?q=')+encodeURIComponent(u);}else if(!u.startsWith('http')){u='https://'+u;}var w=window.open('about:blank','_blank');if(w){w.document.write('<!DOCTYPE html><html><head><title>Home</title></head><body style="margin:0;overflow:hidden;"><iframe src="'+u+'" style="width:100%;height:100vh;border:none;"></iframe></body></html>');w.document.close();}else{alert('Allow pop-ups!');}}
+        function updateTabTitle(tab,url){try{var p=new URL(url.startsWith('http')?url:'https://'+url);tab.title=p.hostname.replace('www.','')||url.substring(0,22);}catch(e){tab.title=url.substring(0,22);}}
+        function encodeUrl(url){var e=localStorage.getItem('search')||'https://www.google.com/search?q=';if(!url.includes('.')||url.includes(' '))url=e+encodeURIComponent(url);else if(!url.startsWith('http'))url='https://'+url;return(localStorage.getItem('proxy')||'ultraviolet')==='ultraviolet'?__uv$config.prefix+__uv$config.encodeUrl(url):'/scram/service/'+encodeURIComponent(url);}
+        function decodeUrl(encoded){try{if(encoded.includes(__uv$config.prefix))return __uv$config.decodeUrl(encoded.split(__uv$config.prefix)[1]);if(encoded.includes('/scram/service/'))return decodeURIComponent(encoded.split('/scram/service/')[1]);}catch(e){}return encoded;}
+        function renderTabs(){tabsBar.querySelectorAll('.tab').forEach(function(el){el.remove();});tabs.forEach(function(tab){var el=document.createElement('div');el.className='tab'+(tab.id===activeTabId?' active':'');el.innerHTML='<span class="tab-title">'+escapeHtml(tab.title||'New Tab')+'</span>'+(tabs.length>1?'<button class="tab-close">✕</button>':'');el.querySelector('.tab-title').addEventListener('click',function(){switchTab(tab.id);});var cb=el.querySelector('.tab-close');if(cb)cb.addEventListener('click',function(e){e.stopPropagation();closeTab(tab.id);});tabsBar.insertBefore(el,newTabBtn);});}
+        function renderAppShortcuts(){var c=document.getElementById('app-shortcuts');var apps=getApps();c.innerHTML='';apps.forEach(function(app){var s=document.createElement('div');s.className='app-shortcut';s.title=app.name+' - Right click to remove';var icon='';try{var d=new URL(app.url.startsWith('http')?app.url:'https://'+app.url).hostname.replace('www.','');icon='<img src="https://www.google.com/s2/favicons?domain='+d+'&sz=64" alt="" onerror="this.style.display=\'none\';this.parentElement.querySelector(\'.app-letter\').style.display=\'block\';">';}catch(e){}s.innerHTML='<div class="app-shortcut-icon">'+icon+'<span class="app-letter" style="display:none;">'+app.name.substring(0,2).toUpperCase()+'</span></div><span class="app-shortcut-name">'+escapeHtml(app.name)+'</span>';s.addEventListener('click',function(){handleSearch(app.url);});s.addEventListener('contextmenu',function(e){e.preventDefault();var apps=getApps();var i=apps.findIndex(function(a){return a.name===app.name&&a.url===app.url;});if(i>-1){apps.splice(i,1);saveApps(apps);renderAppShortcuts();}});c.appendChild(s);});var addBtn=document.createElement('div');addBtn.className='app-shortcut';addBtn.innerHTML='<div class="add-app-shortcut">+</div><span class="app-shortcut-name">Add App</span>';addBtn.addEventListener('click',function(){document.getElementById('add-app-modal').classList.add('show');});c.appendChild(addBtn);}
+        function addAppShortcut(){var n=document.getElementById('app-name-input').value.trim();var u=document.getElementById('app-url-input').value.trim();if(!n||!u){alert('Fill both fields!');return;}if(!u.startsWith('http'))u='https://'+u;var apps=getApps();apps.push({name:n,url:u});saveApps(apps);renderAppShortcuts();closeAddAppModal();}
+        function closeAddAppModal(){document.getElementById('add-app-modal').classList.remove('show');document.getElementById('app-name-input').value='';document.getElementById('app-url-input').value='';}
+        function toggleFullscreen(){if(document.fullscreenElement)document.exitFullscreen();else document.documentElement.requestFullscreen().catch(function(){});}
+        function openHistory(){historyPanel.classList.add('open');historyOverlay.classList.add('visible');renderHistory();}
+        function closeHistory(){historyPanel.classList.remove('open');historyOverlay.classList.remove('visible');}
+        function renderHistory(){var h=getHistory();if(!h.length){historyList.innerHTML='<div style="text-align:center;padding:50px;color:var(--text2);">No history yet</div>';return;}historyList.innerHTML=h.map(function(h,i){return'<div class="history-item" onclick="handleSearch(\''+escapeAttr(h.url)+'\')"><div class="history-item-info"><div class="history-item-title">'+escapeHtml(h.title||h.url)+'</div><div class="history-item-url">'+escapeHtml(h.url)+'</div></div><button class="history-item-delete" onclick="event.stopPropagation();deleteHistoryItem('+i+')">✕</button></div>';}).join('');}
+        function deleteHistoryItem(i){var h=getHistory();h.splice(i,1);saveHistory(h);renderHistory();}
+        function clearHistory(){if(confirm('Clear all history?')){saveHistory([]);renderHistory();}}
+        function loadSettingsValues(){if(!localStorage.getItem('proxy'))localStorage.setItem('proxy','ultraviolet');if(!localStorage.getItem('search'))localStorage.setItem('search','https://www.google.com/search?q=');if(!localStorage.getItem('transport'))localStorage.setItem('transport','libcurl');}
+        function escapeHtml(t){var d=document.createElement('div');d.textContent=t;return d.innerHTML;}
+        function escapeAttr(t){return t.replace(/'/g,"\\'").replace(/"/g,'&quot;');}
 
-        function getHistory() {
-            return JSON.parse(localStorage.getItem('silox_browser_history') || '[]');
-        }
-        function saveHistory(hist) {
-            localStorage.setItem('silox_browser_history', JSON.stringify(hist));
-        }
-        function getApps() {
-            return JSON.parse(localStorage.getItem('silox_browser_apps') || '[]');
-        }
-        function saveApps(apps) {
-            localStorage.setItem('silox_browser_apps', JSON.stringify(apps));
-        }
+        window.persistentMusic=null;
+        function initMusic(){var s=localStorage.getItem('persistentMusicSrc');var p=localStorage.getItem('persistentMusicPlaying');var b=document.getElementById('music-btn');if(p==='true'&&s){var d=localStorage.getItem('activeAudioData');var a=s;if(d&&s.indexOf('data:')===0)a=d;window.persistentMusic=new Audio(a);window.persistentMusic.loop=true;window.persistentMusic.volume=parseFloat(localStorage.getItem('audioVolume')||'0.7');window.persistentMusic.play().then(function(){if(b)b.textContent='🎵';}).catch(function(){});}}
+        function togglePersistentMusic(){var s=localStorage.getItem('persistentMusicSrc');var b=document.getElementById('music-btn');if(!window.persistentMusic){if(!s){alert('No soundtrack set. Go to Settings!');return;}var d=localStorage.getItem('activeAudioData');var a=s;if(d&&s.indexOf('data:')===0)a=d;window.persistentMusic=new Audio(a);window.persistentMusic.loop=true;window.persistentMusic.volume=parseFloat(localStorage.getItem('audioVolume')||'0.7');window.persistentMusic.play().then(function(){localStorage.setItem('persistentMusicPlaying','true');if(b)b.textContent='🎵';}).catch(function(){});}else{if(window.persistentMusic.paused){window.persistentMusic.play().then(function(){localStorage.setItem('persistentMusicPlaying','true');if(b)b.textContent='🎵';});}else{window.persistentMusic.pause();localStorage.setItem('persistentMusicPlaying','false');if(b)b.textContent='🔇';}}}
 
-        class Tab {
-            constructor(id, url, title) {
-                this.id = id;
-                this.url = url || '';
-                this.title = title || 'New Tab';
-                this.history = [];
-                this.historyIndex = -1;
-            }
-            pushHistory(url) {
-                if (this.historyIndex < this.history.length - 1) {
-                    this.history = this.history.slice(0, this.historyIndex + 1);
-                }
-                this.history.push(url);
-                this.historyIndex = this.history.length - 1;
-            }
-            canGoBack() { return this.historyIndex > 0; }
-            canGoForward() { return this.historyIndex < this.history.length - 1; }
-            goBack() {
-                if (this.canGoBack()) { this.historyIndex--; return this.history[this.historyIndex]; }
-                return null;
-            }
-            goForward() {
-                if (this.canGoForward()) { this.historyIndex++; return this.history[this.historyIndex]; }
-                return null;
-            }
-            getCurrentUrl() {
-                if (this.historyIndex >= 0 && this.historyIndex < this.history.length) {
-                    return this.history[this.historyIndex];
-                }
-                return this.url;
-            }
-        }
-
-        function createTabId() {
-            return 't' + Date.now() + Math.random().toString(36).substr(2, 5);
-        }
-
-        function addTab(url, title) {
-            var id = createTabId();
-            var tab = new Tab(id, url || '', title || 'New Tab');
-            tabs.push(tab);
-            renderTabs();
-            switchTab(id);
-            if (url) {
-                var eu = encodeUrl(url);
-                tab.pushHistory(eu);
-                tab.url = eu;
-                updateTabTitle(tab, url);
-                showWebPage();
-                frame.src = eu;
-            }
-            return tab;
-        }
-
-        function addNewTab() {
-            addTab('', 'New Tab');
-        }
-
-        function closeTab(id) {
-            if (tabs.length <= 1) return;
-            var idx = tabs.findIndex(function(t) { return t.id === id; });
-            if (idx === -1) return;
-            tabs.splice(idx, 1);
-            if (activeTabId === id) {
-                var ni = Math.min(idx, tabs.length - 1);
-                activeTabId = tabs[ni].id;
-                updateActiveTab();
-            }
-            renderTabs();
-        }
-
-        function switchTab(id) {
-            activeTabId = id;
-            updateActiveTab();
-            renderTabs();
-        }
-
-        function updateActiveTab() {
-            var tab = tabs.find(function(t) { return t.id === activeTabId; });
-            if (!tab) return;
-            var currentUrl = tab.getCurrentUrl();
-            if (currentUrl) {
-                showWebPage();
-                frame.src = currentUrl;
-            } else {
-                showNewTabPage();
-            }
-        }
-
-        function showWebPage() {
-            frame.style.display = 'block';
-            newtabPage.style.display = 'none';
-        }
-
-        function showNewTabPage() {
-            frame.style.display = 'none';
-            newtabPage.style.display = 'flex';
-            document.getElementById('nt-search').value = '';
-            postSearchActions.classList.remove('show');
-        }
-
-        function navigateInTab(id, rawUrl) {
-            var tab = tabs.find(function(t) { return t.id === id; });
-            if (!tab) return;
-            var eu = encodeUrl(rawUrl);
-            tab.pushHistory(eu);
-            tab.url = eu;
-            updateTabTitle(tab, rawUrl);
-            var hist = getHistory();
-            hist.unshift({ url: rawUrl, title: tab.title, time: Date.now() });
-            if (hist.length > 100) hist.length = 100;
-            saveHistory(hist);
-            if (activeTabId === id) {
-                showWebPage();
-                frame.src = eu;
-            }
-            renderTabs();
-        }
-
-        function handleSearch(query) {
-            var url = query.trim();
-            if (!url) return;
-            lastSearchedUrl = url;
-            postSearchActions.classList.add('show');
-            document.getElementById('nt-search').value = '';
-            var tab = tabs.find(function(t) { return t.id === activeTabId; });
-            if (!tab) {
-                tab = addTab(url);
-                return;
-            }
-            navigateInTab(activeTabId, url);
-        }
-
-        function openInProxy() {
-            if (!lastSearchedUrl) return;
-            handleSearch(lastSearchedUrl);
-        }
-
-        function openInNewTab() {
-            if (!lastSearchedUrl) return;
-            var u = lastSearchedUrl;
-            if (!u.includes('.') || u.includes(' ')) {
-                u = (localStorage.getItem('search') || 'https://www.google.com/search?q=') + encodeURIComponent(u);
-            } else if (!u.startsWith('http')) {
-                u = 'https://' + u;
-            }
-            window.open(u, '_blank');
-        }
-
-        function openFullscreen() {
-            if (!lastSearchedUrl) return;
-            var u = lastSearchedUrl;
-            if (!u.includes('.') || u.includes(' ')) {
-                u = (localStorage.getItem('search') || 'https://www.google.com/search?q=') + encodeURIComponent(u);
-            } else if (!u.startsWith('http')) {
-                u = 'https://' + u;
-            }
-            var w = window.open(u, '_blank', 'fullscreen=yes');
-            if (w) setTimeout(function() { w.document.documentElement.requestFullscreen().catch(function() {}); }, 500);
-        }
-
-        function cloakCurrentTab() {
-            if (!lastSearchedUrl) return;
-            var u = lastSearchedUrl;
-            if (!u.includes('.') || u.includes(' ')) {
-                u = (localStorage.getItem('search') || 'https://www.google.com/search?q=') + encodeURIComponent(u);
-            } else if (!u.startsWith('http')) {
-                u = 'https://' + u;
-            }
-            var w = window.open('about:blank', '_blank');
-            if (w) {
-                w.document.write('<!DOCTYPE html><html><head><title>Home</title></head><body style="margin:0;overflow:hidden;"><iframe src="' + u + '" style="width:100%;height:100vh;border:none;"></iframe></body></html>');
-                w.document.close();
-            } else {
-                alert('Allow pop-ups to use this feature!');
-            }
-        }
-
-        function updateTabTitle(tab, url) {
-            try {
-                var p = new URL(url.startsWith('http') ? url : 'https://' + url);
-                tab.title = p.hostname.replace('www.', '') || url.substring(0, 22);
-            } catch (e) { tab.title = url.substring(0, 22); }
-        }
-
-        function encodeUrl(url) {
-            var engine = localStorage.getItem('search') || 'https://www.google.com/search?q=';
-            if (!url.includes('.') || url.includes(' ')) url = engine + encodeURIComponent(url);
-            else if (!url.startsWith('http')) url = 'https://' + url;
-            return (localStorage.getItem('proxy') || 'ultraviolet') === 'ultraviolet' ? __uv$config.prefix + __uv$config.encodeUrl(url) : '/scram/service/' + encodeURIComponent(url);
-        }
-
-        function decodeUrl(encoded) {
-            try {
-                if (encoded.includes(__uv$config.prefix)) return __uv$config.decodeUrl(encoded.split(__uv$config.prefix)[1]);
-                if (encoded.includes('/scram/service/')) return decodeURIComponent(encoded.split('/scram/service/')[1]);
-            } catch (e) {}
-            return encoded;
-        }
-
-        function renderTabs() {
-            tabsBar.querySelectorAll('.tab').forEach(function(el) { el.remove(); });
-            tabs.forEach(function(tab) {
-                var el = document.createElement('div');
-                el.className = 'tab' + (tab.id === activeTabId ? ' active' : '');
-                el.innerHTML = '<span class="tab-title">' + escapeHtml(tab.title || 'New Tab') + '</span>' + (tabs.length > 1 ? '<button class="tab-close">✕</button>' : '');
-                el.querySelector('.tab-title').addEventListener('click', function() { switchTab(tab.id); });
-                var cb = el.querySelector('.tab-close');
-                if (cb) cb.addEventListener('click', function(e) { e.stopPropagation(); closeTab(tab.id); });
-                tabsBar.insertBefore(el, newTabBtn);
-            });
-        }
-
-        function renderAppShortcuts() {
-            var container = document.getElementById('app-shortcuts');
-            var apps = getApps();
-            container.innerHTML = '';
-            apps.forEach(function(app) {
-                var shortcut = document.createElement('div');
-                shortcut.className = 'app-shortcut';
-                shortcut.title = app.name + ' - Right click to remove';
-                var iconHtml = '';
-                try {
-                    var domain = new URL(app.url.startsWith('http') ? app.url : 'https://' + app.url).hostname.replace('www.', '');
-                    iconHtml = '<img src="https://www.google.com/s2/favicons?domain=' + domain + '&sz=64" alt="" onerror="this.style.display=\'none\';this.parentElement.querySelector(\'.app-letter\').style.display=\'block\';">';
-                } catch (e) {}
-                shortcut.innerHTML = '<div class="app-shortcut-icon">' + iconHtml + '<span class="app-letter" style="display:none;">' + app.name.substring(0, 2).toUpperCase() + '</span></div><span class="app-shortcut-name">' + escapeHtml(app.name) + '</span>';
-                shortcut.addEventListener('click', function() { handleSearch(app.url); });
-                shortcut.addEventListener('contextmenu', function(e) {
-                    e.preventDefault();
-                    var apps = getApps();
-                    var idx = apps.findIndex(function(a) { return a.name === app.name && a.url === app.url; });
-                    if (idx > -1) { apps.splice(idx, 1); saveApps(apps); renderAppShortcuts(); }
-                });
-                container.appendChild(shortcut);
-            });
-            var addBtn = document.createElement('div');
-            addBtn.className = 'app-shortcut';
-            addBtn.innerHTML = '<div class="add-app-shortcut">+</div><span class="app-shortcut-name">Add App</span>';
-            addBtn.addEventListener('click', function() { document.getElementById('add-app-modal').classList.add('show'); });
-            container.appendChild(addBtn);
-        }
-
-        function addAppShortcut() {
-            var name = document.getElementById('app-name-input').value.trim();
-            var url = document.getElementById('app-url-input').value.trim();
-            if (!name || !url) { alert('Fill both fields!'); return; }
-            if (!url.startsWith('http')) url = 'https://' + url;
-            var apps = getApps();
-            apps.push({ name: name, url: url });
-            saveApps(apps);
-            renderAppShortcuts();
-            closeAddAppModal();
-        }
-
-        function closeAddAppModal() {
-            document.getElementById('add-app-modal').classList.remove('show');
-            document.getElementById('app-name-input').value = '';
-            document.getElementById('app-url-input').value = '';
-        }
-
-        function toggleFullscreen() {
-            if (document.fullscreenElement) document.exitFullscreen();
-            else document.documentElement.requestFullscreen().catch(function() {});
-        }
-
-        function openHistory() { historyPanel.classList.add('open'); historyOverlay.classList.add('visible'); renderHistory(); }
-        function closeHistory() { historyPanel.classList.remove('open'); historyOverlay.classList.remove('visible'); }
-
-        function renderHistory() {
-            var hist = getHistory();
-            if (!hist.length) { historyList.innerHTML = '<div style="text-align:center;padding:50px;color:var(--text2);">No history yet</div>'; return; }
-            historyList.innerHTML = hist.map(function(h, i) {
-                return '<div class="history-item" onclick="handleSearch(\'' + escapeAttr(h.url) + '\')"><div class="history-item-info"><div class="history-item-title">' + escapeHtml(h.title || h.url) + '</div><div class="history-item-url">' + escapeHtml(h.url) + '</div></div><button class="history-item-delete" onclick="event.stopPropagation();deleteHistoryItem(' + i + ')">✕</button></div>';
-            }).join('');
-        }
-
-        function deleteHistoryItem(i) { var h = getHistory(); h.splice(i, 1); saveHistory(h); renderHistory(); }
-        function clearHistory() { if (confirm('Clear all history?')) { saveHistory([]); renderHistory(); } }
-
-        function loadSettingsValues() {
-            if (!localStorage.getItem('proxy')) localStorage.setItem('proxy', 'ultraviolet');
-            if (!localStorage.getItem('search')) localStorage.setItem('search', 'https://www.google.com/search?q=');
-            if (!localStorage.getItem('transport')) localStorage.setItem('transport', 'libcurl');
-        }
-
-        function escapeHtml(t) { var d = document.createElement('div'); d.textContent = t; return d.innerHTML; }
-        function escapeAttr(t) { return t.replace(/'/g, "\\'").replace(/"/g, '&quot;'); }
-
-        // Music
-        window.persistentMusic = null;
-        function initMusic() {
-            var musicSrc = localStorage.getItem('persistentMusicSrc');
-            var isPlaying = localStorage.getItem('persistentMusicPlaying');
-            var btn = document.getElementById('music-btn');
-            if (isPlaying === 'true' && musicSrc) {
-                var activeAudioData = localStorage.getItem('activeAudioData');
-                var audioSrc = musicSrc;
-                if (activeAudioData && musicSrc.indexOf('data:') === 0) audioSrc = activeAudioData;
-                window.persistentMusic = new Audio(audioSrc);
-                window.persistentMusic.loop = true;
-                window.persistentMusic.volume = parseFloat(localStorage.getItem('audioVolume') || '0.7');
-                window.persistentMusic.play().then(function() { if (btn) btn.textContent = '🎵'; }).catch(function() {});
-            }
-        }
-        function togglePersistentMusic() {
-            var musicSrc = localStorage.getItem('persistentMusicSrc');
-            var btn = document.getElementById('music-btn');
-            if (!window.persistentMusic) {
-                if (!musicSrc) { alert('No soundtrack set. Go to Settings!'); return; }
-                var activeAudioData = localStorage.getItem('activeAudioData');
-                var audioSrc = musicSrc;
-                if (activeAudioData && musicSrc.indexOf('data:') === 0) audioSrc = activeAudioData;
-                window.persistentMusic = new Audio(audioSrc);
-                window.persistentMusic.loop = true;
-                window.persistentMusic.volume = parseFloat(localStorage.getItem('audioVolume') || '0.7');
-                window.persistentMusic.play().then(function() { localStorage.setItem('persistentMusicPlaying', 'true'); if (btn) btn.textContent = '🎵'; }).catch(function() {});
-            } else {
-                if (window.persistentMusic.paused) {
-                    window.persistentMusic.play().then(function() { localStorage.setItem('persistentMusicPlaying', 'true'); if (btn) btn.textContent = '🎵'; });
-                } else {
-                    window.persistentMusic.pause();
-                    localStorage.setItem('persistentMusicPlaying', 'false');
-                    if (btn) btn.textContent = '🔇';
-                }
-            }
-        }
-
-        // Init proxy
-        async function initProxy() {
-            try {
-                var conn = new BareMux.BareMuxConnection('/baremux/worker.js');
-                var w = localStorage.getItem('wisp') || ((location.protocol === 'https:' ? 'wss' : 'ws') + '://' + location.host + '/wisp/');
-                var t = localStorage.getItem('transport') || 'libcurl';
-                var tp = t === 'epoxy' ? '/epoxy/index.mjs' : '/libcurl/index.mjs';
-                if (await conn.getTransport() !== tp) await conn.setTransport(tp, [{ wisp: w }]);
-            } catch (e) {}
-        }
+        async function initProxy(){try{var c=new BareMux.BareMuxConnection('/baremux/worker.js');var w=localStorage.getItem('wisp')||((location.protocol==='https:'?'wss':'ws')+'://'+location.host+'/wisp/');var t=localStorage.getItem('transport')||'libcurl';var tp=t==='epoxy'?'/epoxy/index.mjs':'/libcurl/index.mjs';if(await c.getTransport()!==tp)await c.setTransport(tp,[{wisp:w}]);}catch(e){}}
         initProxy();
 
-        // Event listeners
-        newTabBtn.addEventListener('click', function() { addNewTab(); });
+        newTabBtn.addEventListener('click',function(){addNewTab();});
+        document.addEventListener('keydown',function(e){if(e.ctrlKey&&e.key==='t'){e.preventDefault();addNewTab();}if(e.ctrlKey&&e.key==='w'){e.preventDefault();var t=tabs.find(function(t){return t.id===activeTabId;});if(t&&tabs.length>1)closeTab(activeTabId);}if(e.ctrlKey&&e.key==='h'){e.preventDefault();openHistory();}if(e.key==='Escape'){closeHistory();closeAddAppModal();}});
 
-        document.addEventListener('keydown', function(e) {
-            if (e.ctrlKey && e.key === 't') { e.preventDefault(); addNewTab(); }
-            if (e.ctrlKey && e.key === 'w') { e.preventDefault(); var t = tabs.find(function(t) { return t.id === activeTabId; }); if (t && tabs.length > 1) closeTab(activeTabId); }
-            if (e.ctrlKey && e.key === 'h') { e.preventDefault(); openHistory(); }
-            if (e.key === 'Escape') { closeHistory(); closeAddAppModal(); }
-        });
-
-        if (localStorage.getItem('silox_intro_seen')) {
-            introOverlay.classList.add('hidden');
-            initBrowser();
-            setTimeout(initMusic, 300);
-        }
+        if(localStorage.getItem('silox_intro_seen')){introOverlay.classList.add('hidden');initBrowser();setTimeout(initMusic,300);}
     </script>
 </body>
 </html>

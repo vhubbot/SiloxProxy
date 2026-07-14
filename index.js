@@ -74,6 +74,10 @@ app.get("/settings/misc", (req, res) => {
     res.render("settings/misc");
 });
 
+app.get("/chat", (req, res) => {
+    res.render("chat/index");
+});
+
 app.get("/search", (req, res) => {
     res.render("search");
 });
