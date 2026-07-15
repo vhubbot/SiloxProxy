@@ -6,6 +6,7 @@ import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
 import { bareModulePath } from "@mercuryworkshop/bare-as-module3";
 import { join } from "node:path";
+import path from "path";
 import { hostname } from "node:os";
 import { server as wisp } from "@mercuryworkshop/wisp-js/server";
 import venus from "venus-pit";
@@ -34,17 +35,14 @@ const io = new Server(server, {
     maxHttpBufferSize: 1e7
 });
 
-// Setup chat
 setupChat(io);
 
-// Multer for profile pictures
 const uploadDir = join(__dirname, 'public', 'uploads', 'pfps');
 if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => cb(null, uploadDir),
     filename: (req, file, cb) => {
-        const ext = join.extname ? require('path').extname(file.originalname) : '.png';
         cb(null, 'pfp-' + Date.now() + '-' + Math.round(Math.random() * 1E9) + '.png');
     }
 });
