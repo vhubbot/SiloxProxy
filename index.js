@@ -78,6 +78,10 @@ app.get("/search", (req, res) => {
     res.render("search");
 });
 
+app.get("/chat", (req, res) => {
+    res.render("chat/index");
+});
+
 server.on("request", (req, res) => {
     res.setHeader("Cross-Origin-Opener-Policy", "same-origin");
     res.setHeader("Cross-Origin-Embedder-Policy", "anonymous");
