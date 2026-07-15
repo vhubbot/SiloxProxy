@@ -3,10 +3,6 @@
         from { opacity: 0; transform: translateX(-50%) translateY(30px); }
         to { opacity: 1; transform: translateX(-50%) translateY(0); }
     }
-    @keyframes barPulse {
-        0%, 100% { box-shadow: 0 8px 32px rgba(220, 38, 38, 0.2); }
-        50% { box-shadow: 0 8px 40px rgba(220, 38, 38, 0.45); }
-    }
     @keyframes barItemPop {
         0% { transform: scale(1); }
         50% { transform: scale(1.2); }
@@ -14,16 +10,10 @@
     }
     @keyframes barRumble {
         0%, 100% { transform: translateX(0); }
-        15% { transform: translateX(-3px) rotate(-1deg); }
-        30% { transform: translateX(3px) rotate(1deg); }
-        45% { transform: translateX(-2px) rotate(-0.5deg); }
-        60% { transform: translateX(2px) rotate(0.5deg); }
-        75% { transform: translateX(-1px); }
-        90% { transform: translateX(1px); }
-    }
-    @keyframes barGlowRed {
-        0%, 100% { box-shadow: 0 0 15px rgba(220, 38, 38, 0.3); }
-        50% { box-shadow: 0 0 30px rgba(220, 38, 38, 0.6); }
+        15% { transform: translateX(-2px); }
+        30% { transform: translateX(2px); }
+        45% { transform: translateX(-1px); }
+        60% { transform: translateX(1px); }
     }
 
     .bottombar {
@@ -33,19 +23,19 @@
         transform: translateX(-50%);
         width: fit-content;
         max-width: 95vw;
-        background: rgba(18, 18, 28, 0.92);
-        backdrop-filter: blur(25px);
-        -webkit-backdrop-filter: blur(25px);
-        padding: 10px 18px;
+        background: rgba(10, 10, 12, 0.88);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        padding: 8px 14px;
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 4px;
         z-index: 1000;
-        border-radius: 18px;
-        border: 1.5px solid rgba(255, 255, 255, 0.12);
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
-        animation: slideUpBar 0.6s cubic-bezier(0.16, 1, 0.3, 1), barPulse 3s ease-in-out 0.6s infinite;
+        border-radius: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.09);
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        animation: slideUpBar 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         transition: all 0.3s ease;
         overflow-x: auto;
         scrollbar-width: none;
@@ -55,145 +45,126 @@
     .bottombar::-webkit-scrollbar { display: none; }
 
     .bottombar:hover {
-        border-color: rgba(220, 38, 38, 0.4);
-        box-shadow: 0 12px 45px rgba(220, 38, 38, 0.3), 0 8px 32px rgba(0, 0, 0, 0.6);
+        border-color: rgba(255, 255, 255, 0.18);
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
     }
 
     .bb-divider {
-        width: 1.5px; 
-        height: 24px;
-        background: rgba(255, 255, 255, 0.12);
-        margin: 0 8px; 
+        width: 1px; 
+        height: 20px;
+        background: rgba(255, 255, 255, 0.08);
+        margin: 0 6px; 
         flex-shrink: 0; 
-        border-radius: 2px;
     }
 
     .bottombar a {
         display: flex; 
         align-items: center; 
         justify-content: center;
-        width: 42px; 
-        height: 42px; 
-        border-radius: 13px;
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
+        width: 38px; 
+        height: 38px; 
+        border-radius: 10px;
+        transition: all 0.2s ease; 
         text-decoration: none;
         position: relative; 
         cursor: pointer; 
         flex-shrink: 0;
         -webkit-tap-highlight-color: transparent;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid transparent;
+        color: #8a8a92;
     }
 
     .bottombar a:hover {
-        background: rgba(255, 255, 255, 0.08);
-        border-color: rgba(255, 255, 255, 0.15);
-        transform: translateY(-3px);
+        background: rgba(255, 255, 255, 0.06);
+        color: #eaeaee;
+        transform: translateY(-2px);
     }
 
     .bottombar a:active {
-        background: rgba(220, 38, 38, 0.2);
-        transform: scale(0.88);
-        animation: barRumble 0.35s ease;
+        background: rgba(255, 255, 255, 0.1);
+        transform: scale(0.9);
+        animation: barRumble 0.3s ease;
     }
 
     .bottombar a.active {
-        background: rgba(220, 38, 38, 0.2);
-        border-color: rgba(220, 38, 38, 0.4);
-        animation: barGlowRed 2s ease-in-out infinite;
+        color: #eaeaee;
     }
 
     .bottombar a.active::after {
         content: ''; 
         position: absolute; 
-        top: -5px; 
+        bottom: -6px; 
         left: 50%;
         transform: translateX(-50%); 
-        width: 5px; 
-        height: 5px;
-        background: #dc2626; 
+        width: 4px; 
+        height: 4px;
+        background: #e8e8ec; 
         border-radius: 50%;
-        box-shadow: 0 0 8px rgba(220, 38, 38, 0.6);
     }
 
     .bottombar a.active .bb-icon-svg {
         opacity: 1; 
-        animation: barItemPop 0.4s ease-out;
-        stroke: #ffffff;
+        animation: barItemPop 0.3s ease-out;
+        stroke: #eaeaee;
     }
 
     .bb-icon-svg {
-        width: 20px; 
-        height: 20px;
-        transition: all 0.25s ease; 
-        opacity: 0.8; 
+        width: 18px; 
+        height: 18px;
+        transition: all 0.2s ease; 
+        opacity: 0.7; 
         flex-shrink: 0;
-        stroke: #d0d0d0;
+        stroke: currentColor;
         fill: none;
     }
 
     .bottombar a:hover .bb-icon-svg {
         opacity: 1; 
-        transform: scale(1.15);
-        stroke: #ffffff;
+        transform: scale(1.1);
     }
 
     .bottombar a.active .bb-icon-svg {
-        stroke: #ffffff;
+        stroke: #eaeaee;
         opacity: 1;
     }
 
     .bb-tooltip {
         position: absolute; 
-        top: -34px; 
+        top: -32px; 
         left: 50%;
         transform: translateX(-50%); 
-        background: #1e1e2a;
-        color: #e8e8f0; 
-        padding: 5px 12px; 
-        border-radius: 7px;
-        font-size: 11px; 
+        background: #0d0d0f;
+        color: #eaeaee; 
+        padding: 4px 10px; 
+        border-radius: 6px;
+        font-size: 10.5px; 
         white-space: nowrap; 
         opacity: 0;
         pointer-events: none; 
-        transition: all 0.2s ease;
-        border: 1px solid rgba(255, 255, 255, 0.15);
+        transition: all 0.15s ease;
+        border: 1px solid rgba(255, 255, 255, 0.1);
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-        font-weight: 600;
-        letter-spacing: 0.3px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-    }
-
-    .bb-tooltip::after {
-        content: '';
-        position: absolute;
-        bottom: -5px;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 0;
-        height: 0;
-        border-left: 5px solid transparent;
-        border-right: 5px solid transparent;
-        border-top: 5px solid rgba(255, 255, 255, 0.15);
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
     }
 
     .bottombar a:hover .bb-tooltip {
         opacity: 1; 
-        top: -30px;
+        top: -28px;
     }
 
     @media (max-width: 600px) {
-        .bottombar { padding: 8px 12px; gap: 2px; border-radius: 16px; bottom: 10px; }
-        .bottombar a { width: 36px; height: 36px; border-radius: 11px; }
-        .bb-icon-svg { width: 17px; height: 17px; }
-        .bb-divider { margin: 0 5px; height: 20px; }
-        .bb-tooltip { font-size: 10px; padding: 4px 10px; top: -32px; }
+        .bottombar { padding: 6px 10px; gap: 2px; border-radius: 14px; bottom: 10px; }
+        .bottombar a { width: 34px; height: 34px; border-radius: 9px; }
+        .bb-icon-svg { width: 16px; height: 16px; }
+        .bb-divider { margin: 0 4px; height: 16px; }
+        .bb-tooltip { font-size: 10px; padding: 3px 8px; top: -30px; }
     }
 
     @media (max-width: 380px) {
-        .bottombar { padding: 6px 10px; bottom: 8px; border-radius: 14px; }
-        .bottombar a { width: 32px; height: 32px; border-radius: 10px; }
-        .bb-icon-svg { width: 15px; height: 15px; }
+        .bottombar { padding: 5px 8px; bottom: 8px; border-radius: 12px; }
+        .bottombar a { width: 30px; height: 30px; border-radius: 8px; }
+        .bb-icon-svg { width: 14px; height: 14px; }
     }
 </style>
 

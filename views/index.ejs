@@ -16,69 +16,6 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes glowPulse { 0%, 100% { text-shadow: 0 0 30px rgba(220, 38, 38, 0.6), 0 0 60px rgba(220, 38, 38, 0.3); } 50% { text-shadow: 0 0 50px rgba(220, 38, 38, 0.9), 0 0 80px rgba(220, 38, 38, 0.5), 0 0 100px rgba(220, 38, 38, 0.3); } }
-        
-        /* Epic button drop animations */
-        @keyframes btnDrop1 { 
-            0% { transform: translateY(-500px) rotate(-45deg) scale(0.3); opacity: 0; } 
-            50% { transform: translateY(15px) rotate(5deg) scale(1.15); opacity: 1; } 
-            62% { transform: translateY(-12px) rotate(-3deg) scale(0.9); } 
-            72% { transform: translateY(8px) rotate(1.5deg) scale(1.05); } 
-            82% { transform: translateY(-5px) rotate(-0.5deg) scale(0.97); } 
-            90% { transform: translateY(3px) rotate(0.2deg) scale(1.02); } 
-            96% { transform: translateY(-1px); } 
-            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
-        }
-        @keyframes btnDrop2 { 
-            0% { transform: translateY(-550px) rotate(35deg) scale(0.2); opacity: 0; } 
-            48% { transform: translateY(18px) rotate(-6deg) scale(1.2); opacity: 1; } 
-            60% { transform: translateY(-14px) rotate(3deg) scale(0.88); } 
-            70% { transform: translateY(10px) rotate(-2deg) scale(1.06); } 
-            80% { transform: translateY(-6px) rotate(0.8deg) scale(0.96); } 
-            88% { transform: translateY(4px) rotate(-0.3deg) scale(1.03); } 
-            94% { transform: translateY(-2px); } 
-            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
-        }
-        @keyframes btnDrop3 { 
-            0% { transform: translateY(-480px) rotate(-55deg) scale(0.25); opacity: 0; } 
-            52% { transform: translateY(12px) rotate(4deg) scale(1.18); opacity: 1; } 
-            64% { transform: translateY(-10px) rotate(-2.5deg) scale(0.91); } 
-            74% { transform: translateY(7px) rotate(1deg) scale(1.04); } 
-            84% { transform: translateY(-4px) rotate(-0.3deg) scale(0.98); } 
-            92% { transform: translateY(2px) scale(1.01); } 
-            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
-        }
-        @keyframes btnDrop4 { 
-            0% { transform: translateY(-600px) rotate(50deg) scale(0.15); opacity: 0; } 
-            46% { transform: translateY(20px) rotate(-7deg) scale(1.25); opacity: 1; } 
-            58% { transform: translateY(-15px) rotate(4deg) scale(0.85); } 
-            68% { transform: translateY(12px) rotate(-2.5deg) scale(1.08); } 
-            78% { transform: translateY(-7px) rotate(1deg) scale(0.95); } 
-            86% { transform: translateY(5px) rotate(-0.5deg) scale(1.04); } 
-            93% { transform: translateY(-2px); } 
-            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
-        }
-        @keyframes btnDrop5 { 
-            0% { transform: translateY(-520px) rotate(-40deg) scale(0.2); opacity: 0; } 
-            50% { transform: translateY(16px) rotate(5deg) scale(1.2); opacity: 1; } 
-            61% { transform: translateY(-13px) rotate(-3deg) scale(0.89); } 
-            71% { transform: translateY(9px) rotate(1.5deg) scale(1.05); } 
-            81% { transform: translateY(-5px) rotate(-0.5deg) scale(0.97); } 
-            89% { transform: translateY(3px) scale(1.02); } 
-            95% { transform: translateY(-1px); } 
-            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
-        }
-        @keyframes btnDrop6 { 
-            0% { transform: translateY(-450px) rotate(-30deg) scale(0.3); opacity: 0; } 
-            54% { transform: translateY(10px) rotate(3deg) scale(1.15); opacity: 1; } 
-            66% { transform: translateY(-8px) rotate(-1.5deg) scale(0.93); } 
-            76% { transform: translateY(5px) rotate(0.5deg) scale(1.03); } 
-            86% { transform: translateY(-3px) scale(0.99); } 
-            93% { transform: translateY(1px); } 
-            100% { transform: translateY(0) rotate(0deg) scale(1); opacity: 1; } 
-        }
-
-        /* Logo materialization */
         @keyframes logoMaterialize { 
             0% { transform: scale(0) perspective(500px) rotateX(90deg); opacity: 0; filter: blur(30px); } 
             40% { transform: scale(1.2) perspective(500px) rotateX(-10deg); opacity: 0.7; filter: blur(0); } 
@@ -97,7 +34,7 @@
         }
         
         @keyframes searchBarUnfold { 
-            0% { transform: scaleX(0); opacity: 0; transform-origin: center; } 
+            0% { transform: scaleX(0); opacity: 0; } 
             50% { transform: scaleX(1.08); opacity: 1; } 
             65% { transform: scaleX(0.95); } 
             78% { transform: scaleX(1.03); } 
@@ -106,210 +43,138 @@
             100% { transform: scaleX(1); opacity: 1; } 
         }
 
-        @keyframes rumbleClick { 
-            0%, 100% { transform: translateX(0); } 
-            15% { transform: translateX(-3px) rotate(-1deg); } 
-            30% { transform: translateX(3px) rotate(1deg); } 
-            45% { transform: translateX(-2px) rotate(-0.5deg); } 
-            60% { transform: translateX(2px) rotate(0.5deg); } 
-            75% { transform: translateX(-1px); } 
-            90% { transform: translateX(1px); } 
-        }
+        @keyframes btnDrop1 { 0%{transform:translateY(-500px)rotate(-45deg)scale(.3);opacity:0} 50%{transform:translateY(15px)rotate(5deg)scale(1.15);opacity:1} 62%{transform:translateY(-12px)rotate(-3deg)scale(.9)} 72%{transform:translateY(8px)rotate(1.5deg)scale(1.05)} 82%{transform:translateY(-5px)rotate(-.5deg)scale(.97)} 90%{transform:translateY(3px)rotate(.2deg)scale(1.02)} 96%{transform:translateY(-1px)} 100%{transform:translateY(0)rotate(0)scale(1);opacity:1} }
+        @keyframes btnDrop2 { 0%{transform:translateY(-550px)rotate(35deg)scale(.2);opacity:0} 48%{transform:translateY(18px)rotate(-6deg)scale(1.2);opacity:1} 60%{transform:translateY(-14px)rotate(3deg)scale(.88)} 70%{transform:translateY(10px)rotate(-2deg)scale(1.06)} 80%{transform:translateY(-6px)rotate(.8deg)scale(.96)} 88%{transform:translateY(4px)rotate(-.3deg)scale(1.03)} 94%{transform:translateY(-2px)} 100%{transform:translateY(0)rotate(0)scale(1);opacity:1} }
+        @keyframes btnDrop3 { 0%{transform:translateY(-480px)rotate(-55deg)scale(.25);opacity:0} 52%{transform:translateY(12px)rotate(4deg)scale(1.18);opacity:1} 64%{transform:translateY(-10px)rotate(-2.5deg)scale(.91)} 74%{transform:translateY(7px)rotate(1deg)scale(1.04)} 84%{transform:translateY(-4px)rotate(-.3deg)scale(.98)} 92%{transform:translateY(2px)scale(1.01)} 100%{transform:translateY(0)rotate(0)scale(1);opacity:1} }
+        @keyframes btnDrop4 { 0%{transform:translateY(-600px)rotate(50deg)scale(.15);opacity:0} 46%{transform:translateY(20px)rotate(-7deg)scale(1.25);opacity:1} 58%{transform:translateY(-15px)rotate(4deg)scale(.85)} 68%{transform:translateY(12px)rotate(-2.5deg)scale(1.08)} 78%{transform:translateY(-7px)rotate(1deg)scale(.95)} 86%{transform:translateY(5px)rotate(-.5deg)scale(1.04)} 93%{transform:translateY(-2px)} 100%{transform:translateY(0)rotate(0)scale(1);opacity:1} }
+        @keyframes btnDrop5 { 0%{transform:translateY(-520px)rotate(-40deg)scale(.2);opacity:0} 50%{transform:translateY(16px)rotate(5deg)scale(1.2);opacity:1} 61%{transform:translateY(-13px)rotate(-3deg)scale(.89)} 71%{transform:translateY(9px)rotate(1.5deg)scale(1.05)} 81%{transform:translateY(-5px)rotate(-.5deg)scale(.97)} 89%{transform:translateY(3px)scale(1.02)} 95%{transform:translateY(-1px)} 100%{transform:translateY(0)rotate(0)scale(1);opacity:1} }
+        @keyframes btnDrop6 { 0%{transform:translateY(-450px)rotate(-30deg)scale(.3);opacity:0} 54%{transform:translateY(10px)rotate(3deg)scale(1.15);opacity:1} 66%{transform:translateY(-8px)rotate(-1.5deg)scale(.93)} 76%{transform:translateY(5px)rotate(.5deg)scale(1.03)} 86%{transform:translateY(-3px)scale(.99)} 93%{transform:translateY(1px)} 100%{transform:translateY(0)rotate(0)scale(1);opacity:1} }
 
-        @keyframes particleRain { 
-            0% { transform: translateY(-10vh) rotate(0deg) scale(1); opacity: 0; } 
-            10% { opacity: 0.8; } 
-            90% { opacity: 0.6; } 
-            100% { transform: translateY(110vh) rotate(720deg) scale(0.3); opacity: 0; } 
-        }
+        @keyframes rumbleClick { 0%,100%{transform:translateX(0)} 15%{transform:translateX(-3px)rotate(-1deg)} 30%{transform:translateX(3px)rotate(1deg)} 45%{transform:translateX(-2px)} 60%{transform:translateX(2px)} 75%{transform:translateX(-1px)} 90%{transform:translateX(1px)} }
 
-        @keyframes bgGlow { 
-            0%, 100% { opacity: 0.3; } 
-            50% { opacity: 0.6; } 
-        }
+        @keyframes snowfall1 { 0%{transform:translateY(-10vh)translateX(0)rotate(0deg);opacity:0}5%{opacity:1}90%{opacity:.6}100%{transform:translateY(110vh)translateX(60px)rotate(360deg);opacity:0} }
+        @keyframes snowfall2 { 0%{transform:translateY(-10vh)translateX(0)rotate(0deg);opacity:0}5%{opacity:.8}90%{opacity:.4}100%{transform:translateY(110vh)translateX(-40px)rotate(-360deg);opacity:0} }
+        @keyframes snowfall3 { 0%{transform:translateY(-10vh)translateX(0)rotate(0deg);opacity:0}5%{opacity:.5}90%{opacity:.3}100%{transform:translateY(110vh)translateX(100px)rotate(540deg);opacity:0} }
+        @keyframes snowfall4 { 0%{transform:translateY(-10vh)translateX(0)rotate(0deg);opacity:0}5%{opacity:.7}90%{opacity:.5}100%{transform:translateY(110vh)translateX(-80px)rotate(-540deg);opacity:0} }
+        @keyframes gridMove { 0%{transform:translate(0,0)}100%{transform:translate(40px,40px)} }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             margin: 0; padding: 0; min-height: 100vh; display: flex;
             justify-content: center; align-items: center; overflow: hidden;
-            background: linear-gradient(135deg, #0a0a0a 0%, #0d0d0d 30%, #0a0a0f 60%, #0c0c0c 100%);
+            background: #050506;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-            color: #e0e0e0; padding: 80px 20px 120px;
+            color: #eaeaee; padding: 80px 20px 120px;
             position: relative;
         }
 
-        /* Radial glow behind logo */
-        .bg-glow {
-            position: fixed;
-            top: 35%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 500px;
-            height: 500px;
-            background: radial-gradient(circle, rgba(220,38,38,0.08) 0%, transparent 70%);
-            border-radius: 50%;
-            pointer-events: none;
-            z-index: 0;
-            animation: bgGlow 3s ease-in-out infinite;
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; opacity: 0.06;
+        }
+        .bg-grid::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 54px 54px;
+            animation: gridMove 20s linear infinite;
         }
 
-        /* Rain particles */
-        .particles {
+        .snow-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 0; overflow: hidden;
         }
-        .particle {
-            position: absolute; border-radius: 50%;
-            animation: particleRain linear infinite;
+        .snowflake {
+            position: absolute; border-radius: 50%; background: white;
+            box-shadow: 0 0 4px rgba(255,255,255,0.6);
         }
+        .snowflake.t1 { animation: snowfall1 linear infinite; }
+        .snowflake.t2 { animation: snowfall2 linear infinite; }
+        .snowflake.t3 { animation: snowfall3 linear infinite; }
+        .snowflake.t4 { animation: snowfall4 linear infinite; }
 
         .container { 
-            text-align: center; 
-            max-width: 650px; 
-            width: 100%;
-            position: relative;
-            z-index: 1;
+            text-align: center; max-width: 650px; width: 100%;
+            position: relative; z-index: 1;
         }
 
-        /* Logo with dark text for readability on any background */
-        .logo-wrapper {
-            position: relative;
-            display: inline-block;
-        }
         .logo-text {
-            font-size: 5.5rem; font-weight: 900; letter-spacing: 12px;
-            margin-bottom: 6px; line-height: 1;
-            color: #1a1a1a;
+            font-size: 5.5rem; font-weight: 700; letter-spacing: 22px;
+            padding-left: 22px; margin-bottom: 8px; line-height: 1;
+            color: #eaeaee;
             animation: logoMaterialize 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-            position: relative;
-            z-index: 1;
-            /* Text shadow for depth */
-            text-shadow: 
-                0 2px 0 rgba(255,255,255,0.1),
-                0 -2px 0 rgba(0,0,0,0.3),
-                2px 0 0 rgba(0,0,0,0.2),
-                -2px 0 0 rgba(0,0,0,0.2);
-        }
-        .logo-text span { 
-            color: #dc2626; 
-            text-shadow: none;
-            animation: glowPulse 2s ease-in-out 1.2s infinite;
-            position: relative;
-            display: inline-block;
         }
 
         .tagline {
-            font-size: 0.8rem; color: rgba(0,0,0,0.6);
-            margin-bottom: 40px; letter-spacing: 6px; text-transform: uppercase;
-            font-weight: 600;
+            font-size: 0.78rem; color: #8a8a92; margin-bottom: 40px;
+            letter-spacing: 6px; text-transform: uppercase; font-weight: 500;
             animation: taglineReveal 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both;
-            text-shadow: 0 1px 0 rgba(255,255,255,0.15);
         }
 
         .search-container {
-            display: flex; align-items: center; gap: 8px;
+            display: flex; align-items: center; gap: 10px;
             animation: searchBarUnfold 0.7s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
         }
 
         .search-input-wrapper { flex: 1; }
 
         .search-input {
-            width: 100%; border: 2px solid rgba(0,0,0,0.15);
-            border-radius: 14px; padding: 15px 20px; font-size: 0.9rem;
-            outline: none; background: rgba(255,255,255,0.9); color: #1a1a1a;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            font-family: inherit;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 100%; border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 12px; padding: 15px 20px; font-size: 0.9rem;
+            outline: none; background: rgba(255,255,255,0.04); color: #eaeaee;
+            transition: all 0.3s ease; font-family: inherit;
         }
-        .search-input:focus { 
-            border-color: #dc2626; background: #ffffff;
-            box-shadow: 0 0 30px rgba(220,38,38,0.2), 0 4px 15px rgba(0,0,0,0.15);
-        }
-        .search-input::placeholder { color: rgba(0,0,0,0.3); }
+        .search-input:focus { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06); }
+        .search-input::placeholder { color: #55555c; }
 
         .search-button {
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
-            border: none; border-radius: 14px; padding: 15px 22px;
-            cursor: pointer; color: white; font-size: 18px;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            font-weight: 700; box-shadow: 0 6px 25px rgba(220,38,38,0.4);
-            font-family: inherit;
+            background: #e8e8ec; border: none; border-radius: 12px; padding: 15px 22px;
+            cursor: pointer; color: #0a0a0b; font-size: 16px; font-weight: 700;
+            transition: all 0.3s ease; font-family: inherit;
         }
-        .search-button:hover { 
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            box-shadow: 0 8px 35px rgba(220,38,38,0.6);
-            transform: translateY(-3px);
-        }
-        .search-button:active { 
-            transform: scale(0.93); 
-            transition: all 0.1s ease; 
-            animation: rumbleClick 0.35s ease;
-        }
+        .search-button:hover { opacity: 0.85; transform: translateY(-1px); }
+        .search-button:active { transform: scale(0.94); animation: rumbleClick 0.35s ease; }
 
         .app-buttons {
-            display: flex; justify-content: center; margin-top: 35px; gap: 10px;
+            display: flex; justify-content: center; margin-top: 38px; gap: 10px;
             flex-wrap: wrap;
         }
 
         .app-button {
             display: flex; align-items: center; justify-content: center;
-            width: 56px; height: 56px; border-radius: 16px;
-            background: rgba(255,255,255,0.9); cursor: pointer;
-            border: 2px solid rgba(0,0,0,0.1); text-decoration: none;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            opacity: 0;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-            position: relative;
-            overflow: visible;
-        }
-        .app-button::after {
-            content: '';
-            position: absolute;
-            inset: -4px;
-            border-radius: 20px;
-            background: transparent;
-            z-index: -1;
-            transition: all 0.3s ease;
+            width: 54px; height: 54px; border-radius: 14px;
+            background: rgba(255,255,255,0.03); cursor: pointer;
+            border: 1px solid rgba(255,255,255,0.1); text-decoration: none;
+            transition: all 0.3s ease; opacity: 0; position: relative;
+            overflow: hidden;
         }
         .app-button.animate { animation-fill-mode: both; }
-        .app-button:nth-child(1).animate { animation: btnDrop1 1s cubic-bezier(0.16, 1, 0.3, 1) 0.95s both; }
-        .app-button:nth-child(2).animate { animation: btnDrop2 1.05s cubic-bezier(0.16, 1, 0.3, 1) 1.05s both; }
-        .app-button:nth-child(3).animate { animation: btnDrop3 0.95s cubic-bezier(0.16, 1, 0.3, 1) 1.15s both; }
-        .app-button:nth-child(4).animate { animation: btnDrop4 1.1s cubic-bezier(0.16, 1, 0.3, 1) 1.0s both; }
-        .app-button:nth-child(5).animate { animation: btnDrop5 1.0s cubic-bezier(0.16, 1, 0.3, 1) 1.1s both; }
-        .app-button:nth-child(6).animate { animation: btnDrop6 0.9s cubic-bezier(0.16, 1, 0.3, 1) 1.2s both; }
+        .app-button:nth-child(1).animate { animation: btnDrop1 1s cubic-bezier(0.16,1,0.3,1) 0.95s both; }
+        .app-button:nth-child(2).animate { animation: btnDrop2 1.05s cubic-bezier(0.16,1,0.3,1) 1.05s both; }
+        .app-button:nth-child(3).animate { animation: btnDrop3 0.95s cubic-bezier(0.16,1,0.3,1) 1.15s both; }
+        .app-button:nth-child(4).animate { animation: btnDrop4 1.1s cubic-bezier(0.16,1,0.3,1) 1.0s both; }
+        .app-button:nth-child(5).animate { animation: btnDrop5 1.0s cubic-bezier(0.16,1,0.3,1) 1.1s both; }
+        .app-button:nth-child(6).animate { animation: btnDrop6 0.9s cubic-bezier(0.16,1,0.3,1) 1.2s both; }
         
-        .app-button:hover { 
-            background: #ffffff; border-color: #dc2626;
-            box-shadow: 0 12px 35px rgba(220,38,38,0.3), 0 4px 15px rgba(0,0,0,0.15);
-            transform: translateY(-6px);
-        }
-        .app-button:hover::after {
-            background: rgba(220,38,38,0.1);
-            inset: -8px;
-            border-radius: 24px;
-        }
-        .app-button:active { 
-            transform: scale(0.82); 
-            transition: all 0.1s ease; 
-            animation: rumbleClick 0.4s ease;
-        }
-        .app-button img { max-width: 48%; max-height: 48%; opacity: 0.7; transition: all 0.3s ease; }
+        .app-button:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.25); transform: translateY(-4px); }
+        .app-button:active { transform: scale(0.88); animation: rumbleClick 0.4s ease; }
+        .app-button img { width: 26px; height: 26px; object-fit: contain; opacity: 0.6; transition: all 0.3s ease; border-radius: 4px; }
         .app-button:hover img { opacity: 1; transform: scale(1.1); }
+        .app-button .app-letter { font-weight: 700; font-size: 0.75rem; color: rgba(255,255,255,0.5); }
 
-        .app-button.add-btn { border: 2.5px dashed rgba(0,0,0,0.15); background: rgba(255,255,255,0.7); }
-        .app-button.add-btn:hover { border-color: #dc2626; background: rgba(255,255,255,0.95); }
+        .app-button.add-btn { border: 1.5px dashed rgba(255,255,255,0.12); }
+        .app-button.add-btn:hover { border-color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.06); }
         .app-button.add-btn svg { transition: all 0.3s ease; }
-        .app-button.add-btn:hover svg { stroke: #dc2626; transform: rotate(90deg); }
+        .app-button.add-btn:hover svg { stroke: #e8e8ec; transform: rotate(90deg); }
 
         .credit-footer {
             position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%);
-            color: rgba(0,0,0,0.3); font-size: 10px; letter-spacing: 2px;
-            transition: all 0.3s ease; font-weight: 600;
+            color: #55555c; font-size: 10px; letter-spacing: 2px;
+            transition: all 0.3s ease; font-weight: 500;
             animation: fadeIn 1s ease 2s both;
         }
-        .credit-footer:hover { color: #dc2626; }
+        .credit-footer:hover { color: #8a8a92; }
 
         .top-buttons {
             position: fixed; top: 16px; right: 16px;
@@ -317,49 +182,44 @@
             animation: fadeIn 0.8s ease 1.6s both;
         }
         .reset-button {
-            background: rgba(255,255,255,0.85); border: 2px solid rgba(0,0,0,0.1);
-            border-radius: 10px; color: #333;
-            padding: 8px 18px; font-size: 11px; cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            font-family: inherit; font-weight: 600;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 8px; color: #8a8a92; padding: 8px 16px;
+            font-size: 11px; cursor: pointer; transition: all 0.3s ease;
+            font-family: inherit; font-weight: 500;
         }
-        .reset-button:hover { background: #dc2626; border-color: #dc2626; color: white; box-shadow: 0 6px 25px rgba(220,38,38,0.4); }
-        .reset-button:active { transform: scale(0.9); animation: rumbleClick 0.3s ease; }
+        .reset-button:hover { background: rgba(255,255,255,0.08); color: #eaeaee; border-color: rgba(255,255,255,0.25); }
+        .reset-button:active { transform: scale(0.94); animation: rumbleClick 0.3s ease; }
 
         .music-btn {
-            width: 38px; height: 38px; border-radius: 10px;
-            background: rgba(255,255,255,0.85); border: 2px solid rgba(0,0,0,0.1);
-            cursor: pointer; font-size: 15px;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            color: #333; box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            width: 36px; height: 36px; border-radius: 8px;
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12);
+            cursor: pointer; font-size: 14px; transition: all 0.3s ease; color: #8a8a92;
         }
-        .music-btn:hover { background: #dc2626; border-color: #dc2626; color: white; box-shadow: 0 6px 25px rgba(220,38,38,0.4); }
-        .music-btn:active { transform: scale(0.85); animation: rumbleClick 0.3s ease; }
+        .music-btn:hover { background: rgba(255,255,255,0.08); color: #eaeaee; border-color: rgba(255,255,255,0.25); }
+        .music-btn:active { transform: scale(0.88); animation: rumbleClick 0.3s ease; }
 
-        /* Modal */
         #add-app-modal > div {
-            background: #ffffff; border: 1px solid rgba(0,0,0,0.1);
-            box-shadow: 0 25px 60px rgba(0,0,0,0.3); border-radius: 18px;
+            background: #0d0d0f; border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7); border-radius: 16px;
         }
-        #add-app-modal h3 { color: #1a1a1a; }
-        #add-app-modal label { color: rgba(0,0,0,0.5); }
+        #add-app-modal h3 { color: #eaeaee; }
+        #add-app-modal label { color: #8a8a92; }
         #add-app-modal input {
-            border: 2px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.02);
-            color: #1a1a1a; transition: all 0.3s ease;
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.04);
+            color: #eaeaee; transition: all 0.3s ease;
         }
-        #add-app-modal input:focus { border-color: #dc2626; background: #fff; }
-        #add-app-modal input::placeholder { color: rgba(0,0,0,0.25); }
-        #add-app-submit { background: #dc2626; color: white; border-radius: 10px; padding: 10px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
-        #add-app-submit:hover { background: #ef4444; }
-        #add-app-cancel { background: transparent; border: 2px solid rgba(0,0,0,0.1); color: rgba(0,0,0,0.5); border-radius: 10px; padding: 10px; cursor: pointer; transition: all 0.2s; font-weight: 600; }
-        #add-app-cancel:hover { background: rgba(0,0,0,0.03); border-color: rgba(0,0,0,0.2); color: #333; }
+        #add-app-modal input:focus { border-color: rgba(255,255,255,0.3); background: rgba(255,255,255,0.06); }
+        #add-app-modal input::placeholder { color: #55555c; }
+        #add-app-submit { background: #e8e8ec; color: #0a0a0b; border-radius: 10px; padding: 10px; font-weight: 600; cursor: pointer; border: none; transition: all 0.2s; }
+        #add-app-submit:hover { opacity: 0.85; }
+        #add-app-cancel { background: transparent; border: 1px solid rgba(255,255,255,0.1); color: #8a8a92; border-radius: 10px; padding: 10px; cursor: pointer; transition: all 0.2s; font-weight: 600; }
+        #add-app-cancel:hover { background: rgba(255,255,255,0.04); border-color: rgba(255,255,255,0.2); color: #eaeaee; }
 
         @media (max-width: 600px) {
-            .logo-text { font-size: 3.5rem; letter-spacing: 8px; }
+            .logo-text { font-size: 3.5rem; letter-spacing: 14px; padding-left: 14px; }
             .search-input { padding: 13px 16px; font-size: 0.8rem; }
-            .search-button { padding: 13px 18px; font-size: 16px; }
-            .app-button { width: 48px; height: 48px; border-radius: 14px; }
+            .search-button { padding: 13px 18px; font-size: 14px; }
+            .app-button { width: 46px; height: 46px; border-radius: 12px; }
         }
     </style>
     <script>
@@ -379,30 +239,22 @@
                 var transport = localStorage.getItem("transport") || "libcurl";
                 var wispUrl = (location.protocol === "https:" ? "wss" : "ws") + "://" + location.host + "/wisp/";
                 var transportPath = transport === "epoxy" ? "/epoxy/index.mjs" : "/libcurl/index.mjs";
-                if (await connection.getTransport() !== transportPath) {
-                    await connection.setTransport(transportPath, [{ wisp: wispUrl }]);
-                }
+                if (await connection.getTransport() !== transportPath) await connection.setTransport(transportPath, [{ wisp: wispUrl }]);
             } catch (err) {}
             try {
                 var ScramjetController = $scramjetLoadController().ScramjetController;
-                var scramjet = new ScramjetController({
-                    prefix: "/scram/service/",
-                    files: { wasm: "/scram/scramjet.wasm.wasm", all: "/scram/scramjet.all.js", sync: "/scram/scramjet.sync.js" },
-                    flags: { syncxhr: true }
-                });
+                var scramjet = new ScramjetController({ prefix: "/scram/service/", files: { wasm: "/scram/scramjet.wasm.wasm", all: "/scram/scramjet.all.js", sync: "/scram/scramjet.sync.js" }, flags: { syncxhr: true } });
                 await scramjet.init();
             } catch (error) {}
         }
         function resetSiteData() {
             if (confirm("Reset all settings and site data?")) {
                 if (window.persistentMusic && !window.persistentMusic.paused) window.persistentMusic.pause();
-                localStorage.clear();
-                window.location.reload();
+                localStorage.clear(); window.location.reload();
             }
         }
 
         window.persistentMusic = null;
-
         function togglePersistentMusic() {
             var musicSrc = localStorage.getItem('persistentMusicSrc');
             var activeAudioData = localStorage.getItem('activeAudioData');
@@ -411,27 +263,14 @@
                 if (!musicSrc) { alert('No soundtrack set. Go to Settings!'); return; }
                 var audioSrc = musicSrc;
                 if (activeAudioData && musicSrc.indexOf('data:') === 0) audioSrc = activeAudioData;
-                window.persistentMusic = new Audio(audioSrc);
-                window.persistentMusic.loop = true;
+                window.persistentMusic = new Audio(audioSrc); window.persistentMusic.loop = true;
                 window.persistentMusic.volume = parseFloat(localStorage.getItem('audioVolume') || '0.7');
-                window.persistentMusic.play().then(function() {
-                    localStorage.setItem('persistentMusicPlaying', 'true');
-                    if (btn) btn.textContent = '🎵';
-                }).catch(function() {});
+                window.persistentMusic.play().then(function() { localStorage.setItem('persistentMusicPlaying', 'true'); if (btn) btn.textContent = 'S'; }).catch(function() {});
             } else {
-                if (window.persistentMusic.paused) {
-                    window.persistentMusic.play().then(function() {
-                        localStorage.setItem('persistentMusicPlaying', 'true');
-                        if (btn) btn.textContent = '🎵';
-                    }).catch(function() {});
-                } else {
-                    window.persistentMusic.pause();
-                    localStorage.setItem('persistentMusicPlaying', 'false');
-                    if (btn) btn.textContent = '🔇';
-                }
+                if (window.persistentMusic.paused) { window.persistentMusic.play().then(function() { localStorage.setItem('persistentMusicPlaying', 'true'); if (btn) btn.textContent = 'S'; }); }
+                else { window.persistentMusic.pause(); localStorage.setItem('persistentMusicPlaying', 'false'); if (btn) btn.textContent = 'X'; }
             }
         }
-
         function initMusic() {
             var isPlaying = localStorage.getItem('persistentMusicPlaying');
             var musicSrc = localStorage.getItem('persistentMusicSrc');
@@ -440,45 +279,32 @@
                 var audioSrc = musicSrc;
                 var activeAudioData = localStorage.getItem('activeAudioData');
                 if (activeAudioData && musicSrc.indexOf('data:') === 0) audioSrc = activeAudioData;
-                window.persistentMusic = new Audio(audioSrc);
-                window.persistentMusic.loop = true;
+                window.persistentMusic = new Audio(audioSrc); window.persistentMusic.loop = true;
                 window.persistentMusic.volume = parseFloat(localStorage.getItem('audioVolume') || '0.7');
-                window.persistentMusic.play().then(function() {
-                    if (btn) btn.textContent = '🎵';
-                }).catch(function() {});
+                window.persistentMusic.play().then(function() { if (btn) btn.textContent = 'S'; }).catch(function() {});
             }
         }
 
-        // Create particles
-        function createParticles() {
-            var container = document.querySelector('.particles');
-            var colors = ['#dc2626', '#ef4444', '#f87171', '#b91c1c', '#991b1b'];
-            for (var i = 0; i < 20; i++) {
-                var p = document.createElement('div');
-                p.className = 'particle';
-                var size = Math.random() * 4 + 1.5;
-                p.style.cssText = 
-                    'left:' + Math.random() * 100 + '%;' +
-                    'width:' + size + 'px;' +
-                    'height:' + size + 'px;' +
-                    'background:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
-                    'animation-duration:' + (Math.random() * 8 + 6) + 's;' +
-                    'animation-delay:' + Math.random() * 10 + 's;' +
-                    'box-shadow: 0 0 ' + (size * 3) + 'px ' + colors[Math.floor(Math.random() * colors.length)] + ';';
-                container.appendChild(p);
+        function createSnow() {
+            var container = document.querySelector('.snow-container');
+            for (var i = 0; i < 80; i++) {
+                var flake = document.createElement('div');
+                flake.className = 'snowflake t' + (Math.floor(Math.random() * 4) + 1);
+                var size = Math.random() * 3 + 1.5;
+                flake.style.cssText = 'left:' + Math.random() * 100 + '%;width:' + size + 'px;height:' + size + 'px;animation-duration:' + (Math.random() * 6 + 6) + 's;animation-delay:' + Math.random() * 12 + 's;opacity:' + (Math.random() * 0.5 + 0.3) + ';';
+                container.appendChild(flake);
             }
+        }
+
+        function getFaviconUrl(url) {
+            try {
+                var domain = new URL(url.startsWith('http') ? url : 'https://' + url).hostname;
+                return 'https://www.google.com/s2/favicons?domain=' + domain + '&sz=64';
+            } catch(e) { return ''; }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
-            createParticles();
-            init();
-            var defaultBg = '/assets/backgrounds/TwoSwords.png';
-            document.body.style.backgroundImage = 'url(\'' + (localStorage.getItem('bg') || defaultBg) + '\')';
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundPosition = 'center center';
-            document.body.style.backgroundRepeat = 'no-repeat';
-            document.body.style.backgroundAttachment = 'fixed';
-
+            createSnow(); init();
             setTimeout(initMusic, 500);
 
             var searchInput = document.querySelector('.search-input');
@@ -492,8 +318,7 @@
             };
 
             var handleSearch = async function() {
-                var query = searchInput.value.trim();
-                if (!query) return;
+                var query = searchInput.value.trim(); if (!query) return;
                 var url, isLikelySearch = false;
                 try {
                     url = (query.startsWith('http://') || query.startsWith('https://')) ? new URL(query) : new URL('https://' + query);
@@ -503,31 +328,35 @@
                 await encodeURL(url.toString());
             };
 
-            var createAppButton = function(appName, appUrl) {
-                var btn = document.createElement('a');
-                btn.href = '#'; btn.classList.add('app-button', 'animate');
-                btn.innerHTML = '<span style="font-weight:700;font-size:0.7rem;color:rgba(0,0,0,0.5);">' + appName.substring(0, 2).toUpperCase() + '</span>';
+            var createAppButton = function(appName, appUrl, isExisting) {
+                var btn = document.createElement('a'); btn.href = '#'; 
+                btn.classList.add('app-button'); 
+                if (!isExisting) btn.classList.add('animate');
                 btn.title = appName;
+                
+                var faviconUrl = getFaviconUrl(appUrl);
+                if (faviconUrl) {
+                    btn.innerHTML = '<img src="' + faviconUrl + '" alt="" onerror="this.style.display=\'none\';this.nextSibling.style.display=\'block\';" style="display:block;"><span class="app-letter" style="display:none;">' + appName.substring(0, 2).toUpperCase() + '</span>';
+                } else {
+                    btn.innerHTML = '<span class="app-letter">' + appName.substring(0, 2).toUpperCase() + '</span>';
+                }
+                
                 btn.addEventListener('click', function(e) { e.preventDefault(); encodeURL(appUrl); });
-                btn.addEventListener('contextmenu', function(e) {
-                    e.preventDefault();
-                    var idx = apps.findIndex(function(a) { return a.name === appName; });
-                    if (idx > -1) { apps.splice(idx, 1); localStorage.setItem('apps', JSON.stringify(apps)); btn.remove(); }
+                btn.addEventListener('contextmenu', function(e) { 
+                    e.preventDefault(); 
+                    var idx = apps.findIndex(function(a) { return a.name === appName; }); 
+                    if (idx > -1) { apps.splice(idx, 1); localStorage.setItem('apps', JSON.stringify(apps)); btn.remove(); } 
                 });
                 return btn;
             };
 
             var apps = JSON.parse(localStorage.getItem('apps') || '[]');
-            apps.forEach(function(app) {
-                var btn = createAppButton(app.name, app.url);
-                appButtonsDiv.insertBefore(btn, addAppButton);
+            apps.forEach(function(app) { 
+                appButtonsDiv.insertBefore(createAppButton(app.name, app.url, true), addAppButton); 
             });
-
-            // Animate all existing buttons
+            
             var allButtons = appButtonsDiv.querySelectorAll('.app-button');
-            allButtons.forEach(function(btn, i) {
-                btn.classList.add('animate');
-            });
+            allButtons.forEach(function(btn) { btn.classList.add('animate'); });
 
             var addAppModal = document.getElementById('add-app-modal');
             document.getElementById('add-app-cancel').addEventListener('click', function() { addAppModal.style.display = 'none'; });
@@ -535,14 +364,13 @@
                 var name = document.getElementById('app-name').value;
                 var url = document.getElementById('app-url').value;
                 if (url && !url.startsWith('http')) url = 'https://' + url;
-                if (name && url) {
-                    apps.push({ name: name, url: url });
-                    localStorage.setItem('apps', JSON.stringify(apps));
-                    var newBtn = createAppButton(name, url);
-                    appButtonsDiv.insertBefore(newBtn, addAppButton);
-                    addAppModal.style.display = 'none';
-                    document.getElementById('app-name').value = '';
-                    document.getElementById('app-url').value = '';
+                if (name && url) { 
+                    apps.push({ name: name, url: url }); 
+                    localStorage.setItem('apps', JSON.stringify(apps)); 
+                    appButtonsDiv.insertBefore(createAppButton(name, url, false), addAppButton); 
+                    addAppModal.style.display = 'none'; 
+                    document.getElementById('app-name').value = ''; 
+                    document.getElementById('app-url').value = ''; 
                 }
             });
             addAppButton.addEventListener('click', function() { addAppModal.style.display = 'flex'; });
@@ -552,50 +380,50 @@
     </script>
 </head>
 <body>
-    <div class="bg-glow"></div>
-    <div class="particles"></div>
+    <div class="bg-grid"></div>
+    <div class="snow-container"></div>
 
     <div class="top-buttons">
         <button class="reset-button" onclick="resetSiteData()">Reset</button>
-        <button class="music-btn" id="music-btn" onclick="togglePersistentMusic()">🎵</button>
+        <button class="music-btn" id="music-btn" onclick="togglePersistentMusic()">S</button>
     </div>
 
     <div class="container">
-        <div class="logo-text">SIL<span>O</span>X</div>
-        <div class="tagline">Browse Freely, Stay Hidden</div>
+        <div class="logo-text">SILOX</div>
+        <div class="tagline">Browse Freely, and Stay Hard my boy</div>
         <div class="search-container">
             <div class="search-input-wrapper">
-                <input type="text" class="search-input" placeholder="Search the web freely...">
+                <input type="text" class="search-input" placeholder="Search or enter a web address...">
             </div>
-            <button class="search-button">→</button>
+            <button class="search-button">Go!!</button>
         </div>
         <div class="app-buttons">
             <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://discord.com';document.querySelector('.search-button').click();">
-                <img src="/assets/svg/discord.svg" alt="Discord">
+                <img src="https://www.google.com/s2/favicons?domain=discord.com&sz=64" alt="Discord">
             </a>
             <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://play.geforcenow.com';document.querySelector('.search-button').click();">
-                <img src="/assets/svg/geforcenow.svg" alt="Geforcenow">
+                <img src="https://www.google.com/s2/favicons?domain=play.geforcenow.com&sz=64" alt="GeForce Now">
             </a>
             <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://youtube.com';document.querySelector('.search-button').click();">
-                <img src="/assets/svg/youtube.svg" alt="Youtube">
+                <img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=64" alt="YouTube">
             </a>
             <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://spotify.com';document.querySelector('.search-button').click();">
-                <img src="/assets/svg/spotify.svg" alt="Spotify">
+                <img src="https://www.google.com/s2/favicons?domain=spotify.com&sz=64" alt="Spotify">
             </a>
             <a href="#" class="app-button" onclick="event.preventDefault();document.querySelector('.search-input').value='https://x.com';document.querySelector('.search-button').click();">
-                <img src="/assets/svg/x.svg" alt="X">
+                <img src="https://www.google.com/s2/favicons?domain=x.com&sz=64" alt="X">
             </a>
             <a href="#" class="app-button add-btn" id="add-app-button">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
             </a>
         </div>
-        <div id="add-app-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);justify-content:center;align-items:center;backdrop-filter:blur(8px);z-index:2000;">
-            <div style="padding:28px;border-radius:18px;text-align:center;min-width:300px;">
-                <h3 style="margin-bottom:16px;font-weight:700;font-size:1rem;letter-spacing:1px;">ADD APP</h3>
-                <label style="font-size:0.7rem;display:block;margin-bottom:4px;text-align:left;">Name</label>
-                <input type="text" id="app-name" placeholder="Netflix" style="width:100%;padding:10px 14px;border-radius:10px;outline:none;margin-bottom:12px;box-sizing:border-box;">
-                <label style="font-size:0.7rem;display:block;margin-bottom:4px;text-align:left;">URL</label>
-                <input type="text" id="app-url" placeholder="netflix.com" style="width:100%;padding:10px 14px;border-radius:10px;outline:none;margin-bottom:16px;box-sizing:border-box;">
+        <div id="add-app-modal" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.7);justify-content:center;align-items:center;backdrop-filter:blur(6px);z-index:2000;">
+            <div style="padding:28px;border-radius:16px;text-align:center;min-width:300px;">
+                <h3 style="margin-bottom:16px;font-weight:600;font-size:1rem;letter-spacing:1px;">ADD APP</h3>
+                <label style="font-size:0.65rem;display:block;margin-bottom:4px;text-align:left;">NAME</label>
+                <input type="text" id="app-name" placeholder="e.g. Netflix" style="width:100%;padding:10px 14px;border-radius:8px;outline:none;margin-bottom:12px;box-sizing:border-box;">
+                <label style="font-size:0.65rem;display:block;margin-bottom:4px;text-align:left;">URL</label>
+                <input type="text" id="app-url" placeholder="e.g. netflix.com" style="width:100%;padding:10px 14px;border-radius:8px;outline:none;margin-bottom:16px;box-sizing:border-box;">
                 <div style="display:flex;gap:8px;">
                     <button id="add-app-submit" style="flex:1;">Add</button>
                     <button id="add-app-cancel" style="flex:1;">Cancel</button>
@@ -604,7 +432,7 @@
         </div>
     </div>
 
-    <span class="credit-footer">Made By Hohogames</span>
+    <span class="credit-footer">Made By  daddy Hohogames</span>
 
     <%- include('parts/bottombar.ejs') %>
 </body>

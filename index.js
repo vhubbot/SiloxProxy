@@ -1,20 +1,25 @@
 import express from "express";
 import { createServer } from "node:http";
+import { Server } from "socket.io";
 import { epoxyPath } from "@mercuryworkshop/epoxy-transport";
 import { libcurlPath } from "@mercuryworkshop/libcurl-transport";
 import { baremuxPath } from "@mercuryworkshop/bare-mux/node";
-import { bareModulePath } from "@mercuryworkshop/bare-as-module3"
+import { bareModulePath } from "@mercuryworkshop/bare-as-module3";
 import { join } from "node:path";
 import { hostname } from "node:os";
 import { server as wisp } from "@mercuryworkshop/wisp-js/server";
-// see https://github.com/xylara/venus
-import venus from "venus-pit"
+import venus from "venus-pit";
+import { setupChat } from "./server/chat.js";
+import multer from "multer";
+import fs from "fs";
 
 const __dirname = process.cwd();
 const app = express();
 
 const publicPath = join(__dirname, "public");
 app.use(express.static(publicPath));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.set('view engine', 'ejs');
 app.set('views', join(__dirname, 'views'));
@@ -24,6 +29,31 @@ wisp.options.dns_servers = ["94.140.14.14", "94.140.15.15", "1.1.1.3", "1.0.0.3"
 wisp.options.dns_result_order = "ipv4first";
 
 const server = createServer();
+const io = new Server(server, {
+    cors: { origin: "*", methods: ["GET", "POST"] },
+    maxHttpBufferSize: 1e7
+});
+
+// Setup chat
+setupChat(io);
+
+// Multer for profile pictures
+const uploadDir = join(__dirname, 'public', 'uploads', 'pfps');
+if (!fs.existsSync(uploadDir)) fs.mkdirSync(uploadDir, { recursive: true });
+
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, uploadDir),
+    filename: (req, file, cb) => {
+        const ext = join.extname ? require('path').extname(file.originalname) : '.png';
+        cb(null, 'pfp-' + Date.now() + '-' + Math.round(Math.random() * 1E9) + '.png');
+    }
+});
+const upload = multer({ storage, limits: { fileSize: 5 * 1024 * 1024 } });
+
+app.post('/upload-pfp', upload.single('pfp'), (req, res) => {
+    if (!req.file) return res.json({ success: false, error: 'No file' });
+    res.json({ success: true, url: '/uploads/pfps/' + req.file.filename });
+});
 
 app.use("/bare-module/", express.static(bareModulePath));
 app.use("/libcurl/", express.static(libcurlPath));
@@ -50,13 +80,12 @@ app.get("/libcurl/index.js", (req, res) => {
     res.sendFile(join(libcurlPath, "index.js"), { headers: { 'Content-Type': 'application/javascript' } });
 });
 
-// create the tarpit
-let _venus = venus(app)
-// if you ignore robots.txt get fucked
+let _venus = venus(app);
+
 app.get("/robots.txt", (req, res) => {
     res.type("text/plain");
     res.send(`User-agent: *\nDisallow: ${_venus}`);
-})
+});
 
 app.get("/", (req, res) => {
     res.render("index", {_venus});
@@ -93,25 +122,15 @@ server.on("upgrade", (req, socket, head) => {
 });
 
 let port = parseInt(process.env.PORT || "3000");
-
 if (isNaN(port)) port = 3000;
 
 server.on("listening", () => {
     const address = server.address();
-
-    // by default we are listening on 0.0.0.0 (every interface)
-    // we just need to list a few
     console.log("Listening on:");
     console.log(`\thttp://localhost:${address.port}`);
     console.log(`\thttp://${hostname()}:${address.port}`);
-    console.log(
-        `\thttp://${address.family === "IPv6" ? `[${address.address}]` : address.address
-        }:${address.port}`
-    );
-
 });
 
-// https://expressjs.com/en/advanced/healthcheck-graceful-shutdown.html
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
@@ -121,6 +140,4 @@ function shutdown() {
     process.exit(0);
 }
 
-server.listen({
-    port,
-});
+server.listen({ port });

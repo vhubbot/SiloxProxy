@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Silox Proxy - Settings</title>
+    <title>Silox - Settings</title>
     <link rel="icon" type="image/png" href="/assets/favicon.png">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
@@ -11,22 +11,27 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        @keyframes logoBuild { 0%{transform:scale(0)perspective(500px)rotateX(90deg);opacity:0;filter:blur(30px)}40%{transform:scale(1.2)perspective(500px)rotateX(-10deg);opacity:.7;filter:blur(0)}55%{transform:scale(.9)perspective(500px)rotateX(5deg)}68%{transform:scale(1.05)perspective(500px)rotateX(-2deg)}78%{transform:scale(.97)}88%{transform:scale(1.02)}95%{transform:scale(.99)}100%{transform:scale(1)perspective(500px)rotateX(0);opacity:1} }
-        @keyframes rumble { 0%,100%{transform:translateX(0)}15%{transform:translateX(-3px)rotate(-1deg)}30%{transform:translateX(3px)rotate(1deg)}45%{transform:translateX(-2px)rotate(-.5deg)}60%{transform:translateX(2px)rotate(.5deg)}75%{transform:translateX(-1px)}90%{transform:translateX(1px)} }
-        @keyframes pulseGlow { 0%,100%{box-shadow:0 0 20px rgba(220,38,38,0.3)}50%{box-shadow:0 0 40px rgba(220,38,38,0.6)} }
-        @keyframes particleRain { 0%{transform:translateY(-10vh)rotate(0deg);opacity:0}10%{opacity:.8}90%{opacity:.6}100%{transform:translateY(110vh)rotate(720deg);opacity:0} }
         @keyframes slideUp { from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)} }
         @keyframes slideDown { from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)} }
+        @keyframes bounceIn { 0%{transform:scale(0.3);opacity:0} 50%{transform:scale(1.05)} 70%{transform:scale(0.95)} 100%{transform:scale(1);opacity:1} }
+        @keyframes rumble { 0%,100%{transform:translateX(0)}15%{transform:translateX(-2px)}30%{transform:translateX(2px)}45%{transform:translateX(-1px)}60%{transform:translateX(1px)} }
+        @keyframes snowfall1 { 0%{transform:translateY(-10vh)translateX(0)rotate(0deg);opacity:0}5%{opacity:1}90%{opacity:.6}100%{transform:translateY(110vh)translateX(60px)rotate(360deg);opacity:0} }
+        @keyframes snowfall2 { 0%{transform:translateY(-10vh)translateX(0)rotate(0deg);opacity:0}5%{opacity:.8}90%{opacity:.4}100%{transform:translateY(110vh)translateX(-40px)rotate(-360deg);opacity:0} }
+        @keyframes snowfall3 { 0%{transform:translateY(-10vh)translateX(0)rotate(0deg);opacity:0}5%{opacity:.5}90%{opacity:.3}100%{transform:translateY(110vh)translateX(100px)rotate(540deg);opacity:0} }
+        @keyframes snowfall4 { 0%{transform:translateY(-10vh)translateX(0)rotate(0deg);opacity:0}5%{opacity:.7}90%{opacity:.5}100%{transform:translateY(110vh)translateX(-80px)rotate(-540deg);opacity:0} }
+        @keyframes gridMove { 0%{transform:translate(0,0)}100%{transform:translate(40px,40px)} }
+        @keyframes selectedPulse { 0%,100%{box-shadow:0 0 20px rgba(232,232,236,0.2)} 50%{box-shadow:0 0 35px rgba(232,232,236,0.4)} }
 
-        :root { --accent: #dc2626; --accent-hover: #ef4444; --bg: #080810; --bg2: #0e0e1a; --bg3: #141428; --text: #e8e8f0; --text2: #6b6b80; --border: rgba(255,255,255,0.08); }
+        :root {
+            --bg:#050506; --bg2:#0d0d0f; --bg3:#0a0a0c;
+            --text:#eaeaee; --text2:#8a8a92; --text-faint:#55555c;
+            --accent:#e8e8ec; --line:rgba(255,255,255,0.09);
+            --line-strong:rgba(255,255,255,0.18);
+        }
 
         body {
             margin: 0; padding: 0;
-            background-color: #08080f;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background: var(--bg);
             min-height: 100vh;
             color: var(--text);
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -36,517 +41,333 @@
             position: relative;
         }
 
-        .particles {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
-            overflow: hidden;
+        .bg-grid {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; opacity: 0.06;
         }
-        .particle {
-            position: absolute; border-radius: 50%;
-            animation: particleRain linear infinite;
-        }
-
-        .settings-wrapper { 
-            max-width: 800px; 
-            margin: 0 auto; 
-            padding: 20px; 
-            position: relative; 
-            z-index: 1; 
+        .bg-grid::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 54px 54px;
+            animation: gridMove 20s linear infinite;
         }
 
-        .settings-header { 
-            text-align: center; 
-            padding: 40px 20px 20px; 
+        .snow-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0; overflow: hidden;
         }
+        .snowflake {
+            position: absolute; border-radius: 50%; background: white;
+            box-shadow: 0 0 4px rgba(255,255,255,0.6);
+        }
+        .snowflake.t1 { animation: snowfall1 linear infinite; }
+        .snowflake.t2 { animation: snowfall2 linear infinite; }
+        .snowflake.t3 { animation: snowfall3 linear infinite; }
+        .snowflake.t4 { animation: snowfall4 linear infinite; }
+
+        .settings-wrapper { max-width: 680px; margin: 0 auto; padding: 20px; position: relative; z-index: 1; }
+
+        .settings-header { text-align: center; padding: 50px 20px 20px; }
         .settings-title {
-            font-size: 3rem; 
-            font-weight: 900; 
-            letter-spacing: 8px; 
-            margin-bottom: 8px; 
-            color: #1a1a1a;
-            animation: logoBuild 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
-            text-shadow: 0 2px 0 rgba(255,255,255,0.1), 0 -2px 0 rgba(0,0,0,0.3);
-        }
-        .settings-title span { 
-            color: var(--accent); 
-            text-shadow: none;
-            animation: pulseGlow 2s ease-in-out 1.2s infinite;
+            font-size: 3rem; font-weight: 700; letter-spacing: 14px;
+            padding-left: 14px; margin-bottom: 8px; color: var(--text);
+            animation: fadeIn 1s ease both;
         }
         .settings-subtitle {
-            font-size: 0.8rem; 
-            color: rgba(0,0,0,0.5);
-            letter-spacing: 6px; 
-            text-transform: uppercase;
-            font-weight: 600;
-            animation: slideUp 0.6s ease 0.4s both;
+            font-size: 0.7rem; color: var(--text-faint);
+            letter-spacing: 6px; text-transform: uppercase; font-weight: 500;
         }
 
         .settings-card {
-            background: rgba(20, 20, 28, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1.5px solid rgba(255, 255, 255, 0.1);
-            border-radius: 18px;
-            padding: 28px;
-            margin-bottom: 16px;
-            transition: all 0.3s ease;
-            animation: slideUp 0.6s ease 0.6s both;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-        }
-        .settings-card:hover {
-            border-color: rgba(220, 38, 38, 0.25);
-            box-shadow: 0 12px 40px rgba(220, 38, 38, 0.1), 0 8px 32px rgba(0,0,0,0.3);
+            background: var(--bg2);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 26px; margin-bottom: 14px;
+            animation: slideUp 0.6s ease both;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
         }
 
         .card-title {
-            font-size: 1rem; 
-            font-weight: 700; 
-            margin-bottom: 18px;
-            display: flex; 
-            align-items: center; 
-            gap: 10px; 
-            color: var(--text); 
-            letter-spacing: 1px;
+            font-size: 0.9rem; font-weight: 600; margin-bottom: 18px;
+            display: flex; align-items: center; gap: 10px;
+            color: var(--text); letter-spacing: 0.5px;
         }
-        .card-title svg { 
-            width: 20px; 
-            height: 20px; 
-            color: var(--accent);
-            flex-shrink: 0;
-        }
-
-        .bg-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-            gap: 12px; 
-            margin-bottom: 16px; 
-        }
-        .bg-option {
-            position: relative; 
-            border-radius: 14px; 
-            overflow: hidden; 
-            cursor: pointer;
-            border: 2.5px solid transparent; 
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-            aspect-ratio: 16/9;
-            background: var(--bg3);
-        }
-        .bg-option:hover { 
-            transform: translateY(-4px); 
-            border-color: rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-        }
-        .bg-option:active { animation: rumble 0.35s ease; }
-        .bg-option.selected { 
-            border-color: var(--accent); 
-            box-shadow: 0 0 25px rgba(220, 38, 38, 0.35);
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-        .bg-option img { width: 100%; height: 100%; object-fit: cover; }
-        .bg-option .bg-name {
-            position: absolute; bottom: 0; left: 0; right: 0;
-            padding: 8px 10px; background: rgba(0, 0, 0, 0.8);
-            font-size: 11px; color: white; text-align: center; 
-            letter-spacing: 0.5px; font-weight: 500;
-        }
-        .bg-option .bg-check {
-            position: absolute; top: 8px; right: 8px; 
-            width: 26px; height: 26px;
-            border-radius: 50%; background: var(--accent); color: white;
-            display: none; align-items: center; justify-content: center; 
-            font-size: 13px; font-weight: bold;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-        }
-        .bg-option.selected .bg-check { display: flex; }
-
-        .custom-bg-option {
-            border: 2.5px dashed rgba(255, 255, 255, 0.15);
-            display: flex; align-items: center; justify-content: center;
-            flex-direction: column; gap: 8px; cursor: pointer;
-            aspect-ratio: 16/9; background: rgba(255, 255, 255, 0.02);
-            transition: all 0.3s ease;
-        }
-        .custom-bg-option:hover { 
-            border-color: var(--accent); 
-            background: rgba(220, 38, 38, 0.08);
-            transform: translateY(-4px);
-        }
-        .custom-bg-option:active { animation: rumble 0.35s ease; }
-        .custom-bg-icon { font-size: 32px; }
-        .custom-bg-text { font-size: 11px; color: var(--text2); text-align: center; }
-
-        .custom-bg-input { display: none; }
-
-        .custom-bg-list { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
-            gap: 12px; 
-            margin-top: 12px; 
-        }
-        .custom-bg-item {
-            position: relative; border-radius: 14px; overflow: hidden;
-            border: 2.5px solid transparent; 
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-            aspect-ratio: 16/9; cursor: pointer;
-        }
-        .custom-bg-item:hover { 
-            border-color: rgba(255, 255, 255, 0.3); 
-            transform: translateY(-4px); 
-        }
-        .custom-bg-item:active { animation: rumble 0.35s ease; }
-        .custom-bg-item.selected { 
-            border-color: var(--accent);
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-        .custom-bg-item img { width: 100%; height: 100%; object-fit: cover; }
-        .custom-bg-item .remove-bg {
-            position: absolute; top: 6px; right: 6px; 
-            width: 24px; height: 24px;
-            border-radius: 50%; background: rgba(0, 0, 0, 0.75); color: white;
-            border: none; cursor: pointer; font-size: 11px; 
-            opacity: 0; transition: all 0.2s;
-            display: flex; align-items: center; justify-content: center;
-            font-weight: 700;
-        }
-        .custom-bg-item:hover .remove-bg { opacity: 1; }
-        .custom-bg-item .remove-bg:hover { 
-            background: var(--accent); 
-            transform: scale(1.1);
-        }
+        .card-title svg { width: 18px; height: 18px; color: var(--text-dim); flex-shrink: 0; }
 
         .setting-group { margin-bottom: 20px; }
         .setting-label { 
-            font-size: 0.85rem; 
-            color: rgba(255, 255, 255, 0.6); 
-            margin-bottom: 8px; 
-            display: block; 
-            letter-spacing: 0.5px; 
-            font-weight: 500;
-        }
-        .setting-select, .setting-input {
-            width: 100%; 
-            padding: 12px 16px; 
-            border-radius: 10px;
-            border: 1.5px solid rgba(255, 255, 255, 0.1); 
-            background: rgba(20, 20, 30, 0.8);
-            color: white; font-size: 0.9rem; 
-            outline: none; 
-            transition: all 0.3s ease; 
-            font-family: inherit;
-        }
-        .setting-select:focus { 
-            border-color: var(--accent); 
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.1); 
-        }
-        .setting-select option { background: #1a1a1a; color: white; }
-
-        .btn {
-            padding: 12px 22px; 
-            border-radius: 10px; 
-            border: none; 
-            font-size: 0.9rem;
-            font-weight: 700; 
-            cursor: pointer; 
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); 
-            font-family: inherit;
-            letter-spacing: 0.5px; 
-            display: inline-flex; 
-            align-items: center; 
-            gap: 8px;
-        }
-        .btn-primary { 
-            background: linear-gradient(135deg, #dc2626, #b91c1c);
-            color: white; 
-            width: 100%; 
-            justify-content: center;
-            box-shadow: 0 6px 25px rgba(220, 38, 38, 0.35);
-            animation: pulseGlow 2s ease-in-out infinite;
-        }
-        .btn-primary:hover { 
-            background: linear-gradient(135deg, #ef4444, #dc2626);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 35px rgba(220, 38, 38, 0.5);
-        }
-        .btn-primary:active { 
-            transform: scale(0.95); 
-            animation: rumble 0.35s ease; 
+            font-size: 0.65rem; color: var(--text-faint);
+            margin-bottom: 10px; display: block; letter-spacing: 1.5px;
+            font-weight: 600; text-transform: uppercase;
         }
 
-        .soundtrack-list { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
-            gap: 10px; 
-            margin-bottom: 16px; 
+        /* Choice cards */
+        .choice-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+            gap: 10px;
         }
-        .soundtrack-item {
-            display: flex; align-items: center; gap: 12px; 
-            padding: 14px; border-radius: 12px;
-            border: 1.5px solid rgba(255, 255, 255, 0.08); 
-            background: rgba(255, 255, 255, 0.02);
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        .choice-card {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            padding: 16px 12px; border: 1px solid var(--line);
+            border-radius: 12px; cursor: pointer; transition: all 0.3s ease;
+            background: rgba(255,255,255,0.015);
         }
-        .soundtrack-item:hover { 
-            border-color: rgba(255, 255, 255, 0.2); 
-            background: rgba(255, 255, 255, 0.05);
-            transform: translateY(-2px);
-        }
-        .soundtrack-item:active { animation: rumble 0.35s ease; }
-        .soundtrack-item.playing { 
-            border-color: var(--accent); 
-            background: rgba(220, 38, 38, 0.1);
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.15);
-        }
-        .soundtrack-icon { 
-            width: 40px; height: 40px; 
-            border-radius: 10px; 
-            background: var(--accent); 
-            display: flex; align-items: center; justify-content: center; 
-            flex-shrink: 0; font-size: 18px;
+        .choice-card:hover { border-color: var(--line-strong); background: rgba(255,255,255,0.04); transform: translateY(-2px); }
+        .choice-card:active { animation: rumble 0.35s ease; }
+        .choice-card.selected { border-color: var(--accent); animation: selectedPulse 2s infinite; background: rgba(255,255,255,0.05); }
+        .choice-icon {
+            width: 48px; height: 48px; border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 22px; font-weight: 700; color: #0a0a0b;
             transition: all 0.3s ease;
         }
-        .soundtrack-item:hover .soundtrack-icon { transform: scale(1.1); }
+        .choice-card:hover .choice-icon { transform: scale(1.08); }
+        .choice-name { font-size: 0.78rem; font-weight: 600; color: var(--text); text-align: center; }
+        .choice-desc { font-size: 0.62rem; color: var(--text-faint); text-align: center; line-height: 1.3; }
+        .choice-check {
+            width: 22px; height: 22px; border-radius: 50%; background: var(--accent);
+            display: none; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 700; color: #0a0a0b;
+            position: absolute; top: 8px; right: 8px;
+        }
+        .choice-card.selected .choice-check { display: flex; }
+
+        .btn {
+            padding: 11px 20px; border-radius: 9px; border: none;
+            font-size: 0.85rem; font-weight: 600; cursor: pointer;
+            transition: all 0.3s ease; font-family: inherit;
+            letter-spacing: 0.3px; display: inline-flex;
+            align-items: center; gap: 8px;
+        }
+        .btn-primary { background: var(--accent); color: #0a0a0b; width: 100%; justify-content: center; }
+        .btn-primary:hover { opacity: 0.85; transform: translateY(-1px); }
+        .btn-primary:active { transform: scale(0.96); animation: rumble 0.35s ease; }
+
+        .soundtrack-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; margin-bottom: 14px; }
+        .soundtrack-item {
+            display: flex; align-items: center; gap: 10px; padding: 12px;
+            border-radius: 10px; border: 1px solid var(--line);
+            background: rgba(255,255,255,0.015); cursor: pointer; transition: all 0.3s ease;
+        }
+        .soundtrack-item:hover { border-color: var(--line-strong); background: rgba(255,255,255,0.03); transform: translateY(-2px); }
+        .soundtrack-item:active { animation: rumble 0.3s ease; }
+        .soundtrack-item.playing { border-color: var(--accent); }
+        .soundtrack-icon { width: 36px; height: 36px; border-radius: 9px; background: var(--accent); color: #0a0a0b; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 15px; font-weight: 700; }
         .soundtrack-info { flex: 1; min-width: 0; }
-        .soundtrack-name { 
-            font-size: 0.85rem; font-weight: 600; 
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; 
-        }
-        .soundtrack-artist { 
-            font-size: 0.7rem; color: var(--text2); 
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; 
-        }
+        .soundtrack-name { font-size: 0.8rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .soundtrack-artist { font-size: 0.65rem; color: var(--text-faint); }
 
         .audio-controls {
-            display: flex; align-items: center; gap: 12px; 
-            padding: 14px; border-radius: 12px;
-            border: 1.5px solid rgba(255, 255, 255, 0.08); 
-            background: rgba(255, 255, 255, 0.02); margin-bottom: 16px;
+            display: flex; align-items: center; gap: 10px; padding: 12px;
+            border-radius: 10px; border: 1px solid var(--line);
+            background: rgba(255,255,255,0.015); margin-bottom: 14px;
         }
-        .audio-control-btn {
-            width: 40px; height: 40px; border-radius: 50%; border: none;
-            background: var(--accent); color: white; cursor: pointer; 
-            font-size: 18px; transition: all 0.3s ease; flex-shrink: 0;
-        }
-        .audio-control-btn:hover { 
-            filter: brightness(1.2); 
-            transform: scale(1.1);
-            box-shadow: 0 0 25px rgba(220, 38, 38, 0.4);
-        }
-        .audio-control-btn:active { animation: rumble 0.35s ease; }
-        .audio-progress { 
-            flex: 1; height: 6px; border-radius: 3px; 
-            background: rgba(255, 255, 255, 0.1); cursor: pointer; 
-        }
-        .audio-progress-fill { 
-            height: 100%; border-radius: 3px; 
-            background: var(--accent); transition: width 0.1s linear; 
-        }
-        .audio-volume { 
-            width: 80px; height: 6px; border-radius: 3px; 
-            background: rgba(255, 255, 255, 0.1); cursor: pointer; 
-        }
-        .audio-volume-fill { 
-            height: 100%; border-radius: 3px; 
-            background: rgba(255, 255, 255, 0.5); 
-        }
+        .audio-control-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: var(--accent); color: #0a0a0b; cursor: pointer; font-size: 14px; font-weight: 700; transition: all 0.3s ease; flex-shrink: 0; }
+        .audio-control-btn:hover { opacity: 0.85; transform: scale(1.05); }
+        .audio-control-btn:active { animation: rumble 0.3s ease; }
+        .audio-progress { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); cursor: pointer; }
+        .audio-progress-fill { height: 100%; border-radius: 2px; background: var(--accent); transition: width 0.1s linear; }
+        .audio-volume { width: 70px; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.08); cursor: pointer; }
+        .audio-volume-fill { height: 100%; border-radius: 2px; background: rgba(255,255,255,0.3); }
 
-        .upload-btn-wrapper { display: flex; gap: 10px; flex-wrap: wrap; }
-        .upload-btn {
-            padding: 12px 20px; border-radius: 12px; 
-            border: 2px dashed rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.02); color: var(--text2);
-            cursor: pointer; transition: all 0.3s ease; font-size: 0.85rem;
-            display: flex; align-items: center; gap: 8px; font-family: inherit;
-            font-weight: 500;
-        }
-        .upload-btn:hover { 
-            border-color: var(--accent); 
-            color: var(--text); 
-            background: rgba(220, 38, 38, 0.08);
-            transform: translateY(-2px);
-        }
-        .upload-btn:active { animation: rumble 0.35s ease; }
+        .upload-btn-wrapper { display: flex; gap: 8px; flex-wrap: wrap; }
+        .upload-btn { padding: 10px 16px; border-radius: 9px; border: 1px dashed var(--line); background: transparent; color: var(--text-dim); cursor: pointer; transition: all 0.3s ease; font-size: 0.8rem; display: flex; align-items: center; gap: 6px; font-family: inherit; font-weight: 500; }
+        .upload-btn:hover { border-color: var(--line-strong); color: var(--text); }
 
-        .apply-btn {
-            background: #22c55e; color: white; border: none; border-radius: 8px;
-            padding: 7px 14px; font-size: 11px; cursor: pointer; font-weight: 600;
-            margin-top: 8px; width: 100%; transition: all 0.3s ease; font-family: inherit;
-        }
-        .apply-btn:hover { filter: brightness(1.2); transform: translateY(-1px); }
+        .apply-btn { background: var(--accent); color: #0a0a0b; border: none; border-radius: 7px; padding: 6px 12px; font-size: 0.7rem; cursor: pointer; font-weight: 600; margin-top: 6px; width: 100%; transition: all 0.3s ease; font-family: inherit; }
+        .apply-btn:hover { opacity: 0.85; }
         .apply-btn:active { animation: rumble 0.3s ease; }
-        .apply-btn.applied { background: var(--accent); }
 
         .notification {
             position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
-            background: rgba(20, 20, 28, 0.95); color: white; 
-            padding: 14px 26px; border-radius: 12px; font-size: 0.9rem; 
-            z-index: 10000; border: 1px solid rgba(255, 255, 255, 0.1); 
-            backdrop-filter: blur(10px); animation: slideDown 0.3s ease;
-            font-weight: 500; letter-spacing: 0.3px;
+            background: var(--bg2); color: var(--text); padding: 12px 24px;
+            border-radius: 10px; font-size: 0.8rem; z-index: 10000;
+            border: 1px solid var(--line); animation: slideDown 0.3s ease; font-weight: 500;
         }
-        .notification.error { 
-            border-color: rgba(220, 38, 38, 0.5); 
-            background: rgba(220, 38, 38, 0.2); 
-        }
-        .notification.success { 
-            border-color: rgba(34, 197, 94, 0.5); 
-            background: rgba(34, 197, 94, 0.2); 
-        }
+        .notification.success { border-color: rgba(34,197,94,0.3); }
+        .notification.error { border-color: rgba(239,68,68,0.3); }
 
-        .back-link {
-            display: block; text-align: center; color: var(--text2);
-            text-decoration: none; margin-top: 24px; font-size: 0.9rem; 
-            letter-spacing: 1px; font-weight: 500;
-            transition: all 0.3s ease;
+        .back-link { display: block; text-align: center; color: var(--text-faint); text-decoration: none; margin-top: 20px; font-size: 0.8rem; letter-spacing: 0.5px; font-weight: 500; transition: all 0.3s ease; }
+        .back-link:hover { color: var(--text); }
+
+        .bottombar-wrapper {
+            position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+            z-index: 200; display: flex; gap: 6px; padding: 8px 14px;
+            background: rgba(10,10,12,0.85); backdrop-filter: blur(14px);
+            border: 1px solid var(--line); border-radius: 16px;
         }
-        .back-link:hover { 
-            color: var(--accent);
-            transform: translateY(-2px);
-        }
+        .bb-item { width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--text-dim); transition: all .2s; text-decoration: none; position: relative; }
+        .bb-item:hover { background: rgba(255,255,255,0.06); color: var(--text); transform: translateY(-2px); }
+        .bb-item.active { color: var(--text); }
+        .bb-item.active::after { content: ''; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); width: 4px; height: 4px; border-radius: 50%; background: var(--accent); }
+        .bb-item svg { width: 17px; height: 17px; }
+        .bb-divider { width: 1px; height: 20px; background: var(--line); margin: 0 4px; }
 
         @media (max-width: 600px) {
-            .settings-title { font-size: 2.2rem; letter-spacing: 4px; }
-            .bg-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+            .settings-title { font-size: 2.2rem; letter-spacing: 8px; }
+            .choice-grid { grid-template-columns: repeat(2, 1fr); }
             .soundtrack-list { grid-template-columns: 1fr; }
-            .upload-btn-wrapper { flex-direction: column; }
             .settings-card { padding: 18px; }
-            .custom-bg-list { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
         }
     </style>
 </head>
 <body>
-    <div class="particles" id="particles"></div>
+    <div class="bg-grid"></div>
+    <div class="snow-container" id="snow-container"></div>
 
     <div class="settings-wrapper">
         <div class="settings-header">
-            <div class="settings-title">SIL<span>O</span>X</div>
+            <div class="settings-title">SILOX</div>
             <div class="settings-subtitle">Settings</div>
         </div>
         
         <div class="settings-card">
             <div class="card-title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/></svg>
-                Background
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                Search Engine
             </div>
-            <div class="bg-grid" id="bg-grid"></div>
-            <div class="card-title" style="margin-top: 20px;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-                Your Custom Backgrounds
-            </div>
-            <div class="custom-bg-list" id="custom-bg-list"></div>
-            <div class="upload-btn-wrapper" style="margin-top: 12px;">
-                <button class="upload-btn" onclick="document.getElementById('bg-upload-input').click()">
-                    <span>🖼️</span> Add Background (Max 90MB)
-                </button>
-                <input type="file" id="bg-upload-input" class="custom-bg-input" accept="image/*,.png,.jpg,.jpeg,.gif,.webp,.bmp,.svg">
+            <div class="setting-group">
+                <label class="setting-label">Choose your search engine</label>
+                <div class="choice-grid" id="search-choices">
+                    <div class="choice-card" data-value="https://www.google.com/search?q=" onclick="selectChoice(this, 'search')">
+                        <div class="choice-icon" style="background:#fff;color:#4285f4;">G</div>
+                        <div class="choice-name">Google</div>
+                        <div class="choice-desc">Fast & reliable</div>
+                    </div>
+                    <div class="choice-card" data-value="https://duckduckgo.com/?q=" onclick="selectChoice(this, 'search')">
+                        <div class="choice-icon" style="background:#de5833;color:#fff;">D</div>
+                        <div class="choice-name">DuckDuckGo</div>
+                        <div class="choice-desc">Private search</div>
+                    </div>
+                    <div class="choice-card" data-value="https://www.bing.com/search?q=" onclick="selectChoice(this, 'search')">
+                        <div class="choice-icon" style="background:#008373;color:#fff;">B</div>
+                        <div class="choice-name">Bing</div>
+                        <div class="choice-desc">Microsoft search</div>
+                    </div>
+                    <div class="choice-card" data-value="https://search.brave.com/search?q=" onclick="selectChoice(this, 'search')">
+                        <div class="choice-icon" style="background:#fb542b;color:#fff;">B</div>
+                        <div class="choice-name">Brave</div>
+                        <div class="choice-desc">Independent</div>
+                    </div>
+                </div>
             </div>
         </div>
-        
+
         <div class="settings-card">
             <div class="card-title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
-                Soundtrack / Background Music
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                Proxy Backend
+            </div>
+            <div class="setting-group">
+                <label class="setting-label">Choose your proxy engine</label>
+                <div class="choice-grid" id="proxy-choices">
+                    <div class="choice-card" data-value="ultraviolet" onclick="selectChoice(this, 'proxy')">
+                        <div class="choice-icon" style="background:#7c3aed;color:#fff;">UV</div>
+                        <div class="choice-name">Ultraviolet</div>
+                        <div class="choice-desc">Fast & modern</div>
+                    </div>
+                    <div class="choice-card" data-value="scramjet" onclick="selectChoice(this, 'proxy')">
+                        <div class="choice-icon" style="background:#059669;color:#fff;">SJ</div>
+                        <div class="choice-name">Scramjet</div>
+                        <div class="choice-desc">Secure & reliable</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="settings-card">
+            <div class="card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Transport
+            </div>
+            <div class="setting-group">
+                <label class="setting-label">Choose your connection method</label>
+                <div class="choice-grid" id="transport-choices">
+                    <div class="choice-card" data-value="libcurl" onclick="selectChoice(this, 'transport')">
+                        <div class="choice-icon" style="background:#f59e0b;color:#000;">LC</div>
+                        <div class="choice-name">Libcurl</div>
+                        <div class="choice-desc">Standard transport</div>
+                    </div>
+                    <div class="choice-card" data-value="epoxy" onclick="selectChoice(this, 'transport')">
+                        <div class="choice-icon" style="background:#3b82f6;color:#fff;">EP</div>
+                        <div class="choice-name">Epoxy</div>
+                        <div class="choice-desc">WebSocket based</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+        </div>
+
+        <div class="settings-card">
+            <div class="card-title">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                Soundtrack
             </div>
             <div class="audio-controls" id="audio-controls">
-                <button class="audio-control-btn" id="audio-play-btn" onclick="toggleAudio()">▶</button>
+                <button class="audio-control-btn" id="audio-play-btn" onclick="toggleAudio()">></button>
                 <div class="audio-progress" id="audio-progress" onclick="seekAudio(event)">
                     <div class="audio-progress-fill" id="audio-progress-fill" style="width: 0%;"></div>
                 </div>
-                <span id="audio-time" style="font-size: 0.7rem; color: var(--text2); flex-shrink: 0;">0:00 / 0:00</span>
+                <span id="audio-time" style="font-size: 0.65rem; color: var(--text-faint); flex-shrink: 0;">0:00</span>
                 <div class="audio-volume" id="audio-volume" onclick="setVolume(event)">
                     <div class="audio-volume-fill" id="audio-volume-fill" style="width: 70%;"></div>
                 </div>
-                <span style="font-size: 0.7rem; color: var(--text2); flex-shrink: 0;">🔊</span>
             </div>
             <div class="soundtrack-list" id="soundtrack-list"></div>
-            <div class="upload-btn-wrapper" style="margin-top: 12px;">
-                <button class="upload-btn" onclick="document.getElementById('audio-upload-input').click()">
-                    <span>🎵</span> Add Custom Audio (Max 90MB)
-                </button>
-                <input type="file" id="audio-upload-input" class="custom-bg-input" accept="audio/*,.mp3,.wav,.ogg,.flac,.aac,.m4a,.opus">
+            <div class="upload-btn-wrapper">
+                <button class="upload-btn" onclick="document.getElementById('audio-upload-input').click()">+ Add Audio (Max 90MB)</button>
+                <input type="file" id="audio-upload-input" style="display:none;" accept="audio/*,.mp3,.wav,.ogg,.flac,.aac,.m4a,.opus">
             </div>
         </div>
-        
-        <div class="settings-card">
-            <div class="card-title">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                Search & Proxy
-            </div>
-            <div class="setting-group">
-                <label class="setting-label">Search Engine</label>
-                <select class="setting-select" id="search-engine">
-                    <option value="https://www.google.com/search?q=">Google</option>
-                    <option value="https://duckduckgo.com/?q=">DuckDuckGo</option>
-                    <option value="https://www.bing.com/search?q=">Bing</option>
-                    <option value="https://search.brave.com/search?q=">Brave</option>
-                </select>
-            </div>
-            <div class="setting-group">
-                <label class="setting-label">Proxy Backend</label>
-                <select class="setting-select" id="proxy-backend">
-                    <option value="ultraviolet">Ultraviolet (Fast)</option>
-                    <option value="scramjet">Scramjet (Secure)</option>
-                </select>
-            </div>
-            <div class="setting-group">
-                <label class="setting-label">Transport</label>
-                <select class="setting-select" id="transport">
-                    <option value="libcurl">Libcurl</option>
-                    <option value="epoxy">Epoxy</option>
-                </select>
-            </div>
-            <button class="btn btn-primary" onclick="saveSettings()">
-                <span>💾</span> Save Settings
-            </button>
-        </div>
-        <a href="/" class="back-link">← Back to Home</a>
+
+        <a href="/" class="back-link">Back to Home</a>
+    </div>
+
+    <div class="bottombar-wrapper">
+        <a href="/" class="bb-item" title="Home">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        </a>
+        <div class="bb-divider"></div>
+        <a href="/search" class="bb-item" title="Browser">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="2" y="3" width="20" height="18" rx="2"/><line x1="2" y1="8" x2="22" y2="8"/></svg>
+        </a>
+        <div class="bb-divider"></div>
+        <a href="/chat" class="bb-item" title="Chat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </a>
+        <div class="bb-divider"></div>
+        <a href="/settings" class="bb-item active" title="Settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </a>
     </div>
     
-    <%- include('../parts/bottombar.ejs') %>
-    
     <script>
-        // Create particles
-        (function() {
-            var container = document.getElementById('particles');
-            var colors = ['#dc2626', '#ef4444', '#f87171', '#b91c1c', '#991b1b'];
-            for (var i = 0; i < 25; i++) {
-                var p = document.createElement('div');
-                p.className = 'particle';
-                var size = Math.random() * 3.5 + 1.5;
-                p.style.cssText = 
-                    'left:' + Math.random() * 100 + '%;' +
-                    'width:' + size + 'px;' +
-                    'height:' + size + 'px;' +
-                    'background:' + colors[Math.floor(Math.random() * colors.length)] + ';' +
-                    'animation-duration:' + (Math.random() * 8 + 6) + 's;' +
-                    'animation-delay:' + Math.random() * 10 + 's;' +
-                    'box-shadow: 0 0 ' + (size * 3) + 'px ' + colors[Math.floor(Math.random() * colors.length)] + ';';
-                container.appendChild(p);
+        function createSnow() {
+            var container = document.getElementById('snow-container');
+            for (var i = 0; i < 80; i++) {
+                var flake = document.createElement('div');
+                flake.className = 'snowflake t' + (Math.floor(Math.random() * 4) + 1);
+                var size = Math.random() * 3 + 1.5;
+                flake.style.cssText = 'left:' + Math.random() * 100 + '%;width:' + size + 'px;height:' + size + 'px;animation-duration:' + (Math.random() * 6 + 6) + 's;animation-delay:' + Math.random() * 12 + 's;opacity:' + (Math.random() * 0.5 + 0.3) + ';';
+                container.appendChild(flake);
             }
-        })();
+        }
 
         var CUSTOM_SOUNDTRACKS = [
             { name: "Rest Here", artist: "Silox OST", file: "RestHere.mp3", duration: "2:45" },
             { name: "Death Note Track", artist: "Phonk", file: "DeathNoteTrack.mp3", duration: "2:45" }
         ];
         
-        var PRESET_BACKGROUNDS = [
-            { name: "Two Swords", file: "TwoSwords.png" },
-            { name: "City Night", file: "CityNight.png" },
-            { name: "Mountain Lake", file: "MountainLake.png" },
-            { name: "Cyberpunk", file: "Cyberpunk.png" },
-            { name: "Sunset Ocean", file: "SunsetOcean.png" },
-            { name: "Forest Path", file: "ForestPath.png" },
-            { name: "Dark Abyss", file: "" }
-        ];
-        
-        var selectedBg = localStorage.getItem('bg') || '/assets/backgrounds/TwoSwords.png';
         var currentAudio = null;
         var audioVolume = parseFloat(localStorage.getItem('audioVolume') || '0.7');
         var currentTrackIndex = -1;
-        var customBackgrounds = JSON.parse(localStorage.getItem('customBackgrounds') || '[]');
         var customAudios = JSON.parse(localStorage.getItem('customAudios') || '[]');
         var origin = window.location.origin;
+
+        var selectedSearch = localStorage.getItem('search') || 'https://www.google.com/search?q=';
+        var selectedProxy = localStorage.getItem('proxy') || 'ultraviolet';
+        var selectedTransport = localStorage.getItem('transport') || 'libcurl';
 
         if (window.parentAudio && !window.parentAudio.paused) {
             currentAudio = window.parentAudio;
@@ -558,356 +379,170 @@
             audioVolume = currentAudio.volume;
             var tracks = getAllTracks();
             for (var i = 0; i < tracks.length; i++) {
-                var trackSrc = i < CUSTOM_SOUNDTRACKS.length ? 
-                    origin + '/assets/sounds/' + tracks[i].file : tracks[i].data;
-                if (currentAudio.src.indexOf(trackSrc) !== -1 || trackSrc === currentAudio.src) {
-                    currentTrackIndex = i;
-                    break;
-                }
+                var trackSrc = i < CUSTOM_SOUNDTRACKS.length ? origin + '/assets/sounds/' + tracks[i].file : tracks[i].data;
+                if (currentAudio.src.indexOf(trackSrc) !== -1 || trackSrc === currentAudio.src) { currentTrackIndex = i; break; }
             }
-            updatePlayButton();
-            renderSoundtrackList();
+            updatePlayButton(); renderSoundtrackList();
         }
         
-        function getAllTracks() {
-            return CUSTOM_SOUNDTRACKS.concat(customAudios);
+        function getAllTracks() { return CUSTOM_SOUNDTRACKS.concat(customAudios); }
+
+        function selectChoice(el, type) {
+            var container = document.getElementById(type + '-choices');
+            container.querySelectorAll('.choice-card').forEach(function(c) { c.classList.remove('selected'); });
+            el.classList.add('selected');
+            if (type === 'search') selectedSearch = el.dataset.value;
+            if (type === 'proxy') selectedProxy = el.dataset.value;
+            if (type === 'transport') selectedTransport = el.dataset.value;
         }
-        
-        function renderBgGrid() {
-            var grid = document.getElementById('bg-grid');
-            if (!grid) return;
-            grid.innerHTML = PRESET_BACKGROUNDS.map(function(bg) {
-                var bgPath = bg.file ? '/assets/backgrounds/' + bg.file : '';
-                var isSelected = selectedBg === bgPath;
-                return '<div class="bg-option ' + (isSelected ? 'selected' : '') + '" onclick="selectBackground(\'' + bgPath + '\', this)" style="' + (!bg.file ? 'background: #0a0a0a;' : '') + '">' +
-                    (bg.file ? '<img src="' + bgPath + '" alt="' + bg.name + '" loading="lazy" onerror="this.parentElement.style.background=\'#1a1a1a\';this.style.display=\'none\';">' : '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#555;font-size:13px;">Dark</div>') +
-                    '<div class="bg-name">' + bg.name + '</div><div class="bg-check">✓</div></div>';
-            }).join('');
-            var customOption = document.createElement('div');
-            customOption.className = 'bg-option custom-bg-option';
-            customOption.innerHTML = '<span class="custom-bg-icon">📁</span><span class="custom-bg-text">Upload<br>Background</span>';
-            customOption.onclick = function() { document.getElementById('bg-upload-input').click(); };
-            grid.appendChild(customOption);
+
+        function highlightSaved() {
+            // Search
+            document.querySelectorAll('#search-choices .choice-card').forEach(function(c) {
+                if (c.dataset.value === selectedSearch) c.classList.add('selected');
+            });
+            // Proxy
+            document.querySelectorAll('#proxy-choices .choice-card').forEach(function(c) {
+                if (c.dataset.value === selectedProxy) c.classList.add('selected');
+            });
+            // Transport
+            document.querySelectorAll('#transport-choices .choice-card').forEach(function(c) {
+                if (c.dataset.value === selectedTransport) c.classList.add('selected');
+            });
         }
-        
-        function renderCustomBackgrounds() {
-            var list = document.getElementById('custom-bg-list');
-            if (!list) return;
-            if (customBackgrounds.length === 0) {
-                list.innerHTML = '<div style="color:var(--text2);font-size:0.85rem;text-align:center;padding:20px;">No custom backgrounds yet. Upload one above!</div>';
-                return;
-            }
-            list.innerHTML = customBackgrounds.map(function(bg, index) {
-                var isSelected = selectedBg === bg.data;
-                return '<div class="custom-bg-item ' + (isSelected ? 'selected' : '') + '" onclick="selectBackground(\'' + bg.data + '\', this, true)">' +
-                    '<img src="' + bg.data + '" alt="' + bg.name + '" loading="lazy" onerror="this.style.display=\'none\'">' +
-                    '<button class="remove-bg" onclick="event.stopPropagation();removeCustomBg(' + index + ')">✕</button>' +
-                    '<div class="bg-name">' + bg.name + '</div></div>';
-            }).join('');
-        }
-        
-        function selectBackground(path, element) {
-            selectedBg = path;
-            document.body.style.backgroundImage = path ? 'url(\'' + path + '\')' : 'none';
-            document.querySelectorAll('.bg-option.selected, .custom-bg-item.selected').forEach(function(el) { el.classList.remove('selected'); });
-            if (element) element.classList.add('selected');
-        }
-        
-        function removeCustomBg(index) {
-            customBackgrounds.splice(index, 1);
-            localStorage.setItem('customBackgrounds', JSON.stringify(customBackgrounds));
-            if (selectedBg && selectedBg.indexOf('data:') === 0) {
-                var stillExists = customBackgrounds.some(function(bg) { return bg.data === selectedBg; });
-                if (!stillExists) {
-                    selectedBg = '/assets/backgrounds/TwoSwords.png';
-                    document.body.style.backgroundImage = 'url(\'/assets/backgrounds/TwoSwords.png\')';
-                }
-            }
-            renderBgGrid();
-            renderCustomBackgrounds();
-            showNotification('Background removed', 'success');
-        }
-        
-        document.getElementById('bg-upload-input').addEventListener('change', function(e) {
-            var file = e.target.files[0];
-            if (!file) return;
-            if (file.size > 90 * 1024 * 1024) { showNotification('File too large! Max 90MB.', 'error'); return; }
-            var reader = new FileReader();
-            reader.onload = function(event) {
-                var bgName = file.name.replace(/\.[^/.]+$/, "");
-                customBackgrounds.push({ name: bgName, data: event.target.result, type: file.type });
-                localStorage.setItem('customBackgrounds', JSON.stringify(customBackgrounds));
-                selectedBg = event.target.result;
-                document.body.style.backgroundImage = 'url(\'' + event.target.result + '\')';
-                renderBgGrid();
-                renderCustomBackgrounds();
-                showNotification('Background "' + bgName + '" added!', 'success');
-            };
-            reader.readAsDataURL(file);
-            this.value = '';
-        });
         
         function renderSoundtrackList() {
             var list = document.getElementById('soundtrack-list');
             if (!list) return;
             var tracks = getAllTracks();
             if (tracks.length === 0) {
-                list.innerHTML = '<div style="color:var(--text2);font-size:0.85rem;text-align:center;padding:20px;">No tracks available. Add custom audio below!</div>';
+                list.innerHTML = '<div style="color:var(--text-faint);font-size:0.8rem;text-align:center;padding:20px;">No tracks yet. Add audio below.</div>';
                 return;
             }
             var customCount = CUSTOM_SOUNDTRACKS.length;
             list.innerHTML = tracks.map(function(track, index) {
                 var isPlaying = currentTrackIndex === index && currentAudio && !currentAudio.paused;
                 var isCustom = index >= customCount;
-                var removeBtn = isCustom ? '<button class="remove-bg" style="position:static;opacity:0.5;margin-left:4px;" onclick="event.stopPropagation();removeCustomAudio(' + (index - customCount) + ')">✕</button>' : '';
+                var removeBtn = isCustom ? '<button class="apply-btn" style="width:auto;margin:0;background:transparent;border:1px solid var(--line);color:var(--text-faint);" onclick="event.stopPropagation();removeCustomAudio(' + (index - customCount) + ')">X</button>' : '';
                 return '<div class="soundtrack-item ' + (isPlaying ? 'playing' : '') + '">' +
-                    '<div class="soundtrack-icon" onclick="playTrack(' + index + ')">' + (isPlaying ? '⏸' : '🎵') + '</div>' +
+                    '<div class="soundtrack-icon" onclick="playTrack(' + index + ')">' + (isPlaying ? '||' : '>') + '</div>' +
                     '<div class="soundtrack-info" onclick="playTrack(' + index + ')">' +
                     '<div class="soundtrack-name">' + escapeHtml(track.name || 'Unknown') + '</div>' +
-                    '<div class="soundtrack-artist">' + escapeHtml(track.artist || 'Unknown') + '</div>' +
-                    '</div>' +
-                    '<button class="apply-btn ' + (isPlaying ? 'applied' : '') + '" onclick="event.stopPropagation();applySoundtrackForAllPages(' + index + ', this)" style="margin-left:4px;width:auto;">🎧 Apply Everywhere</button>' +
-                    removeBtn +
-                    '</div>';
+                    '<div class="soundtrack-artist">' + escapeHtml(track.artist || 'Unknown') + '</div></div>' +
+                    '<button class="apply-btn" onclick="event.stopPropagation();applySoundtrackForAllPages(' + index + ', this)" style="width:auto;margin:0;">Apply</button>' + removeBtn + '</div>';
             }).join('');
         }
         
         function applySoundtrackForAllPages(index, btn) {
-            var tracks = getAllTracks();
-            if (index >= tracks.length) return;
+            var tracks = getAllTracks(); if (index >= tracks.length) return;
             var track = tracks[index];
             var audioSrc = index < CUSTOM_SOUNDTRACKS.length ? '/assets/sounds/' + track.file : track.data;
             localStorage.setItem('persistentMusicSrc', audioSrc);
             localStorage.setItem('persistentMusicPlaying', 'true');
             localStorage.setItem('persistentMusicIndex', index.toString());
             localStorage.setItem('persistentMusicName', track.name);
-            if (index >= CUSTOM_SOUNDTRACKS.length) {
-                localStorage.setItem('activeAudioData', track.data);
-            } else {
-                localStorage.removeItem('activeAudioData');
-            }
+            if (index >= CUSTOM_SOUNDTRACKS.length) localStorage.setItem('activeAudioData', track.data);
+            else localStorage.removeItem('activeAudioData');
             playTrack(index);
-            showNotification('🎧 "' + track.name + '" will play everywhere!', 'success');
-            document.querySelectorAll('.apply-btn').forEach(function(b) { b.classList.remove('applied'); b.textContent = 'Apply'; });
-            if (btn) { btn.classList.add('applied'); btn.textContent = '✓ Applied'; }
+            showNotification('"' + track.name + '" will play everywhere!', 'success');
+            document.querySelectorAll('.apply-btn').forEach(function(b) { b.textContent = 'Apply'; });
+            if (btn) btn.textContent = 'Applied';
         }
         
         function removeCustomAudio(index) {
             customAudios.splice(index, 1);
             localStorage.setItem('customAudios', JSON.stringify(customAudios));
-            if (currentAudio) {
-                currentAudio.pause();
-                currentAudio = null;
-                currentTrackIndex = -1;
-                localStorage.setItem('persistentMusicPlaying', 'false');
-                updatePlayButton();
-            }
+            if (currentAudio) { currentAudio.pause(); currentAudio = null; currentTrackIndex = -1; localStorage.setItem('persistentMusicPlaying', 'false'); updatePlayButton(); }
             renderSoundtrackList();
-            showNotification('Audio removed', 'success');
         }
         
         function playTrack(index) {
-            var tracks = getAllTracks();
-            if (index >= tracks.length) return;
+            var tracks = getAllTracks(); if (index >= tracks.length) return;
             if (currentTrackIndex === index && currentAudio) {
-                if (currentAudio.paused) {
-                    currentAudio.play();
-                    localStorage.setItem('persistentMusicPlaying', 'true');
-                } else {
-                    currentAudio.pause();
-                    localStorage.setItem('persistentMusicPlaying', 'false');
-                }
-                updatePlayButton();
-                renderSoundtrackList();
-                return;
+                if (currentAudio.paused) { currentAudio.play(); localStorage.setItem('persistentMusicPlaying', 'true'); }
+                else { currentAudio.pause(); localStorage.setItem('persistentMusicPlaying', 'false'); }
+                updatePlayButton(); renderSoundtrackList(); return;
             }
             if (currentAudio) { currentAudio.pause(); currentAudio = null; }
             var audioSrc = index < CUSTOM_SOUNDTRACKS.length ? '/assets/sounds/' + tracks[index].file : tracks[index].data;
-            currentAudio = new Audio(audioSrc);
-            currentAudio.loop = true;
-            currentAudio.volume = audioVolume;
+            currentAudio = new Audio(audioSrc); currentAudio.loop = true; currentAudio.volume = audioVolume;
             currentTrackIndex = index;
-            window.currentAudio = currentAudio;
-            window.parentAudio = currentAudio;
-            localStorage.setItem('persistentMusicSrc', audioSrc);
-            localStorage.setItem('persistentMusicPlaying', 'true');
-            localStorage.setItem('persistentMusicIndex', index.toString());
-            localStorage.setItem('persistentMusicName', tracks[index].name);
-            if (index >= CUSTOM_SOUNDTRACKS.length) {
-                localStorage.setItem('activeAudioData', tracks[index].data);
-            } else {
-                localStorage.removeItem('activeAudioData');
-            }
+            window.currentAudio = currentAudio; window.parentAudio = currentAudio;
+            localStorage.setItem('persistentMusicSrc', audioSrc); localStorage.setItem('persistentMusicPlaying', 'true');
+            localStorage.setItem('persistentMusicIndex', index.toString()); localStorage.setItem('persistentMusicName', tracks[index].name);
+            if (index >= CUSTOM_SOUNDTRACKS.length) localStorage.setItem('activeAudioData', tracks[index].data);
+            else localStorage.removeItem('activeAudioData');
             currentAudio.addEventListener('loadedmetadata', updateTimeDisplay);
-            currentAudio.addEventListener('timeupdate', function() { 
-                updateTimeDisplay(); 
-                updateProgressBar();
-                localStorage.setItem('musicCurrentTime', currentAudio.currentTime.toString());
-            });
+            currentAudio.addEventListener('timeupdate', function() { updateTimeDisplay(); updateProgressBar(); localStorage.setItem('musicCurrentTime', currentAudio.currentTime.toString()); });
             currentAudio.addEventListener('ended', function() { currentAudio.play(); });
-            currentAudio.addEventListener('error', function() {
-                showNotification('Could not play audio file.', 'error');
-                currentTrackIndex = -1; currentAudio = null;
-                updatePlayButton(); renderSoundtrackList();
-            });
-            currentAudio.play().catch(function(err) {
-                showNotification('Could not play audio: ' + err.message, 'error');
-            });
-            updatePlayButton();
-            renderSoundtrackList();
+            currentAudio.addEventListener('error', function() { showNotification('Could not play audio file.', 'error'); currentTrackIndex = -1; currentAudio = null; updatePlayButton(); renderSoundtrackList(); });
+            currentAudio.play().catch(function(err) { showNotification('Could not play audio: ' + err.message, 'error'); });
+            updatePlayButton(); renderSoundtrackList();
         }
         
         function toggleAudio() {
-            if (!currentAudio) {
-                var tracks = getAllTracks();
-                if (tracks.length > 0) playTrack(0);
-                return;
-            }
-            if (currentAudio.paused) {
-                currentAudio.play();
-                localStorage.setItem('persistentMusicPlaying', 'true');
-            } else {
-                currentAudio.pause();
-                localStorage.setItem('persistentMusicPlaying', 'false');
-            }
-            updatePlayButton();
-            renderSoundtrackList();
+            if (!currentAudio) { var tracks = getAllTracks(); if (tracks.length > 0) playTrack(0); return; }
+            if (currentAudio.paused) { currentAudio.play(); localStorage.setItem('persistentMusicPlaying', 'true'); }
+            else { currentAudio.pause(); localStorage.setItem('persistentMusicPlaying', 'false'); }
+            updatePlayButton(); renderSoundtrackList();
         }
         
-        function updatePlayButton() {
-            var btn = document.getElementById('audio-play-btn');
-            if (btn) btn.textContent = (!currentAudio || currentAudio.paused) ? '▶' : '⏸';
-        }
-        
-        function updateTimeDisplay() {
-            if (!currentAudio) return;
-            var timeEl = document.getElementById('audio-time');
-            if (timeEl) timeEl.textContent = formatTime(currentAudio.currentTime) + ' / ' + formatTime(currentAudio.duration || 0);
-        }
-        
-        function updateProgressBar() {
-            if (!currentAudio || !currentAudio.duration) return;
-            var fill = document.getElementById('audio-progress-fill');
-            if (fill) fill.style.width = (currentAudio.currentTime / currentAudio.duration * 100) + '%';
-        }
-        
-        function seekAudio(event) {
-            if (!currentAudio || !currentAudio.duration) return;
-            var progress = document.getElementById('audio-progress');
-            var rect = progress.getBoundingClientRect();
-            currentAudio.currentTime = ((event.clientX - rect.left) / rect.width) * currentAudio.duration;
-        }
-        
-        function setVolume(event) {
-            var volumeEl = document.getElementById('audio-volume');
-            var rect = volumeEl.getBoundingClientRect();
-            audioVolume = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width));
-            localStorage.setItem('audioVolume', audioVolume);
-            if (currentAudio) currentAudio.volume = audioVolume;
-            document.getElementById('audio-volume-fill').style.width = (audioVolume * 100) + '%';
-        }
-        
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return '0:00';
-            var mins = Math.floor(seconds / 60);
-            var secs = Math.floor(seconds % 60);
-            return mins + ':' + (secs < 10 ? '0' : '') + secs;
-        }
+        function updatePlayButton() { var btn = document.getElementById('audio-play-btn'); if (btn) btn.textContent = (!currentAudio || currentAudio.paused) ? '>' : '||'; }
+        function updateTimeDisplay() { if (!currentAudio) return; var el = document.getElementById('audio-time'); if (el) el.textContent = formatTime(currentAudio.currentTime) + ' / ' + formatTime(currentAudio.duration || 0); }
+        function updateProgressBar() { if (!currentAudio || !currentAudio.duration) return; var fill = document.getElementById('audio-progress-fill'); if (fill) fill.style.width = (currentAudio.currentTime / currentAudio.duration * 100) + '%'; }
+        function seekAudio(event) { if (!currentAudio || !currentAudio.duration) return; var bar = document.getElementById('audio-progress'); var rect = bar.getBoundingClientRect(); currentAudio.currentTime = ((event.clientX - rect.left) / rect.width) * currentAudio.duration; }
+        function setVolume(event) { var vol = document.getElementById('audio-volume'); var rect = vol.getBoundingClientRect(); audioVolume = Math.max(0, Math.min(1, (event.clientX - rect.left) / rect.width)); localStorage.setItem('audioVolume', audioVolume); if (currentAudio) currentAudio.volume = audioVolume; document.getElementById('audio-volume-fill').style.width = (audioVolume * 100) + '%'; }
+        function formatTime(seconds) { if (isNaN(seconds)) return '0:00'; var m = Math.floor(seconds / 60); var s = Math.floor(seconds % 60); return m + ':' + (s < 10 ? '0' : '') + s; }
         
         document.getElementById('audio-upload-input').addEventListener('change', function(e) {
-            var file = e.target.files[0];
-            if (!file) return;
+            var file = e.target.files[0]; if (!file) return;
             if (file.size > 90 * 1024 * 1024) { showNotification('File too large! Max 90MB.', 'error'); return; }
             var reader = new FileReader();
             reader.onload = function(event) {
-                var audioName = file.name.replace(/\.[^/.]+$/, "");
-                customAudios.push({ name: audioName, artist: 'Custom Upload', data: event.target.result, duration: '', isCustom: true });
+                customAudios.push({ name: file.name.replace(/\.[^/.]+$/, ""), artist: 'Custom', data: event.target.result, isCustom: true });
                 localStorage.setItem('customAudios', JSON.stringify(customAudios));
-                renderSoundtrackList();
-                showNotification('Audio "' + audioName + '" added!', 'success');
+                renderSoundtrackList(); showNotification('Audio added!', 'success');
             };
-            reader.readAsDataURL(file);
-            this.value = '';
+            reader.readAsDataURL(file); this.value = '';
         });
         
         function saveSettings() {
-            localStorage.setItem('bg', selectedBg);
-            localStorage.setItem('search', document.getElementById('search-engine').value);
-            localStorage.setItem('proxy', document.getElementById('proxy-backend').value);
-            localStorage.setItem('transport', document.getElementById('transport').value);
-            showNotification('✓ Settings saved!', 'success');
+            localStorage.setItem('search', selectedSearch);
+            localStorage.setItem('proxy', selectedProxy);
+            localStorage.setItem('transport', selectedTransport);
+            showNotification('Settings saved!', 'success');
         }
         
         function showNotification(message, type) {
-            type = type || '';
-            var existing = document.querySelector('.notification');
-            if (existing) existing.remove();
-            var notification = document.createElement('div');
-            notification.className = 'notification ' + type;
-            notification.textContent = message;
-            document.body.appendChild(notification);
-            setTimeout(function() {
-                notification.style.opacity = '0';
-                notification.style.transition = 'opacity 0.3s ease';
-                setTimeout(function() { if (notification.parentNode) notification.parentNode.removeChild(notification); }, 300);
-            }, 2500);
+            var existing = document.querySelector('.notification'); if (existing) existing.remove();
+            var n = document.createElement('div'); n.className = 'notification ' + (type||''); n.textContent = message;
+            document.body.appendChild(n);
+            setTimeout(function() { n.style.opacity = '0'; n.style.transition = 'opacity 0.3s ease'; setTimeout(function() { if (n.parentNode) n.remove(); }, 300); }, 2000);
         }
         
-        function escapeHtml(text) {
-            var div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        function escapeHtml(text) { var d = document.createElement('div'); d.textContent = text; return d.innerHTML; }
         
         document.addEventListener('DOMContentLoaded', function() {
-            var savedBg = localStorage.getItem('bg') || '/assets/backgrounds/TwoSwords.png';
-            document.body.style.backgroundImage = (savedBg.indexOf('data:') === 0 || savedBg.indexOf('/') === 0) ? 'url(\'' + savedBg + '\')' : 'url(\'/assets/backgrounds/TwoSwords.png\')';
-            selectedBg = savedBg;
-            
-            renderBgGrid();
-            renderCustomBackgrounds();
+            createSnow();
+            highlightSaved();
             renderSoundtrackList();
-            
             document.getElementById('audio-volume-fill').style.width = (audioVolume * 100) + '%';
-            
-            var searchSelect = document.getElementById('search-engine');
-            var currentSearch = localStorage.getItem('search') || 'https://www.google.com/search?q=';
-            if (currentSearch.indexOf('duckduckgo') !== -1) searchSelect.value = 'https://duckduckgo.com/?q=';
-            else if (currentSearch.indexOf('bing') !== -1) searchSelect.value = 'https://www.bing.com/search?q=';
-            else if (currentSearch.indexOf('brave') !== -1) searchSelect.value = 'https://search.brave.com/search?q=';
-            
-            document.getElementById('proxy-backend').value = localStorage.getItem('proxy') || 'ultraviolet';
-            document.getElementById('transport').value = localStorage.getItem('transport') || 'libcurl';
             
             var persistentPlaying = localStorage.getItem('persistentMusicPlaying');
             var persistentSrc = localStorage.getItem('persistentMusicSrc');
             if (persistentPlaying === 'true' && persistentSrc) {
-                currentAudio = new Audio(persistentSrc);
-                currentAudio.loop = true;
-                currentAudio.volume = audioVolume;
+                currentAudio = new Audio(persistentSrc); currentAudio.loop = true; currentAudio.volume = audioVolume;
                 var savedTime = parseFloat(localStorage.getItem('musicCurrentTime') || '0');
                 if (savedTime > 0) currentAudio.currentTime = savedTime;
-                var savedIndex = parseInt(localStorage.getItem('persistentMusicIndex') || '-1');
-                currentTrackIndex = savedIndex;
-                window.currentAudio = currentAudio;
-                window.parentAudio = currentAudio;
-                currentAudio.addEventListener('timeupdate', function() {
-                    localStorage.setItem('musicCurrentTime', currentAudio.currentTime.toString());
-                    updateTimeDisplay();
-                    updateProgressBar();
-                });
+                currentTrackIndex = parseInt(localStorage.getItem('persistentMusicIndex') || '-1');
+                window.currentAudio = currentAudio; window.parentAudio = currentAudio;
+                currentAudio.addEventListener('timeupdate', function() { localStorage.setItem('musicCurrentTime', currentAudio.currentTime.toString()); updateTimeDisplay(); updateProgressBar(); });
                 currentAudio.addEventListener('ended', function() { currentAudio.play(); });
                 currentAudio.play().catch(function() {});
-                updatePlayButton();
-                renderSoundtrackList();
+                updatePlayButton(); renderSoundtrackList();
             }
             
-            setInterval(function() {
-                if (currentAudio && !currentAudio.paused) {
-                    updateProgressBar();
-                    updateTimeDisplay();
-                }
-            }, 1000);
+            setInterval(function() { if (currentAudio && !currentAudio.paused) { updateProgressBar(); updateTimeDisplay(); } }, 1000);
         });
     </script>
 </body>
